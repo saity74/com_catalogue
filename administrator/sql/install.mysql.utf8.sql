@@ -40,7 +40,7 @@ CREATE TABLE `#__catalogue_attr` (
   `attr_description` varchar(255) NOT NULL,
   `attr_default` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_attr_image`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -78,7 +78,7 @@ CREATE TABLE `#__catalogue_attrdir` (
   `state` int(11) NOT NULL,
   `published` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_attrdir_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
