@@ -143,8 +143,8 @@
             "Migrate DB '${db.name}' for user '${db.user}'@'localhost' (using password: ${db.pass})"
         </echo>
         <exec
-                command="mysql ${db.name} -u ${db.user} -p${db.pass} -e &#34;show tables like '${db.pattern}'&#34; | grep -v Tables_in | xargs mysqldump -d --skip-comments ${db.name} -u ${db.user} -p${db.pass} -r ${db.output.install}"/>
-        <exec command="sed -i s/j_/#__/g ${db.output.install}"/>
+                command="mysql ${db.name} -u ${db.user} -p${db.pass} -e &#34;show tables like '${db.pattern}'&#34; | grep -v Tables_in | xargs mysqldump -d --skip-comments --skip-auto-increment ${db.name} -u ${db.user} -p${db.pass} -r ${db.output.install}"/>
+        <exec command="sed -i s/${db.prefix}/#__/g ${db.output.install}"/>
         <exec command="echo 'DELETE FROM `#__categories` WHERE `extension` = '\''com_catalogue'\'';' > ${db.output.uninstall}"/>
         <exec command="grep 'DROP' ${db.output.install} >> ${db.output.uninstall}"/>
 
