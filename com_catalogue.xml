@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <extension type="component" version="3.0" method="upgrade">
     <name>Catalogue</name>
-    <creationDate>2014-09-04</creationDate>
-    <copyright>© 2014. Все права защищены.</copyright>
+    <creationDate>07.07.2015</creationDate>
+    <copyright>© 2015. Все права защищены.</copyright>
     <license>GNU General Public License версии 2 или более поздней;</license>
     <author>Saity74 LLC</author>
     <authorEmail>info@saity74.ru</authorEmail>
     <authorUrl>saity74.ru</authorUrl>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
     <description>COM_CATALOGUE_DESCRIPTION</description>
     <scriptfile>script.php</scriptfile>
     <install>
