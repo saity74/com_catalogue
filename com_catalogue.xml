@@ -22,6 +22,11 @@
             <file driver="mysqli" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
         </sql>
     </uninstall>
+    <update> <!-- Runs on update -->
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
     <administration>
         <menu img="class:catalogue">Catalogue</menu>
         <submenu>
@@ -64,4 +69,9 @@
         <folder>models</folder>
         <folder>views</folder>
     </files>
+
+    <updateservers>
+        <server type="extension" priority="1" name="Saity74 extensions update server">https://raw.githubusercontent.com/saity74/Joomla-Extension-Updates/master/com_catalogue.xml</server>
+    </updateservers>
+
 </extension>
