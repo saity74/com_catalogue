@@ -71,7 +71,7 @@
     </files>
 
     <updateservers>
-        <server type="extension" priority="1" name="Saity74 extensions update server">https://raw.githubusercontent.com/saity74/Joomla-Extension-Updates/master/com_catalogue.xml</server>
+        <server type="extension" priority="1" name="Saity74 extensions update server">https://raw.githubusercontent.com/saity74/Joomla-Extension-Updates/master/com_catalogue_update.xml</server>
     </updateservers>
 
 </extension>
