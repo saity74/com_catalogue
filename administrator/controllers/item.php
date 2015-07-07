@@ -147,8 +147,9 @@ class CatalogueControllerItem extends JControllerForm
 	/**
 	 * Method to upload images
 	 *
-	 * @return	string
+	 * @return  string
 	 *
+	 * @since   2.0
 	 */
 	public function imageUpload()
 	{
@@ -212,13 +213,17 @@ class CatalogueControllerItem extends JControllerForm
 		elseif (!isset($file['name']))
 		{
 			echo 'no file name';
-		} else {
+		}
+		else
+		{
 			if (JFile::exists($file['filepath']))
 			{
 				// A file with this name already exists
 				header('HTTP/1.1 409 Conflict!');
 				echo 'A file with this name already exists';
-			} else {
+			}
+			else
+			{
 				// Set FTP credentials, if given
 				JClientHelper::setCredentialsFromRequest('ftp');
 
@@ -229,7 +234,9 @@ class CatalogueControllerItem extends JControllerForm
 				{
 					// Error in upload
 					echo 'can\'t upload file';
-				} else {
+				}
+				else
+				{
 					echo '1';
 				}
 			}

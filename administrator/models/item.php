@@ -268,7 +268,7 @@ class CatalogueModelItem extends JModelAdmin
 				$registry = new Registry;
 				$registry->loadString($item->images);
 				$item->images = $registry->toArray();
-				foreach($item->images as &$image)
+				foreach ($item->images as &$image)
 				{
 					$image['url'] = $image['name'];
 					$image['dir'] = dirname($image['name']);
@@ -552,9 +552,11 @@ class CatalogueModelItem extends JModelAdmin
 		{
 			$root = JUri::root(true);
 			$id = $input->getInt('id');
+
 			// Restruct images data
 			$images = array_map(
-				function($name, $size) use ($root, $id) {
+				function($name, $size) use ($root, $id)
+				{
 					$name = $root . '/images/' . $id . '/' . $name;
 					return ['name' => $name, 'size' => $size];
 				}, $data['images']['name'], $data['images']['size']
@@ -562,7 +564,9 @@ class CatalogueModelItem extends JModelAdmin
 			$registry = new Registry;
 			$registry->loadArray($images);
 			$data['images'] = (string) $registry;
-		} else {
+		}
+		else
+		{
 			$data['images'] = '{}';
 		}
 
