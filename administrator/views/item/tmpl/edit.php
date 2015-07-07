@@ -72,7 +72,8 @@ $doc->addScriptDeclaration('
         }
     };
 ');
-$doc->addScript(JPATH_COMPONENT . '/assets/js/tablednd.js');
+
+$doc->addScript('components/com_catalogue/assets/js/tablednd.js');
 $doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() });');
 
 ?>
@@ -105,20 +106,6 @@ $doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() })
 				</div>
 				<div class="span6">
 					<?php echo JLayoutHelper::render('joomla.edit.metadata', $this); ?>
-				</div>
-			</div>
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
-		<?php endif; ?>
-
-		<?php // Do not show the images and links options if the edit form is configured not to. ?>
-		<?php if ($params->show_urls_images_backend == 1) : ?>
-			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'images', JText::_('COM_CATALOGUE_FIELDSET_URLS_AND_IMAGES', true)); ?>
-			<div class="row-fluid form-horizontal-desktop">
-				<div class="span12">
-					<?php echo $this->form->getControlGroup('images'); ?>
-					<?php foreach ($this->form->getGroup('images') as $field) : ?>
-						<?php echo $field->getControlGroup(); ?>
-					<?php endforeach; ?>
 				</div>
 			</div>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -170,3 +157,5 @@ $doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() })
 	<input type="hidden" name="task" value=""/>
 	<?php echo JHtml::_('form.token'); ?>
 </form>
+<?php // Load Dropzone template outside of the AdminForm ?>
+<?php echo $this->loadTemplate('dropzone'); ?>

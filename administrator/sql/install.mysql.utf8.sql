@@ -127,7 +127,7 @@ DROP TABLE IF EXISTS `#__catalogue_item`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `#__catalogue_item` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `asset_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table.',
   `title` varchar(255) NOT NULL DEFAULT '',
   `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
@@ -166,8 +166,9 @@ CREATE TABLE `#__catalogue_item` (
   `votes_count` int(11) NOT NULL,
   `comments_count` int(11) NOT NULL,
   `sticker` tinyint(4) NOT NULL DEFAULT '0',
-  `params` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `params` text NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_item_review`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

@@ -258,9 +258,23 @@ class CatalogueModelItem extends JModelAdmin
 			$registry->loadString($item->metadata);
 			$item->metadata = $registry->toArray();
 
-			$techs = new JRegistry;
+			$techs = new Registry;
 			$techs->loadString($item->techs);
 			$item->techs = $techs->toArray();
+
+			// Convert the images field to an array.
+			if (isset($item->images) && !empty($item->images))
+			{
+				$registry = new Registry;
+				$registry->loadString($item->images);
+				$item->images = $registry->toArray();
+				foreach($item->images as &$image)
+				{
+					$image['url'] = $image['name'];
+					$image['dir'] = dirname($image['name']);
+					$image['name'] = basename($image['name']);
+				}
+			}
 
 			$query = $this->_db->getQuery(true);
 			$query->select('a.*, i.title as assoc_name')
@@ -519,36 +533,6 @@ class CatalogueModelItem extends JModelAdmin
 		$input = JFactory::getApplication()->input;
 		$filter  = JFilterInput::getInstance();
 
-		if (isset($data['item_image_data']))
-		{
-			$image_data = array_map(
-				function ($src, $desc = '')
-				{
-					if ($src && $desc)
-					{
-						return ['src' => $src, 'desc' => $desc];
-					}
-					else
-					{
-						return null;
-					}
-
-				}, $data['item_image_data']['src'], $data['item_image_data']['desc']
-			);
-
-			array_walk(
-				$image_data,
-				function ($value, $key)
-				{
-					unset($image_data[$key]);
-				}
-			);
-
-			$registry = new JRegistry($image_data);
-
-			$data['item_image_data'] = $registry->toString();
-		}
-
 		$techs = array_map(array($this, '_restructTechData'), $data['techs']['name'], $data['techs']['value'], $data['techs']['show_short']);
 
 		$registry = new JRegistry($techs);
@@ -566,9 +550,20 @@ class CatalogueModelItem extends JModelAdmin
 
 		if (isset($data['images']) && is_array($data['images']))
 		{
+			$root = JUri::root(true);
+			$id = $input->getInt('id');
+			// Restruct images data
+			$images = array_map(
+				function($name, $size) use ($root, $id) {
+					$name = $root . '/images/' . $id . '/' . $name;
+					return ['name' => $name, 'size' => $size];
+				}, $data['images']['name'], $data['images']['size']
+			);
 			$registry = new Registry;
-			$registry->loadArray($data['images']);
+			$registry->loadArray($images);
 			$data['images'] = (string) $registry;
+		} else {
+			$data['images'] = '{}';
 		}
 
 		// Alter the title for save as copy
