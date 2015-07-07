@@ -157,5 +157,7 @@ $doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() })
 	<input type="hidden" name="task" value=""/>
 	<?php echo JHtml::_('form.token'); ?>
 </form>
-<?php // Load Dropzone template outside of the AdminForm ?>
-<?php echo $this->loadTemplate('dropzone'); ?>
+<?php
+
+// Load Dropzone template outside of the AdminForm
+echo $this->loadTemplate('dropzone');

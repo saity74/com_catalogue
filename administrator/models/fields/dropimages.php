@@ -172,7 +172,7 @@ class JFormFieldDropimages extends JFormField
 		$js[] = '				fileName.value = file.name;';
 		$js[] = '				fileSize.value = file.size;';
 		$js[] = '			});';
-		$js[] = '			var files = JSON.parse(\''.json_encode($this->value).'\');';
+		$js[] = '			var files = JSON.parse(\'' . json_encode($this->value) . '\');';
 		$js[] = '			files.each(function(file){';
 		$js[] = '				that.emit("addedfile", file);';
 		$js[] = '				that.emit("thumbnail", file, file.url);';
