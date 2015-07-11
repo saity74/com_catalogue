@@ -7,7 +7,7 @@
     <author>Saity74 LLC</author>
     <authorEmail>info@saity74.ru</authorEmail>
     <authorUrl>saity74.ru</authorUrl>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
     <description>COM_CATALOGUE_DESCRIPTION</description>
     <scriptfile>script.php</scriptfile>
     <install>
@@ -64,4 +64,10 @@
         <folder>models</folder>
         <folder>views</folder>
     </files>
+    <languages folder="site">
+        <language tag="ru-RU">language/ru-RU/ru-RU.com_catalogue.ini</language>
+    </languages>
+    <updateservers>
+        <server type="extension" priority="1" name="Saity74 extensions update server">https://raw.githubusercontent.com/saity74/Joomla-Extension-Updates/master/com_catalogue_update.xml</server>
+    </updateservers>
 </extension>
