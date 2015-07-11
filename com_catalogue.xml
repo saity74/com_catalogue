@@ -7,7 +7,7 @@
     <author>Saity74 LLC</author>
     <authorEmail>info@saity74.ru</authorEmail>
     <authorUrl>saity74.ru</authorUrl>
-    <version>2.0.0</version>
+    <version>2.1.0</version>
     <description>COM_CATALOGUE_DESCRIPTION</description>
     <scriptfile>script.php</scriptfile>
     <install>
