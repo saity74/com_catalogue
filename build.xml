@@ -38,7 +38,9 @@
 
     <target name="init">
         <mkdir dir="${admin_dest}" />
+        <mkdir dir="${admin_dest}/languages" />
         <mkdir dir="${site_dest}" />
+        <mkdir dir="${site_dest}/languages" />
     </target>
 
     <target name="copyFiles">
@@ -53,14 +55,24 @@
 
         <copy todir="${admin_dest}">
             <fileset dir="${admin_src}">
-                <include name="*/**" />
                 <exclude name="com_catalogue.xml"/>
                 <exclude name="script.php"/>
+                <include name="*/**" />
+            </fileset>
+
+            <fileset dir="${JPATH_ROOT}/administrator/language/ru-RU/">
+                <include name="ru-RU.com_catalogue.ini"/>
+                <include name="ru-RU.com_catalogue.sys.ini"/>
             </fileset>
         </copy>
+
         <copy todir="${site_dest}" >
             <fileset dir="${site_src}">
                 <include name="**/*" />
+            </fileset>
+
+            <fileset dir="${JPATH_ROOT}/language/ru-RU/">
+                <include name="ru-RU.com_catalogue.ini"/>
             </fileset>
         </copy>
     </target>
