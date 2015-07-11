@@ -46,7 +46,7 @@
     <target name="copyFiles">
         <echo>Copying files from dev to package...</echo>
 
-        <copy todir="${base}">
+        <copy todir="${base}" verbose="true">
             <fileset dir="${admin_src}">
                 <include name="com_catalogue.xml"/>
                 <include name="script.php"/>
