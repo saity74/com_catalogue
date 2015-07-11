@@ -19,6 +19,8 @@ class CatalogueViewItem extends JViewLegacy
 
 	protected $state;
 
+	protected $attrs;
+
 	protected $category;
 
 	/**
@@ -35,6 +37,9 @@ class CatalogueViewItem extends JViewLegacy
 	{
 		$this->item = $this->get('Item');
 		$this->state = $this->get('State');
+		$this->attrs = $this->get('Attrs');
+
+		$dispatcher = JEventDispatcher::getInstance();
 
 		// Process the content plugins.
 
@@ -52,8 +57,8 @@ class CatalogueViewItem extends JViewLegacy
 		$item->event->afterDisplayContent = trim(implode("\n", $results));
 
 		$this->_prepareDocument();
-		parent::display($tpl);
 
+		parent::display($tpl);
 	}
 
 	/**
@@ -67,7 +72,7 @@ class CatalogueViewItem extends JViewLegacy
 		$menus = $app->getMenu();
 		$pathway = $app->getPathway();
 		$title = null;
-		$metadata = new JRegistry($this->state->get('item.metadata'));
+		$metadata = new Registry($this->state->get('item.metadata'));
 
 		// Ссылка на активный пункт меню
 		$menu = $menus->getActive();

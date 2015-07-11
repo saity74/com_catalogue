@@ -555,11 +555,24 @@ class CatalogueModelItem extends JModelAdmin
 
 			// Restruct images data
 			$images = array_map(
-				function($name, $size) use ($root, $id)
+				function($name, $size, $alt, $author, $title, $attrs) use ($root, $id)
 				{
 					$name = $root . '/images/' . $id . '/' . $name;
-					return ['name' => $name, 'size' => $size];
-				}, $data['images']['name'], $data['images']['size']
+					return [
+						'name'    => $name,
+						'size'    => $size,
+						'alt'     => $alt,
+						'author'  => $author,
+						'title'   => $title,
+						'attrs'   => $attrs
+					];
+				},
+				$data['images']['name'],
+				$data['images']['size'],
+				$data['images']['alt'],
+				$data['images']['author'],
+				$data['images']['title'],
+				$data['images']['attrs']
 			);
 			$registry = new Registry;
 			$registry->loadArray($images);

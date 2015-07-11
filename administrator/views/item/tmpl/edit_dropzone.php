@@ -25,10 +25,19 @@ defined('_JEXEC') or die;
 		opacity: 1;
 		position: relative;
 	}
+
+	.dropzone .dz-preview {
+		padding: 5px 10px;
+		min-height: 100px;
+		width: 148px;
+	}
+	.dropzone .dz-preview.selected{
+		outline: 1px solid #0087F7;
+	}
 </style>
 
 <ul id="template-container" style="display: none">
-	<li class="dz-preview dz-file-preview">
+	<li class="dz-preview dz-file-preview image_tooltip_open">
 		<a href="#" class="close"><span data-dz-remove>×</span></a>
 		<div class="dz-details">
 			<img data-dz-thumbnail />
@@ -87,5 +96,9 @@ defined('_JEXEC') or die;
 		<div class="dz-error-message"><span data-dz-errormessage></span></div>
 		<input type="hidden" class="filename" name="jform[images][name][]" />
 		<input type="hidden" class="filesize" name="jform[images][size][]" />
+		<input type="hidden" data-attr="title" class="title editable" name="jform[images][title][]" />
+		<input type="hidden" data-attr="alt" class="alt editable" name="jform[images][alt][]" />
+		<input type="hidden" data-attr="author" class="author editable" name="jform[images][author][]" />
+		<input type="hidden" data-attr="attrs" class="attrs editable" name="jform[images][attrs][]" />
 	</li>
 </ul>

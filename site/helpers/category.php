@@ -30,7 +30,7 @@ class CatalogueCategories extends JCategories
 	{
 		$options['table'] = '#__catalogue_item';
 		$options['extension'] = 'com_catalogue';
-		$options['field'] = 'category_id';
+		$options['field'] = 'catid';
 
 		parent::__construct($options);
 	}

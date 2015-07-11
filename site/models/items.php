@@ -35,12 +35,11 @@ class CatalogueModelItems extends JModelList
 		{
 			$config['filter_fields'] = array(
 				'id', 'itm.id',
-				'item_name', 'itm.item_name',
+				'title', 'itm.title',
 				'price', 'itm.price',
 				'alias', 'itm.alias',
 				'state', 'itm.state',
-				'ordering', 'itm.ordering',
-				'published', 'itm.published'
+				'ordering', 'itm.ordering'
 			);
 		}
 		parent::__construct($config);
@@ -68,7 +67,7 @@ class CatalogueModelItems extends JModelList
 
 			// Add subcategory check
 			$includeSubcategories = $this->getState('filter.subcategories', false);
-			$categoryEquals = 'itm.category_id ' . $type . (int) $categoryId;
+			$categoryEquals = 'itm.catid ' . $type . (int) $categoryId;
 
 			if ($includeSubcategories)
 			{
@@ -87,7 +86,7 @@ class CatalogueModelItems extends JModelList
 				}
 
 				// Add the subquery to the main query
-				$query->where('(' . $categoryEquals . ' OR itm.category_id IN (' . $subQuery->__toString() . '))');
+				$query->where('(' . $categoryEquals . ' OR itm.catid IN (' . $subQuery->__toString() . '))');
 
 			}
 			else
@@ -103,18 +102,18 @@ class CatalogueModelItems extends JModelList
 			if (!empty($categoryId))
 			{
 				$type = $this->getState('filter.category_id.include', true) ? 'IN' : 'NOT IN';
-				$query->where('itm.category_id ' . $type . ' (' . $categoryId . ')');
+				$query->where('itm.catid ' . $type . ' (' . $categoryId . ')');
 			}
 		}
 		// $price_cat != 0 ? $price_category = ' AND itm.price_cat = '.$price_cat : $price_category = '';
 		$params = $this->state->params;
 
-		$params->get('catalogue_sort') == 1 ? $ordering = 'ordering' : $ordering = 'item_name';
+		$params->get('catalogue_sort') == 1 ? $ordering = 'ordering' : $ordering = 'title';
 
 		$query->select('itm.*, cat.title AS category_name, cat.description AS category_description')
 			->from('#__catalogue_item AS itm')
-			->join('LEFT', '#__categories as cat ON itm.category_id = cat.id')
-			->where('itm.state = 1 AND itm.published = 1');
+			->join('LEFT', '#__categories as cat ON itm.catid = cat.id')
+			->where('itm.state = 1');
 
 		$sphinx_ids = $this->getState('filter.sphinx_ids', array());
 		if (is_array($sphinx_ids) && !empty($sphinx_ids))
@@ -223,7 +222,7 @@ class CatalogueModelItems extends JModelList
 
 		$query->select('i.*');
 		$query->from('#__catalogue_item AS i');
-		$query->where('i.state = 1  AND i.published = 1');
+		$query->where('i.state = 1');
 		$query->where('i.sticker = 2');
 		$query->order('i.ordering');
 		$db->setQuery($query, 0, 4);
@@ -304,7 +303,7 @@ class CatalogueModelItems extends JModelList
 		{
 			$query->select('p.*, a.attr_name')
 				->from('#__catalogue_attr_price as p')
-				->join('LEFT', '#__catalogue_attr as a ON a.published = 1 AND a.attrdir_id = 1 AND a.id = p.attr_id')
+				->join('LEFT', '#__catalogue_attr as a ON a.attrdir_id = 1 AND a.id = p.attr_id')
 				->where('p.item_id in (' . implode(', ', $ids) . ')')
 				->order('a.ordering');
 
@@ -390,7 +389,7 @@ class CatalogueModelItems extends JModelList
 			$db->getQuery(true)
 				->select('title AS category_name, category_description')
 				->from('#__categories')
-				->where('state = 1 AND published AND id = ' . $catid)
+				->where('state = 1 AND id = ' . $catid)
 		);
 		$category = $db->loadObject();
 

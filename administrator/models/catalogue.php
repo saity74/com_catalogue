@@ -173,13 +173,14 @@ class CatalogueModelCatalogue extends JModelList
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
 		$user = JFactory::getUser();
-		$app = JFactory::getApplication();
 
 		// Select the required fields from the table.
 		$query->select(
 			$this->getState(
 				'list.select',
-				'i.*'
+				'i.id, i.title, i.alias, i.checked_out, i.fulltext, i.price, i.checked_out_time, i.catid' .
+				', i.state, i.access, i.created, i.created_by, i.created_by_alias, i.ordering, i.language, i.hits' .
+				', i.publish_up, i.publish_down'
 			)
 		);
 		$query->from('#__catalogue_item AS i');
@@ -304,11 +305,6 @@ class CatalogueModelCatalogue extends JModelList
 			if (stripos($search, 'id:') === 0)
 			{
 				$query->where('i.id = ' . (int) substr($search, 3));
-			}
-			elseif (stripos($search, 'author:') === 0)
-			{
-				$search = $db->quote('%' . $db->escape(substr($search, 7), true) . '%');
-				$query->where('(uc.name LIKE ' . $search . ' OR uc.username LIKE ' . $search . ')');
 			}
 			else
 			{

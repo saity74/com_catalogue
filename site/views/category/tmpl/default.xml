@@ -24,20 +24,13 @@
     <fields name="params">
         <fieldset name="basic" label="JGLOBAL_CATEGORY_OPTIONS">
 
-            <field name="layout_type"
-                   type="hidden"
-                   default="grid"
+            <field
+                    name="label1"
+                    type="note"
+                    label="JGLOBAL_SHOW_CATEGORY_NOTE_HEADER"
+                    description="JGLOBAL_SHOW_CATEGORY_NOTE_DESCRIPTION"
                     />
 
-            <field name="show_category_heading_title_text"
-                   type="list"
-                   label="JGLOBAL_SHOW_CATEGORY_HEADING_TITLE_TEXT_LABEL"
-                   description="JGLOBAL_SHOW_CATEGORY_HEADING_TITLE_TEXT_DESC"
-                    >
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
             <field name="show_category_title" type="list"
                    label="JGLOBAL_SHOW_CATEGORY_TITLE"
                    description="JGLOBAL_SHOW_CATEGORY_TITLE_DESC"
@@ -47,9 +40,52 @@
                 <option value="1">JSHOW</option>
             </field>
 
+            <field name="category_title_tag_size" type="list"
+                   label="COM_CATALOGUE_CATEGORY_TITLE_TAG_SIZE_LABEL"
+                   description="COM_CATALOGUE_CATEGORY_TITLE_TAG_SIZE_LABEL"
+                   default="2">
+                <option value="1">h1</option>
+                <option value="2">h2</option>
+                <option value="3">h3</option>
+                <option value="4">h4</option>
+                <option value="5">h5</option>
+                <option value="6">h6</option>
+            </field>
+
             <field name="show_description" type="list"
                    description="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_DESC"
                    label="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_LABEL"
+                    >
+                <option value="">JGLOBAL_USE_GLOBAL</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field
+                    name="spacer1"
+                    type="spacer"
+                    hr="true"
+                    />
+
+            <field name="show_subcategories_list"
+                   type="list"
+                   label="COM_CATALOGUE_SHOW_SUBCATEGORIES_LIST_LABEL"
+                   description="COM_CATALOGUE_SHOW_SUBCATEGORIES_LIST_DESC"
+                    >
+                <option value="">JGLOBAL_USE_GLOBAL</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
+            <field name="layout_type"
+                   type="hidden"
+                   default="grid"
+                    />
+
+            <field name="show_category_heading_title_text"
+                   type="list"
+                   label="JGLOBAL_SHOW_CATEGORY_HEADING_TITLE_TEXT_LABEL"
+                   description="JGLOBAL_SHOW_CATEGORY_HEADING_TITLE_TEXT_DESC"
                     >
                 <option value="">JGLOBAL_USE_GLOBAL</option>
                 <option value="0">JHIDE</option>
@@ -192,27 +228,6 @@
                 <option value="1">JSHOW</option>
             </field>
 
-        </fieldset>
-        <fieldset name="integration" label="COM_MENUS_INTEGRATION_FIELDSET_LABEL"
-                >
-
-            <field name="show_feed_link" type="list"
-                   description="JGLOBAL_SHOW_FEED_LINK_DESC"
-                   label="JGLOBAL_SHOW_FEED_LINK_LABEL"
-                    >
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="feed_summary" type="list"
-                   description="JGLOBAL_FEED_SUMMARY_DESC"
-                   label="JGLOBAL_FEED_SUMMARY_LABEL"
-                    >
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JGLOBAL_INTRO_TEXT</option>
-                <option value="1">JGLOBAL_FULL_TEXT</option>
-            </field>
         </fieldset>
     </fields>
 

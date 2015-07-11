@@ -74,7 +74,7 @@ class CatalogueViewAttrDirs extends JViewLegacy
 		/** @noinspection PhpIncludeInspection */
 		require_once JPATH_COMPONENT . '/helpers/catalogue.php';
 
-		$canDo = CatalogueHelper::getActions($this->state->get('filter.attr_id'));
+		$canDo = JHelperContent::getActions('com_catalogue', 'attr_dir', $this->state->get('filter.attr_dir_id'));
 
 		JToolbarHelper::title(JText::_('COM_MANUFACTURER_MANAGER'), 'component.png');
 		if ($canDo->get('core.create'))

@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 /**
  * Model class for handling lists of items.
  *
@@ -20,39 +22,81 @@ class CatalogueModelItem extends JModelList
 
 	protected $_extension = 'com_catalogue';
 
-	private $_items = null;
-
 	/**
-	 * Method get one item
+	 * Method to get item data.
 	 *
-	 * @return  mixed
+	 * @param   integer  $pk  The id of the item.
+	 *
+	 * @return  mixed  Catalogue item data object on success, false on failure.
 	 */
-	public function getItem()
+	public function getItem($pk = null)
 	{
-		$app = JFactory::getApplication();
-		$input = $app->input;
-		$id = $input->getInt('id', 0);
+		$user = JFactory::getUser();
 
-		$db = JFactory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select('itm.*, cat.title AS category_name, man.manufacturer_description');
-		$query->from('#__catalogue_item AS itm');
-		$query->join('LEFT', '#__categories AS cat ON cat.id = itm.category_id');
-		$query->join('LEFT', '#__catalogue_manufacturer AS man ON man.id = itm.manufacturer_id');
-		$query->where('itm.state = 1  && itm.published = 1 && itm.id=' . $id);
+		$pk = (!empty($pk)) ? $pk : (int) $this->getState('item.id');
+
+		$db = $this->getDbo();
+
+		$query = $db->getQuery(true)
+			->select('itm.*, cat.title AS category_name, man.manufacturer_description')
+			->from('#__catalogue_item AS itm')
+			->join('LEFT', '#__categories AS cat ON cat.id = itm.catid')
+			->join('LEFT', '#__catalogue_manufacturer AS man ON man.id = itm.manufacturer_id');
+
+		if ((!$user->authorise('core.edit.state', 'com_catalogue')) && (!$user->authorise('core.edit', 'com_catalogue')))
+		{
+			// Filter by start and end dates.
+			$nullDate = $db->quote($db->getNullDate());
+			$date = JFactory::getDate();
+
+			$nowDate = $db->quote($date->toSql());
+
+			$query->where('(itm.publish_up = ' . $nullDate . ' OR itm.publish_up <= ' . $nowDate . ')')
+				->where('(itm.publish_down = ' . $nullDate . ' OR itm.publish_down >= ' . $nowDate . ')');
+		}
+
+		// Filter by published state.
+		$published = $this->getState('filter.published');
+		$archived = $this->getState('filter.archived');
+
+		if (is_numeric($published))
+		{
+			$query->where('(itm.state = ' . (int) $published . ' OR itm.state =' . (int) $archived . ')');
+		}
+
+		$query->where('itm.id = ' . (int) $pk);
 
 		$db->setQuery($query);
-		$this->_items = $db->loadObject();
+
+		$data = $db->loadObject();
+
+		if (empty($data))
+		{
+			return JError::raiseError(404, JText::_('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
+		}
+
+		// Check for published state if filter set.
+		if (((is_numeric($published)) || (is_numeric($archived))) && (($data->state != $published) && ($data->state != $archived)))
+		{
+			return JError::raiseError(404, JText::_('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
+		}
+
+		// Convert parameter fields to objects.
+		$registry = new Registry;
+		$registry->loadString($data->attribs);
+
+		$data->params = clone $this->getState('params');
+		$data->params->merge($registry);
 
 		$query = $this->_db->getQuery(true);
 		$query->select('i.*')
 			->from('#__catalogue_assoc as a')
 			->join('LEFT', '#__catalogue_item as i ON i.id = a.assoc_id')
-			->where('item_id = ' . (int) $this->_items->id)
+			->where('item_id = ' . (int) $data->id)
 			->order('ordering ASC');
 		$this->_db->setQuery($query);
 
-		$this->_items->assoc = $this->_db->loadObjectList();
+		$data->assoc = $this->_db->loadObjectList();
 
 		// Load assoc attr size..
 
@@ -60,7 +104,7 @@ class CatalogueModelItem extends JModelList
 			function($el){
 				return $el->id;
 			},
-			$this->_items->assoc
+			$data->assoc
 		);
 
 		$query = $this->_db->getQuery(true);
@@ -81,7 +125,7 @@ class CatalogueModelItem extends JModelList
 				$item_attrs[$attr->item_id][] = $attr;
 			}
 
-			foreach ($this->_items->assoc as $item)
+			foreach ($data->assoc as $item)
 			{
 				if (isset($item_attrs[$item->id]))
 				{
@@ -89,87 +133,52 @@ class CatalogueModelItem extends JModelList
 				}
 			}
 		}
-		// ..Load assoc attr size
 
-		// Load reviews
-		$query = $this->_db->getQuery(true);
-		$query->select('rv.*')
-			->from('#__catalogue_item_review as rv')
-			->where('rv.published = 1 AND item_id = ' . (int) $this->_items->id)
-			->order('item_review_date');
-		$this->_db->setQuery($query);
-
-		$this->_items->reviews = $this->_db->loadObjectList();
-
-		$this->_addToSimilarList($this->_items);
-
-		// Load attr size..
-		$query = $this->_db->getQuery(true);
-		$query->select('p.*, a.attr_name')
-			->from('#__catalogue_attr_price as p')
-			->join('LEFT', '#__catalogue_attr as a ON a.published = 1 AND a.attrdir_id = 1 AND a.id = p.attr_id')
-			->where('p.item_id = ' . $id)
-			->order('a.ordering');
-
-		$this->_db->setQuery($query);
-		$attrs = $this->_db->loadObjectList();
-
-		$this->_items->sizes = $attrs;
-
-		return $this->_items;
+		return $data;
 	}
 
 	/**
-	 * Method get similar items list item
+	 * Get attr dirs and attrs.
 	 *
-	 * @param   JTable  $item  Object of JTable
-	 *
-	 * @return  mixed
+	 * @return  array  Array of objects.
 	 */
-	private function _addToSimilarList($item)
+	public function getAttrs()
 	{
-		$app = JFactory::getApplication();
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->select('d.id AS dir_id, a.id AS attr_id, d.dir_name, a.attr_name')
+			->from('#__catalogue_attr AS a')
+			->join('LEFT', '#__catalogue_attrdir AS d ON d.id = a.attrdir_id')
+			->where('a.state = 1 AND d.state = 1');
+		$db->setQuery($query);
 
-		$ctn = 3;
-		$id = $item->id;
-		$query = $this->_db->getQuery(true);
-		$query->select('itm.*');
-		$query->from('#__catalogue_item AS itm');
-		$query->where('itm.state = 1')
-			->where('itm.published = 1', 'AND')
-			->where('itm.id <> ' . $id, 'AND')
-			->where('itm.category_id = ' . $item->category_id, 'AND')
-			->order('itm.price DESC');
-		$this->_db->setQuery($query);
-		$similar = $this->_db->loadAssocList('id');
+		$data = $db->loadAssocList('attr_id');
 
-		$count_similar = count($similar);
-		$similar_items = array();
+		return $data;
+	}
 
-		$num = 1;
-		$direct = 0;
-		$i = 1;
-		if ($count_similar > $ctn)
+	/**
+	 * Increment the hit counter for the article.
+	 *
+	 * @param   integer  $pk  Optional primary key of the article to increment.
+	 *
+	 * @return  boolean  True if successful; false otherwise and internal error set.
+	 */
+	public function hit($pk = 0)
+	{
+		$input = JFactory::getApplication()->input;
+		$hitcount = $input->getInt('hitcount', 1);
+
+		if ($hitcount)
 		{
-			while (count($similar_items) != $ctn)
-			{
-				$direct == 0 ? $cur = @$similar[$id - $num] : $cur = @$similar[$id + $num];
-				if ($cur != null)
-				{
-					$similar_items[] = $cur;
-				}
-				$i % 2 ? $num++ : $num;
-				$direct == 0 ? $direct = 1 : $direct = 0;
-				$i++;
-			}
-		}
-		else
-		{
-			$similar_items = $similar;
+			$pk = (!empty($pk)) ? $pk : (int) $this->getState('item.id');
+
+			$table = JTable::getInstance('Catalogue', 'JTable');
+			$table->load($pk);
+			$table->hit($pk);
 		}
 
-		$list = serialize($similar_items);
-		$app->setUserState('com_catalogue.similaritems', $list);
+		return true;
 	}
 
 	/**
@@ -202,14 +211,22 @@ class CatalogueModelItem extends JModelList
 
 		$db->setQuery(
 			$db->getQuery(true)
-				->select('item_name, item_description, params, metadata')
+				->select('title, introtext, `fulltext`, params, metadata')
 				->from('#__catalogue_item')
-				->where('state = 1 AND published AND id = ' . $id)
+				->where('state = 1 AND id = ' . $id)
 		);
 
 		$item = $db->loadObject();
 
-		$this->setState('item.name', $item->item_name);
+		$user = JFactory::getUser();
+
+		if ((!$user->authorise('core.edit.state', 'com_content')) && (!$user->authorise('core.edit', 'com_content')))
+		{
+			$this->setState('filter.published', 1);
+			$this->setState('filter.archived', 2);
+		}
+
+		$this->setState('item.name', $item->title);
 		$this->setState('item.params', $item->params);
 		$this->setState('item.metadata', $item->metadata);
 		$this->setState('item.desc', $item->item_description);

@@ -73,8 +73,8 @@ class CatalogueViewAttr extends JViewLegacy
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 
 		// Since we don't track these assets at the item level, use the manufacturer id.
-		/** @noinspection PhpUndefinedClassInspection */
-		$canDo = CatalogueHelper::getActions($this->item->id, 0);
+
+		$canDo = JHelperContent::getActions('com_catalogue', 'attr', $this->item->id);
 
 		JToolbarHelper::title($isNew ? JText::_('COM_CATALOGUE_MANAGER_ATTR_NEW') : JText::_('COM_CATALOGUE_MANAGER_ATTR_EDIT'));
 

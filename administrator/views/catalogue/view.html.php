@@ -44,7 +44,6 @@ class CatalogueViewCatalogue extends JViewLegacy
 		$this->items         = $this->get('Items');
 		$this->pagination    = $this->get('Pagination');
 		$this->state         = $this->get('State');
-		$this->authors       = $this->get('Authors');
 		$this->filterForm    = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
 
@@ -96,7 +95,7 @@ class CatalogueViewCatalogue extends JViewLegacy
 		// Get the toolbar object instance
 		$bar = JToolBar::getInstance('toolbar');
 
-		JToolbarHelper::title(JText::_('COM_CONTENT_ITEMS_TITLE'), 'stack item');
+		JToolbarHelper::title(JText::_('COM_CATALOGUE_ITEMS_TITLE'), 'stack item');
 
 		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_catalogue', 'core.create'))) > 0 )
 		{

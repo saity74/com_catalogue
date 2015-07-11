@@ -74,6 +74,16 @@ abstract class CatalogueHelperRoute
 		// Check if the active menuitem matches the requested language
 		$active = $menus->getActive();
 
+		$items = $menus->getItems($attributes, $values);
+
+		foreach ($items as $item)
+		{
+			if ($item->query['cid'] == $needles['category'])
+			{
+				return $item->id;
+			}
+		}
+
 		if ($active && $active->component == 'com_catalogue')
 		{
 			return $active->id;
@@ -113,7 +123,7 @@ abstract class CatalogueHelperRoute
 			$needles = array();
 			$link = 'index.php?option=com_catalogue&view=category&cid=' . $id;
 			$catids = array_reverse($category->getPath());
-			$needles['category'] = $catids;
+			$needles['category'] = $id;
 			$needles['categories'] = $catids;
 
 			if ($item = self::_findItem($needles))

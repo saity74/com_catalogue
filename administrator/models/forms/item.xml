@@ -251,62 +251,6 @@
 			</field>
 
 			<field
-					name="show_item_navigation"
-					type="list"
-					class="chzn-color"
-					label="JGLOBAL_SHOW_NAVIGATION_LABEL"
-					description="JGLOBAL_SHOW_NAVIGATION_DESC">
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field
-					name="show_icons"
-					type="list"
-					class="chzn-color"
-					label="JGLOBAL_SHOW_ICONS_LABEL"
-					description="JGLOBAL_SHOW_ICONS_DESC">
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field
-					name="show_print_icon"
-					type="list"
-					class="chzn-color"
-					label="JGLOBAL_SHOW_PRINT_ICON_LABEL"
-					description="JGLOBAL_SHOW_PRINT_ICON_DESC">
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field
-					name="show_email_icon"
-					type="list"
-					class="chzn-color"
-					label="JGLOBAL_SHOW_EMAIL_ICON_LABEL"
-					description="JGLOBAL_SHOW_EMAIL_ICON_DESC">
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field
-					name="show_vote"
-					type="list"
-					class="chzn-color"
-					label="JGLOBAL_SHOW_VOTE_LABEL"
-					description="JGLOBAL_SHOW_VOTE_DESC"
-					>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field
 					name="show_hits"
 					type="list"
 					class="chzn-color"
@@ -318,26 +262,10 @@
 			</field>
 
 			<field
-					name="show_noauth"
-					type="list"
-					class="chzn-color"
-					label="JGLOBAL_SHOW_UNAUTH_LINKS_LABEL"
-					description="JGLOBAL_SHOW_UNAUTH_LINKS_DESC">
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-
-			<field
 					name="spacer2"
 					type="spacer"
 					hr="true"
 					/>
-
-			<field name="alternative_readmore" type="text"
-				   label="JFIELD_READMORE_LABEL"
-				   description="JFIELD_READMORE_DESC"
-				   size="25" />
 
 			<field name="item_layout" type="componentlayout"
 				   label="JFIELD_ALT_LAYOUT_LABEL"
@@ -495,6 +423,30 @@
 
 		</fieldset>
 	</fields>
+
+    <fieldset name="imagemodal"
+              label="COM_CATALOGUE_FIELDSET_IMAGEMODAL_OPTIONS">
+
+        <field name="image_alt" type="text"
+               label="COM_CATALOGUE_IMAGE_ALT_LABEL"
+               size="30" />
+
+        <field name="image_title" type="text"
+               label="COM_CATALOGUE_IMAGE_TITLE_LABEL"
+               size="30" />
+
+        <field name="image_author" type="text"
+               label="COM_CATALOGUE_IMAGE_AUTHOR_LABEL"
+               size="30" />
+
+        <field name="image_attrs" type="attrslist"
+               multiple="true"
+               size="5"
+               label="COM_CATALOGUE_IMAGE_ATTRSLIST_LABEL"
+               description="COM_CATALOGUE_IMAGE_ATTRSLIST_DESC"
+                />
+    </fieldset>
+
 	<!-- These fields are used to get labels for the Content History Preview and Compare Views -->
 	<fields>
 		<field name="introtext" label="COM_CONTENT_FIELD_INTROTEXT" />

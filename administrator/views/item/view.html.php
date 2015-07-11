@@ -22,6 +22,8 @@ class CatalogueViewItem extends JViewLegacy
 
 	protected $state;
 
+	protected $fields;
+
 	/**
 	 * Execute and display a template script.
 	 *
@@ -51,6 +53,7 @@ class CatalogueViewItem extends JViewLegacy
 		$this->form     = $this->get('Form');
 		$this->item     = $this->get('Item');
 		$this->state    = $this->get('State');
+
 		$this->canDo    = JHelperContent::getActions('com_catalogue', 'item', $this->item->id);
 
 		// Check for errors.

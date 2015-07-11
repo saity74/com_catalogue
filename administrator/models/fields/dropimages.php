@@ -151,8 +151,8 @@ class JFormFieldDropimages extends JFormField
 		$doc = JFactory::getDocument();
 		$doc->addStyleSheet('components/com_catalogue/assets/css/dropzone.css');
 		$doc->addScript('components/com_catalogue/assets/js/dropzone.js');
-		$doc->addScript('components/com_catalogue/assets/js/jquery.popupoverlay.js');
 		$doc->addScript('components/com_catalogue/assets/js/jquery-ui.min.js');
+		$doc->addScript('components/com_catalogue/assets/js/init.js');
 
 		$js[] = 'jQuery( document ).ready(function( $ ) {';
 		$js[] = '	Dropzone.options.imagesContainer = {';
@@ -167,10 +167,13 @@ class JFormFieldDropimages extends JFormField
 		$js[] = '			var that = this;';
 		$js[] = '			this.on("addedfile", function(file) {';
 		$js[] = '				jQuery(file.previewElement).parent().sortable();';
-		$js[] = '				fileName = file.previewElement.querySelector(".filename"),';
-		$js[] = '				fileSize = file.previewElement.querySelector(".filesize");';
-		$js[] = '				fileName.value = file.name;';
-		$js[] = '				fileSize.value = file.size;';
+		$js[] = '				console.log(file);';
+		$js[] = '				file.previewElement.querySelector(".filename").value = file.name;';
+		$js[] = '				file.previewElement.querySelector(".filesize").value = file.size;';
+		$js[] = '				file.previewElement.querySelector(".title").value = file.title ? file.title : \'\';';
+		$js[] = '				file.previewElement.querySelector(".alt").value = file.alt ? file.alt : \'\';';
+		$js[] = '				file.previewElement.querySelector(".author").value = file.author ? file.author : \'\';';
+		$js[] = '				file.previewElement.querySelector(".attrs").value = file.attrs ? file.attrs : \'\';';
 		$js[] = '			});';
 		$js[] = '			var files = JSON.parse(\'' . json_encode($this->value) . '\');';
 		$js[] = '			files.each(function(file){';

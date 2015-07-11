@@ -38,19 +38,13 @@ $published = $this->state->get('filter.published');
 					</div>
 				</div>
 			<?php endif; ?>
-			<div class="control-group span6">
-				<div class="controls">
-					<?php echo JHtml::_('batch.tag'); ?>
-				</div>
-			</div>
 		</div>
 	</div>
 	<div class="modal-footer">
 		<button class="btn" type="button"
 		        onclick="document.getElementById('batch-category-id').value='';
 	                     document.getElementById('batch-access').value='';
-	                     document.getElementById('batch-language-id').value='';
-	                     document.getElementById('batch-tag-id').value=''"
+	                     document.getElementById('batch-language-id').value=''"
 		        data-dismiss="modal">
 			<?php echo JText::_('JCANCEL'); ?>
 		</button>

@@ -76,28 +76,6 @@ class CatalogueHelper
 	 *
 	 * @since   12.2
 	 */
-	public static function getActions()
-	{
-		$user = JFactory::getUser();
-		$result = new JObject;
-
-		$actions = JAccess::getActions('com_catalogue', 'component');
-
-		foreach ($actions as $action)
-		{
-			$result->set($action->name, $user->authorise($action->name, 'com_catalogue'));
-		}
-
-		return $result;
-	}
-
-	/**
-	 * Method to get options for list.
-	 *
-	 * @return  array
-	 *
-	 * @since   12.2
-	 */
 	public static function getItemsOptions()
 	{
 		$options = array();
@@ -207,6 +185,41 @@ class CatalogueHelper
 		$query->select('id As value, dir_name As text');
 		$query->from('#__catalogue_attrdir AS d');
 		$query->order('d.dir_name');
+
+		// Get the options.
+		$db->setQuery($query);
+
+		try
+		{
+			$options = $db->loadObjectList();
+		}
+		catch (RuntimeException $e)
+		{
+			JError::raiseWarning(500, $e->getMessage());
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Method to get options for list.
+	 *
+	 * @return  array
+	 *
+	 * @since   12.2
+	 */
+	public static function getAttrsOptions()
+	{
+		$options = array();
+
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		$query->select('CONCAT(d.id, ":", a.id) AS value, a.attr_name AS text')
+			->from('#__catalogue_attr AS a')
+			->join('LEFT', '#__catalogue_attrdir AS d ON d.id = a.attrdir_id')
+			->where('a.state = 1 AND d.state = 1')
+			->order('d.dir_name');
 
 		// Get the options.
 		$db->setQuery($query);

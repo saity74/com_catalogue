@@ -92,7 +92,7 @@ $doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() })
 				</fieldset>
 			</div>
 			<div class="span3">
-				<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+				<?php echo JLayoutHelper::render('edit.global', $this);?>
 			</div>
 		</div>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -111,6 +111,10 @@ $doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() })
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 		<?php endif; ?>
 
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'images', JText::_('COM_CATALOGUE_IMAGES', true)); ?>
+		<?php echo $this->loadTemplate('images'); ?>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
+
 		<?php if ($assoc) : ?>
 			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'associations', JText::_('JGLOBAL_FIELDSET_ASSOCIATIONS', true)); ?>
 			<?php echo $this->loadTemplate('associations'); ?>
@@ -128,10 +132,6 @@ $doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() })
 
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'techs', JText::_('COM_CATALOGUE_ITEMTECHS', true)); ?>
 		<?php echo $this->loadTemplate('techs'); ?>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'images', JText::_('COM_CATALOGUE_IMAGES', true)); ?>
-		<?php echo $this->loadTemplate('images'); ?>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'assoc', JText::_('COM_CATALOGUE_ASSOC', true)); ?>

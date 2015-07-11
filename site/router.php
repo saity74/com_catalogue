@@ -380,7 +380,7 @@ class CatalogueRouter extends JComponentRouterBase
 			else
 			{
 				$query = $db->getQuery(true)
-					->select($db->quoteName(array('alias', 'category_id')))
+					->select($db->quoteName(array('alias', 'catid')))
 					->from($db->quoteName('#__catalogue_item'))
 					->where($db->quoteName('id') . ' = ' . (int) $id);
 				$db->setQuery($query);

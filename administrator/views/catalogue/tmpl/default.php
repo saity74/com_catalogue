@@ -63,10 +63,10 @@ $assoc = JLanguageAssociations::isEnabled();
 						<th width="1%" style="min-width:55px" class="nowrap center">
 							<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'i.state', $listDirn, $listOrder); ?>
 						</th>
-						<th>
+						<th width="10%" style="min-width:250px">
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'i.title', $listDirn, $listOrder); ?>
 						</th>
-						<th class="hidden-phone" width="30%">
+						<th class="hidden-phone" width="1%">
 							<?php echo JHtml::_('grid.sort', 'COM_CATALOGUE_HEADING_INTRO', 'i.fulltext', $listDirn, $listOrder); ?>
 						</th>
 						<th>
@@ -79,7 +79,7 @@ $assoc = JLanguageAssociations::isEnabled();
 							<?php echo JHtml::_('grid.sort', 'COM_CATALOGUE_HEADING_PRICE', 'i.price', $listDirn, $listOrder); ?>
 						</th>
 						<th width="10%" class="nowrap hidden-phone">
-							<?php echo JHtml::_('searchtools.sort',  'JGRID_HEADING_ACCESS', 'ш.access', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('searchtools.sort',  'JGRID_HEADING_ACCESS', 'i.access', $listDirn, $listOrder); ?>
 						</th>
 					<?php if ($assoc) : ?>
 						<th width="5%" class="nowrap hidden-phone">
@@ -87,19 +87,19 @@ $assoc = JLanguageAssociations::isEnabled();
 						</th>
 					<?php endif;?>
 						<th width="10%" class="nowrap hidden-phone">
-							<?php echo JHtml::_('searchtools.sort',  'JAUTHOR', 'ш.created_by', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('searchtools.sort',  'JAUTHOR', 'i.created_by', $listDirn, $listOrder); ?>
 						</th>
 						<th width="5%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 						</th>
 						<th width="10%" class="nowrap hidden-phone">
-							<?php echo JHtml::_('searchtools.sort', 'JDATE', 'ш.created', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('searchtools.sort', 'JDATE', 'i.created', $listDirn, $listOrder); ?>
 						</th>
 						<th width="1%" class="nowrap hidden-phone">
-							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'ш.hits', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'i.hits', $listDirn, $listOrder); ?>
 						</th>
 						<th width="1%" class="nowrap hidden-phone">
-							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'ш.id', $listDirn, $listOrder); ?>
+							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'i.id', $listDirn, $listOrder); ?>
 						</th>
 					</tr>
 				</thead>
@@ -173,6 +173,7 @@ $assoc = JLanguageAssociations::isEnabled();
 										<?php echo $this->escape($item->title); ?>
 									</span>
 								<?php endif; ?>
+								<br/>
 								<span class="small break-word">
 									<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
 								</span>
@@ -182,10 +183,11 @@ $assoc = JLanguageAssociations::isEnabled();
 							</div>
 						</td>
 						<td class="hidden-phone">
-							<?php if ($item->fulltext)
-							{
-								echo substr(strip_tags($item->fulltext), 0, 100) . '...';
-							} ?>
+							<?php if ($this->escape($item->fulltext)) : ?>
+								<span class="label">есть</span>
+							<?php else : ?>
+								<span class="label label-warning">Добавьте описание</span>
+							<?php endif; ?>
 						</td>
 						<td class="hidden-phone">
 							<?php echo $item->manufacturer_name; ?>

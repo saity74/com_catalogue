@@ -17,34 +17,21 @@ $params = $app->getParams();
 			<?php $category->params = new JRegistry($category->params); ?>
 			<?php $clink = CatalogueHelperRoute::getCategoryRoute($category->id, $category->language); ?>
 			<?php $img = json_decode($category->params)->image; ?>
-			<div class="span4">
-
-				<div class="item-image-wrapper">
-					<a href="<?php echo $clink; ?>">
-						<img src="<?php echo $img; ?>"/>
-
-						<div class="item-link-wrapper">
-							<span class="item-link"><?php echo $category->title; ?></span>
-						</div>
-					</a>
-				</div>
-				<div class="item-desc-wrapper">
-					<?php echo $category->description; ?>
-				</div>
-				<div class="item-price-wrapper">
-					<p>
-						<span class="price-name">Цена: </span>
-                        <span class="item-price"><?php if ($category->min_price && $category->max_price)
-							{
-								echo 'от ' . number_format($category->min_price, 0, '.', ' ') . ' до ' .
-								number_format($category->max_price, 0, '.', ' ') . ' ' .
-								$params->get('catalogue_currency');
-							}
-							else
-							{
-								echo "по запросу";
-							} ?></span>
-					</p>
+			<div class="col-md-6 col-lg-6 col-sm-12 col-xs-12">
+				<div class="subcategory-wrapper">
+					<div class="category-image-wrapper pull-right">
+						<a href="<?php echo $clink; ?>">
+							<img src="<?php echo $img; ?>"/>
+						</a>
+					</div>
+					<h3 class="category-link-wrapper">
+						<a href="<?php echo $clink; ?>">
+							<?php echo $category->title; ?>
+						</a>
+					</h3>
+					<div class="category-desc-wrapper">
+						<?php echo $category->description; ?>
+					</div>
 				</div>
 			</div>
 		<?php endforeach; ?>
