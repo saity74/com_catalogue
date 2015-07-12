@@ -139,7 +139,7 @@
 				type="text"/>
 
 		<field
-				name="item_id"
+				name="similar_items"
 				type="itemslist"
 				multiple="true"
 				label="COM_CATALOGUE_FIELD_ASSOC_LABEL"

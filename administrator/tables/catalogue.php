@@ -109,6 +109,13 @@ class CatalogueTableCatalogue extends JTable
 			$array['techs'] = (string) $registry;
 		}
 
+		if (isset($array['similar_items']) && is_array($array['similar_items']))
+		{
+			$registry = new JRegistry;
+			$registry->loadArray($array['similar_items']);
+			$array['similar_items'] = (string) $registry;
+		}
+
 		return parent::bind($array, $ignore);
 	}
 
@@ -146,7 +153,7 @@ class CatalogueTableCatalogue extends JTable
 		}
 		else
 		{
-			// New contact. A contact created and created_by field can be set by the user,
+			// New item. A item created and created_by field can be set by the user,
 			// so we don't touch either of these if they are set.
 			if (!(int) $this->created)
 			{
@@ -159,66 +166,6 @@ class CatalogueTableCatalogue extends JTable
 		}
 
 		$result = parent::store($updateNulls);
-		$values = array();
-
-		$query_assoc = 'DELETE FROM #__catalogue_assoc WHERE item_id = ' . $this->id;
-		$this->_db->setQuery($query_assoc);
-		$this->_db->execute();
-
-		$keyName = $this->getKeyName();
-		$this->load($this->$keyName);
-
-		$jform = JFactory::getApplication()->input->post->get('jform', array(), 'array');
-		if (!isset($jform['assoc']['published']))
-		{
-			$jform['assoc']['published'] = array();
-		}
-		$assocs = array_map(array($this, '_restructData'), $jform['assoc']['assoc_id'], $jform['assoc']['ordering'], $jform['assoc']['published']);
-
-		if (!empty($assocs))
-		{
-			$query_assoc = 'INSERT INTO #__catalogue_assoc (`item_id`, `assoc_id`, `ordering`, `published`) VALUES ';
-
-			foreach ($assocs as $assoc)
-			{
-				$values[] = '(' . $this->id . ',' . $assoc['assoc_id'] . ',' . $assoc['ordering'] . ',' . $assoc['published'] . ')';
-			}
-
-			if (is_array($values) && !empty($values))
-			{
-				$query_assoc .= implode(',', $values);
-				$this->_db->setQuery($query_assoc);
-				$this->_db->execute();
-			}
-		}
-
-		$values = array();
-
-		$query_image = 'DELETE FROM #__catalogue_attr_image WHERE item_id = ' . $this->id;
-		$this->_db->setQuery($query_image);
-		$this->_db->execute();
-
-		$attr_images = array_map(array($this, '_restructDataImage'), $jform['params']['attr_id'], $jform['params']['attr_image']);
-
-		if (!empty($attr_images))
-		{
-			$query_attr_images = 'INSERT INTO #__catalogue_attr_image (`item_id`, `attr_id`, `attr_image`) VALUES ';
-
-			foreach ($attr_images as $attr_image)
-			{
-				if ($attr_image['attr_image'])
-				{
-					$values[] = '(' . $this->id . ',' . $attr_image['attr_id'] . ',\'' . $attr_image['attr_image'] . '\')';
-				}
-			}
-
-			if (is_array($values) && !empty($values))
-			{
-				$query_attr_images .= implode(',', $values);
-				$this->_db->setQuery($query_attr_images);
-				$this->_db->execute();
-			}
-		}
 
 		$values = array();
 
@@ -303,54 +250,16 @@ class CatalogueTableCatalogue extends JTable
 	}
 
 	/**
-	 * _restructData
-	 *
-	 * @param   int  $assoc_id   Assoc item ID
-	 * @param   int  $ordering   Order
-	 * @param   int  $published  Publish (0/1)
-	 *
-	 * @return  array
-	 */
-	protected function _restructData($assoc_id, $ordering = 0, $published = 0)
-	{
-		if ($published == null)
-		{
-			$published = 0;
-		}
-		if ($assoc_id)
-		{
-			return array('assoc_id' => $assoc_id, 'ordering' => $ordering, 'published' => $published);
-		}
-
-		return array();
-	}
-
-	/**
 	 * _restructDataParams
 	 *
 	 * @param   int  $attr_id     Assoc item ID
-	 * @param   int  $attr_value  Order
+	 * @param   int  $attr_value  Attr value
 	 *
 	 * @return  array
 	 */
 	protected function _restructDataParams($attr_id, $attr_value = 0)
 	{
 		return array('attr_id' => (string) $attr_id, 'attr_value' => $attr_value);
-	}
-
-	/**
-	 * _restructDataImage
-	 *
-	 * @param   int  $attr_id     Assoc attr ID
-	 * @param   int  $attr_image  Order
-	 *
-	 * @return  array
-	 */
-	protected function _restructDataImage($attr_id, $attr_image = 0)
-	{
-		list($null, $id) = explode('_', $attr_id, 2);
-
-		return array('attr_id' => (int) $id, 'attr_image' => (string) $attr_image);
 	}
 
 	/**

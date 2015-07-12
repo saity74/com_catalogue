@@ -124,12 +124,6 @@ $doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() })
 		<?php $this->show_options = $params->show_item_options; ?>
 		<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
 
-		<?php if ($this->canDo->get('core.admin')) : ?>
-			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_CONTENT_FIELDSET_RULES', true)); ?>
-			<?php echo $this->form->getInput('rules'); ?>
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
-		<?php endif; ?>
-
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'techs', JText::_('COM_CATALOGUE_ITEMTECHS', true)); ?>
 		<?php echo $this->loadTemplate('techs'); ?>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -151,6 +145,12 @@ $doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() })
 			</div>
 		<?php endif; ?>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+		<?php if ($this->canDo->get('core.admin')) : ?>
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_CONTENT_FIELDSET_RULES', true)); ?>
+			<?php echo $this->form->getInput('rules'); ?>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
+		<?php endif; ?>
 
 		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 	</div>

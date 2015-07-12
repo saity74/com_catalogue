@@ -278,15 +278,9 @@ class CatalogueModelItem extends JModelAdmin
 
 			$item->itemtext = trim($item->fulltext) != '' ? $item->introtext . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
 
-			$query = $this->_db->getQuery(true);
-			$query->select('a.*, i.title as assoc_name')
-				->from('#__catalogue_assoc as a')
-				->join('LEFT', '#__catalogue_item as i ON i.id = a.assoc_id')
-				->where('a.item_id = ' . (int) $item->id)
-				->order('a.ordering ASC');
-			$this->_db->setQuery($query);
-
-			$item->assoc = $this->_db->loadObjectList();
+			$similar_items = new Registry;
+			$similar_items->loadString($item->similar_items);
+			$item->similar_items = $similar_items->toArray();
 
 			// Load reviews..
 			$query = $this->_db->getQuery(true);

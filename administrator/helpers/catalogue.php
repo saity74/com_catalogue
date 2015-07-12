@@ -70,7 +70,7 @@ class CatalogueHelper
 	}
 
 	/**
-	 * Method to get options for list.
+	 * Method to get options for list of items.
 	 *
 	 * @return  array
 	 *
@@ -78,6 +78,9 @@ class CatalogueHelper
 	 */
 	public static function getItemsOptions()
 	{
+		$app = JFactory::getApplication();
+		$id = $app->getUserState('com_catalogue.edit.item.id', 0);
+
 		$options = array();
 
 		$db = JFactory::getDbo();
@@ -85,6 +88,12 @@ class CatalogueHelper
 
 		$query->select('id As value, title As text');
 		$query->from('#__catalogue_item AS i');
+
+		if (!empty($id))
+		{
+			$query->where('id <> ' . (int) $id[0]);
+		}
+
 		$query->order('i.title');
 
 		// Get the options.
