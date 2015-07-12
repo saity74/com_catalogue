@@ -51,7 +51,23 @@
 				size="45"
 				label="COM_CATALOGUE_FIELD_ITEMSALE_LABEL"
 				description="COM_CATALOGUE_FIELD_ITEMSALE_DESC"
-				required="false"/>
+				required="false"
+				/>
+
+		<field name="sticker"
+				type="list"
+				label="COM_CATALOGUE_FIELD_STICKER_LABEL"
+				description="COM_CATALOGUE_FIELD_STICKER_DESC"
+				class="small"
+				filter="intval"
+				size="1"
+				default="0"
+				>
+			<option value="0">COM_CATALOGUE_NONE</option>
+			<option value="1">COM_CATALOGUE_HOT</option>
+			<option value="2">COM_CATALOGUE_NEW</option>
+			<option value="3">COM_CATALOGUE_SALE</option>
+		</field>
 
 		<field
 				name="itemtext"
@@ -289,20 +305,6 @@
 					description="COM_CATALOGUE_FIELD_RATE_DESC"
 					required="false"/>
 
-			<field name="sticker"
-					type="list"
-					label="COM_CATALOGUE_FIELD_STICKER_LABEL"
-					description="COM_CATALOGUE_FIELD_STICKER_DESC"
-					class="small"
-					filter="intval"
-					size="1"
-					default="0"
-					>
-				<option value="0">COM_CATALOGUE_NONE</option>
-				<option value="1">COM_CATALOGUE_HOT</option>
-				<option value="2">COM_CATALOGUE_NEW</option>
-				<option value="3">COM_CATALOGUE_SALE</option>
-			</field>
 		</fieldset>
 		<fieldset name="basic"
 				label="COM_CONTENT_ATTRIBS_FIELDSET_LABEL">
