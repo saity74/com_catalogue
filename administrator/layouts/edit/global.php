@@ -14,6 +14,7 @@ $form      = $displayData->getForm();
 $fields = $displayData->get('fields') ?: array(
 	'price',
 	'sale',
+	'count',
 	'sticker',
 	array('parent', 'parent_id'),
 	array('published', 'state', 'enabled'),

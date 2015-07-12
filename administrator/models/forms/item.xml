@@ -78,6 +78,15 @@
 				buttons="true"/>
 
 		<field
+				name="count"
+				type="text"
+				class="inputbox"
+				size="40"
+				label="COM_CATALOGUE_FIELD_ITEMCOUNT_LABEL"
+				description="COM_CATALOGUE_FIELD_ITEMCOUNT_DESC"
+				required="false"/>
+
+		<field
 				name="techtext"
 				type="editor"
 				class="text"
@@ -276,38 +285,16 @@
 
 	<fields name="attribs"
 			label="COM_CATALOGUE_ATTRIBS_FIELDSET_LABEL">
-		<fieldset name="details"
-				label="COM_CATALOGUE_DETAILS_FIELDSET_LABEL">
-			<field
-					name="article"
-					type="text"
-					class="inputbox"
-					size="40"
-					label="COM_CATALOGUE_FIELD_ITEMARTICLE_LABEL"
-					description="COM_CATALOGUE_FIELD_ITEMARTICLE_DESC"
-					required="false"/>
 
-			<field
-					name="count"
-					type="text"
-					class="inputbox"
-					size="40"
-					label="COM_CATALOGUE_FIELD_ITEMCOUNT_LABEL"
-					description="COM_CATALOGUE_FIELD_ITEMCOUNT_DESC"
-					required="false"/>
-
-			<field
-					name="rate"
-					type="text"
-					class="inputbox"
-					size="45"
-					label="COM_CATALOGUE_FIELD_RATE_LABEL"
-					description="COM_CATALOGUE_FIELD_RATE_DESC"
-					required="false"/>
-
-		</fieldset>
 		<fieldset name="basic"
 				label="COM_CONTENT_ATTRIBS_FIELDSET_LABEL">
+
+			<field
+					name="label1"
+					type="note"
+					label="JGLOBAL_SHOW_ITEM_NOTE_HEADER"
+					/>
+
 			<field
 					name="show_title"
 					type="list"
@@ -329,6 +316,32 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
+
+			<field name="category_title_tag_size" type="list"
+					label="COM_CATALOGUE_ITEM_TITLE_TAG_SIZE_LABEL"
+					description="COM_CATALOGUE_ITEM_TITLE_TAG_SIZE_LABEL"
+					default="2">
+				<option value="1">h1</option>
+				<option value="2">h2</option>
+				<option value="3">h3</option>
+				<option value="4">h4</option>
+				<option value="5">h5</option>
+				<option value="6">h6</option>
+			</field>
+
+			<field
+					name="spacer2"
+					type="spacer"
+					hr="true"
+					/>
+
+			<field
+					name="itemtext_head"
+					type="text"
+					label="COM_CATALOGUE_ITEMTEXT_HEAD_LABEL"
+					description="COM_CATALOGUE_ITEMTEXT_HEAD_DESC"
+					hint="COM_CATALOGUE_ITEMTEXT_HEAD_DEFAULT"
+					/>
 
 			<field
 					name="show_intro"
@@ -365,33 +378,22 @@
 			</field>
 
 			<field
-					name="show_parent_category"
+					name="show_hits"
 					type="list"
 					class="chzn-color"
-					label="JGLOBAL_SHOW_PARENT_CATEGORY_LABEL"
-					description="JGLOBAL_SHOW_PARENT_CATEGORY_DESC">
+					label="JGLOBAL_SHOW_HITS_LABEL"
+					description="JGLOBAL_SHOW_HITS_DESC">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 
 			<field
-					name="link_parent_category"
+					name="show_print_icon"
 					type="list"
 					class="chzn-color"
-					label="JGLOBAL_LINK_PARENT_CATEGORY_LABEL"
-					description="JGLOBAL_LINK_PARENT_CATEGORY_DESC">
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-
-			<field
-					name="show_hits"
-					type="list"
-					class="chzn-color"
-					label="JGLOBAL_SHOW_HITS_LABEL"
-					description="JGLOBAL_SHOW_HITS_DESC">
+					label="JGLOBAL_SHOW_PRINT_ICON_LABEL"
+					description="JGLOBAL_SHOW_PRINT_ICON_DESC">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
