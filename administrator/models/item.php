@@ -337,16 +337,6 @@ class CatalogueModelItem extends JModelAdmin
 
 			$attr_prices = $this->_db->loadAssocList('attr_id');
 
-			$query = $this->_db->getQuery(true);
-
-			$query->select('i.attr_id, i.attr_image')
-				->from('#__catalogue_attr_image as i')
-				->where('i.item_id = ' . (int) $item->id);
-
-			$this->_db->setQuery($query);
-
-			$attr_images = $this->_db->loadAssocList('attr_id');
-
 			foreach ($item->attrdirs as $attr_dir)
 			{
 
