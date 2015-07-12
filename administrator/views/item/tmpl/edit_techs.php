@@ -8,7 +8,6 @@
  */
 ?>
 <div class="row-fluid form-horizontal-desktop">
-	<h3>Технические характеристики</h3>
 	<table id="techsTable" class="table table-stripped span12">
 		<tr>
 			<th>Показать в кратком</th>

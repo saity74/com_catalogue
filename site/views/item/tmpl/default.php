@@ -31,11 +31,11 @@ $doc = JFactory::getDocument();
 	<?php if($item->params->get('show_title', 1)) : ?>
 		<div class="item-header">
 			<div class="row">
-				<div class="col-lg-8 col-md-8 col-sm-8">
+				<div class="col-lg-8 col-md-8 col-sm-6">
 					<a href="#" onclick="window.history.go(-1); return false;" class="back-btn" alt="Назад"></a>
 					<?php echo JLayoutHelper::render('catalogue.item.title', $item); ?>
 				</div>
-				<div class="col-lg-2 col-md-2 col-sm-2">
+				<div class="col-lg-2 col-md-2 col-sm-4">
 					<?php echo JLayoutHelper::render('catalogue.item.price', $item); ?>
 				</div>
 			</div>
@@ -48,8 +48,7 @@ $doc = JFactory::getDocument();
 		<div class="top-right-block">
 
 			<div class="item-top-desc" itemprop="description">
-				<h4><?php echo JText::_('COM_CATALOGUE_ITEM_DESC_HEAD'); ?></h4>
-				<?php echo $item->introtext . $item->fulltext; ?>
+				<?php echo JLayoutHelper::render('catalogue.item.description', $item); ?>
 			</div>
 
 			<div class="attrs">

@@ -141,7 +141,7 @@
 		<field
 				name="item_id"
 				type="itemslist"
-				multiple="false"
+				multiple="true"
 				label="COM_CATALOGUE_FIELD_ASSOC_LABEL"
 				description="COM_CATALOGUE_FIELD_ASSOC_DESC"/>
 

@@ -16,7 +16,6 @@
 		'<th>Название фильтра</th>' .
 		'<th>Значение</th>' .
 		'<th>Цена</th>' .
-		'<th>Изображение</th>' .
 		'</tr></thead><tbody>';
 
 	$current_dir = $this->item->attrdirs{0}->attrdir_id;
@@ -36,7 +35,6 @@
 				'<th>Название фильтра</th>' .
 				'<th>Значение</th>' .
 				'<th>Цена</th>' .
-				'<th>Изображение</th>' .
 				'</tr></thead><tbody>';
 		}
 
@@ -64,15 +62,9 @@
 				break;
 		}
 
-		$this->form->setValue('attr_image', null, $attr_dir->attr_image);
-		$this->form->setFieldAttribute('attr_image', 'id', 'attr_image_' . $attr_dir->attr_id);
-
 		echo '<td><input type="input" class="inputbox" name="jform[params][attr_price][]" value="' . $attr_dir->attr_price . '"/></td>
 					<td>' . $this->form->getInput('attr_image') . '</td>
-
 				</tr>';
-
-
 	}
 
 	echo '</tbody></table>';
