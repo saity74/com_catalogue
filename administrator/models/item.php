@@ -350,11 +350,6 @@ class CatalogueModelItem extends JModelAdmin
 					$attr_dir->attr_price = $attr_prices[$attr_dir->attr_id]['attr_price'];
 				}
 
-				if (isset($attr_images[$attr_dir->attr_id]))
-				{
-					$attr_dir->attr_image = $attr_images[$attr_dir->attr_id]['attr_image'];
-				}
-
 			}
 			$item->attrs = JArrayHelper::toObject($item->attrs);
 		}
