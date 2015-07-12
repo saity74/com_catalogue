@@ -276,6 +276,8 @@ class CatalogueModelItem extends JModelAdmin
 				}
 			}
 
+			$item->itemtext = trim($item->fulltext) != '' ? $item->introtext . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
+
 			$query = $this->_db->getQuery(true);
 			$query->select('a.*, i.title as assoc_name')
 				->from('#__catalogue_assoc as a')

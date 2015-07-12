@@ -72,7 +72,7 @@ class CatalogueViewItem extends JViewLegacy
 		$menus = $app->getMenu();
 		$pathway = $app->getPathway();
 		$title = null;
-		$metadata = new Registry($this->state->get('item.metadata'));
+		$metadata = new JRegistry($this->state->get('item.metadata'));
 
 		// Ссылка на активный пункт меню
 		$menu = $menus->getActive();
