@@ -74,6 +74,11 @@ abstract class CatalogueHelperRoute
 		// Check if the active menuitem matches the requested language
 		$active = $menus->getActive();
 
+		$component = JComponentHelper::getComponent('com_catalogue');
+
+		$attributes = array('component_id');
+		$values = array($component->id);
+
 		$items = $menus->getItems($attributes, $values);
 
 		foreach ($items as $item)

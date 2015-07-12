@@ -25,7 +25,7 @@ $category = $this->category;
 jimport('joomla.application.module.helper');
 
 $modules	= JModuleHelper::getModules('catalogue-left');
-$params		= array('style' => bootstrap);
+$params		= array('style' => 'bootstrap');
 
 ?>
 <div class="catalogue-<?php echo $view ?>-<?php echo $layout ?>">
