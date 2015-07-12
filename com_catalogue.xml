@@ -46,8 +46,8 @@
             <folder>views</folder>
         </files>
         <languages folder="administrator">
-            <language tag="ru-RU">language/ru-RU/ru-RU.com_catalogue.ini</language>
-            <language tag="ru-RU">language/ru-RU/ru-RU.com_catalogue.sys.ini</language>
+            <language tag="ru-RU">languages/ru-RU/ru-RU.com_catalogue.ini</language>
+            <language tag="ru-RU">languages/ru-RU/ru-RU.com_catalogue.sys.ini</language>
         </languages>
     </administration>
     <files folder="site">
@@ -65,7 +65,7 @@
         <folder>views</folder>
     </files>
     <languages folder="site">
-        <language tag="ru-RU">language/ru-RU/ru-RU.com_catalogue.ini</language>
+        <language tag="ru-RU">languages/ru-RU/ru-RU.com_catalogue.ini</language>
     </languages>
     <updateservers>
         <server type="extension" priority="1" name="Saity74 extensions update server">https://raw.githubusercontent.com/saity74/Joomla-Extension-Updates/master/com_catalogue_update.xml</server>
