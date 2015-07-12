@@ -15,6 +15,6 @@ $params = $item->params;
 $item_title_tag_size = $params->get('item_title_tag_size', 1);
 ?>
 
-	<h<?php echo $item_title_tag_size ?>>
+	<h<?php echo $item_title_tag_size ?> itemprop="name">
 		<?php echo $item->title; ?>
 	</h<?php echo $item_title_tag_size ?>>

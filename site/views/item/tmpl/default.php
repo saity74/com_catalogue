@@ -27,7 +27,7 @@ $app = JFactory::getApplication();
 $doc = JFactory::getDocument();
 
 ?>
-<div class="catalogue-item-open">
+<div class="catalogue-item-open" itemscope itemtype="http://schema.org/Product">
 	<?php if($item->params->get('show_title', 1)) : ?>
 		<div class="item-header">
 			<div class="row">
@@ -36,34 +36,7 @@ $doc = JFactory::getDocument();
 					<?php echo JLayoutHelper::render('catalogue.item.title', $item); ?>
 				</div>
 				<div class="col-lg-2 col-md-2 col-sm-2">
-					<div class="open-item-price-wrap">
-						<?php if (!$item->item_sale): ?>
-							<p class="item-price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-								<?php if ($item->price)
-								{
-									echo number_format($item->price, 0, '.', ' ') . ' ' . $params->get('catalogue_currency', 'руб.');
-								} ?>
-								<meta itemprop="priceCurrency" content="RUB">
-							</p>
-						<?php else: ?>
-							<?php $new_price = $item->price - (($item->price / 100) * $item->item_sale); ?>
-							<div class="item-price-wrapper clearfix">
-								<p class="item-old-price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-									<?php echo number_format($item->price, 0, '.', ' '); ?>
-								</p>
-
-								<p class="item-price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-									<?php echo number_format($new_price, 0, '.', ' ') . ' ' . $params->get('catalogue_currency', 'руб.'); ?>
-								</p>
-								<meta itemprop="priceCurrency" content="RUB">
-							</div>
-							<div class="discount-sum-wrap">
-								<p>Экономия <span
-										class="bold-text"><?php echo number_format((($item->price / 100) * $item->item_sale), 0, '.', ' '); ?></span>
-									руб.</p>
-							</div>
-						<?php endif; ?>
-					</div>
+					<?php echo JLayoutHelper::render('catalogue.item.price', $item); ?>
 				</div>
 			</div>
 		</div>
