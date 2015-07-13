@@ -36,9 +36,9 @@ $items = array_chunk($this->items, $num_columns);
 			<div class="row clearfix row-<?php echo $i; ?>">
 				<?php foreach ($row as $j => $item) : ?>
 					<?php
-					$bootstrapSize = round(12 / $num_columns);
-					$itemClass = "col-lg-$bootstrapSize col-md-$bootstrapSize col-sm-12 col-xs-12";
-
+						$bootstrapSize = round(12 / $num_columns);
+						$itemClass = "col-lg-$bootstrapSize col-md-$bootstrapSize col-sm-12 col-xs-12";
+						$ilink = JRoute::_(CatalogueHelperRoute::getItemRoute($item->id, $item->catid));
 					?>
 					<div class="<?php echo $itemClass ?>">
 						<div class="catalogue-one-item white-box" itemscope="" itemtype="http://schema.org/Product">

@@ -107,6 +107,23 @@ class CatalogueModelItem extends JModelList
 			}
 		}
 
+		$registry = new Registry();
+		$registry->loadString($data->similar_items);
+		$similar_items = $registry->toArray();
+
+		if (!empty($similar_items))
+		{
+			$query = $this->_db->getQuery(true);
+			$query->select('i.*')
+				->from('#__catalogue_item as i')
+				->where('i.id in (' . implode(', ', $similar_items) . ')')
+				->order('i.ordering');
+
+			$this->_db->setQuery($query);
+
+			$data->similar_items = $this->_db->loadObjectList();
+		}
+
 		return $data;
 	}
 

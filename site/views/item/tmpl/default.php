@@ -59,3 +59,8 @@ $doc = JFactory::getDocument();
 		</div>
 	</section>
 </div>
+<?php if ($params->get('show_similar_items', 1)) : ?>
+<div class="catalogue-item-similar-items">
+	<?php echo JLayoutHelper::render('catalogue.item.similar', $item); ?>
+</div>
+<?php endif; ?>

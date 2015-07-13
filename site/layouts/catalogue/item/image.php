@@ -33,46 +33,47 @@ if ($item->images)
 	}
 }
 ?>
-
-<div class="image-slider-wrapper">
-	<ul class="image-slider">
-		<?php foreach($images->toObject() as $image) : ?>
-			<li>
-				<a href="<?php echo $image->src ?>" data-attrs="['<?php echo implode('\',\'', $image->attrs); ?>']">
-					<img src="<?php echo $image->thumb; ?>"/>
-				</a>
-			</li>
-		<?php endforeach; ?>
-	</ul>
-</div>
-
-<div class="item-img gallery <?php echo ($item->item_sale) ? 'discount-label' : '' ?>">
-	<div itemscope itemtype="http://schema.org/ImageGallery">
-
-		<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-			<a
-				href="<?php echo $images->get('0.name'); ?>"
-				data-size="<?php echo $images->get('0.info')[0] . 'x' . $images->get('0.info')[1] ?>"
-				itemprop="contentUrl">
-				<img
-					id="item-image"
-					src="<?php echo $images->get('0.src'); ?>"
-					width="<?php echo $img_width ?>"
-					height="<?php echo $img_height ?>" />
-			</a>
-		</figure>
-
-		<?php foreach($images->toObject() as $image) : $k++ ?>
-			<?php if ($k != 1) : ?>
-				<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-					<a
-						href="<?php echo $image->name ?>"
-						itemprop="contentUrl"
-						data-size="<?php echo $image->info[0] . 'x' . $image->info[1] ?>"">
-					<figcaption itemprop="caption description"><?php $image->title ?></figcaption>
+<?php if ($item->images && $images) : ?>
+	<div class="image-slider-wrapper">
+		<ul class="image-slider">
+			<?php foreach($images->toObject() as $image) : ?>
+				<li>
+					<a href="<?php echo $image->src ?>" data-attrs="['<?php echo implode('\',\'', $image->attrs); ?>']">
+						<img src="<?php echo $image->thumb; ?>"/>
 					</a>
-				</figure>
-			<?php endif; ?>
-		<?php endforeach; ?>
+				</li>
+			<?php endforeach; ?>
+		</ul>
 	</div>
-</div>
+
+	<div class="item-img gallery <?php echo ($item->item_sale) ? 'discount-label' : '' ?>">
+		<div itemscope itemtype="http://schema.org/ImageGallery">
+
+			<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+				<a
+					href="<?php echo $images->get('0.name'); ?>"
+					data-size="<?php echo $images->get('0.info')[0] . 'x' . $images->get('0.info')[1] ?>"
+					itemprop="contentUrl">
+					<img
+						id="item-image"
+						src="<?php echo $images->get('0.src'); ?>"
+						width="<?php echo $img_width ?>"
+						height="<?php echo $img_height ?>" />
+				</a>
+			</figure>
+
+			<?php foreach($images->toObject() as $image) : $k++ ?>
+				<?php if ($k != 1) : ?>
+					<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+						<a
+							href="<?php echo $image->name ?>"
+							itemprop="contentUrl"
+							data-size="<?php echo $image->info[0] . 'x' . $image->info[1] ?>">
+						<figcaption itemprop="caption description"><?php $image->title ?></figcaption>
+						</a>
+					</figure>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		</div>
+	</div>
+<?php endif; ?>

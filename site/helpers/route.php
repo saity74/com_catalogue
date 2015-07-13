@@ -45,8 +45,8 @@ abstract class CatalogueHelperRoute
 
 			if ($category)
 			{
-				$needles['category'] = array_reverse($category->getPath());
-				$needles['categories'] = $needles['category'];
+				$needles['category'] = $catid;
+				$needles['categories'] = array_reverse($category->getPath());
 				$link .= '&cid=' . $catid;
 			}
 		}
