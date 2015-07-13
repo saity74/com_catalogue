@@ -63,4 +63,4 @@ $doc = JFactory::getDocument();
 <div class="catalogue-item-similar-items">
 	<?php echo JLayoutHelper::render('catalogue.item.similar', $item); ?>
 </div>
-<?php endif; ?>
+<?php endif;

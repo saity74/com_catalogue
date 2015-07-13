@@ -107,7 +107,7 @@ class CatalogueModelItem extends JModelList
 			}
 		}
 
-		$registry = new Registry();
+		$registry = new Registry;
 		$registry->loadString($data->similar_items);
 		$similar_items = $registry->toArray();
 

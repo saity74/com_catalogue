@@ -76,4 +76,4 @@ if ($item->images)
 			<?php endforeach; ?>
 		</div>
 	</div>
-<?php endif; ?>
+<?php endif;

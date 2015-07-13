@@ -69,4 +69,4 @@ $params = $item->params;
 			</div>
 		</div>
 	</div>
-<?php endforeach; ?>
+<?php endforeach;
