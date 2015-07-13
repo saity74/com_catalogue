@@ -41,6 +41,7 @@ class CatalogueModelCatalogue extends JModelList
 				'checked_out_time', 'i.checked_out_time',
 				'catid', 'i.catid', 'category_title',
 				'state', 'i.state',
+				'sticker', 'i.sticker',
 				'access', 'i.access', 'access_level',
 				'created', 'i.created',
 				'created_by', 'i.created_by',
@@ -178,9 +179,7 @@ class CatalogueModelCatalogue extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'i.id, i.title, i.alias, i.checked_out, i.fulltext, i.price, i.checked_out_time, i.catid' .
-				', i.state, i.access, i.created, i.created_by, i.created_by_alias, i.ordering, i.language, i.hits' .
-				', i.publish_up, i.publish_down'
+				'i.*'
 			)
 		);
 		$query->from('#__catalogue_item AS i');

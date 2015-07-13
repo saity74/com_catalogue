@@ -62,19 +62,19 @@ class CatalogueTableCatalogue extends JTable
 	public function bind($array, $ignore = '')
 	{
 
-		if (isset($array['item_description']))
+		if (isset($array['itemtext']))
 		{
 			$pattern = '#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i';
-			$tagPos = preg_match($pattern, $array['item_description']);
+			$tagPos = preg_match($pattern, $array['itemtext']);
 
 			if ($tagPos == 0)
 			{
-				$this->introtext = $array['item_description'];
+				$this->introtext = $array['itemtext'];
 				$this->fulltext = '';
 			}
 			else
 			{
-				list($this->introtext, $this->fulltext) = preg_split($pattern, $array['item_description'], 2);
+				list($this->introtext, $this->fulltext) = preg_split($pattern, $array['itemtext'], 2);
 			}
 		}
 

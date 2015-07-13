@@ -14,9 +14,9 @@ $num_columns = $params->get('num_columns', 3);
 $categories = array_chunk($this->category->getChildren(), $num_columns);
 ?>
 
-<div class="catalogue-categories">
+<div class="catalogue-subcategories">
 	<?php foreach ($categories as $i => $row) : ?>
-		<div class="row clearfix row-<?php echo $i; ?>">
+		<div class="row catalogue-category-row row-<?php echo $i; ?>">
 			<?php foreach ($row as $category) : ?>
 				<?php $category->params = new JRegistry($category->params); ?>
 				<?php $clink = CatalogueHelperRoute::getCategoryRoute($category->id, $category->language); ?>
@@ -26,18 +26,16 @@ $categories = array_chunk($this->category->getChildren(), $num_columns);
 					$itemClass = "col-lg-$bootstrapSize col-md-$bootstrapSize col-sm-12 col-xs-12";
 				?>
 				<div class="<?php echo $itemClass; ?>">
-					<div class="subcategory-wrapper">
-						<div class="category-image-wrapper">
-							<a href="<?php echo $clink; ?>">
+					<div class="catalogue-category">
+						<a href="<?php echo $clink; ?>">
+							<div class="catalogue-category-image">
 								<img src="<?php echo $img; ?>"/>
-							</a>
-						</div>
-						<h3 class="category-link-wrapper">
-							<a href="<?php echo $clink; ?>">
+							</div>
+							<h3 class="catalogue-category-title">
 								<?php echo $category->title; ?>
-							</a>
-						</h3>
-						<div class="category-desc-wrapper">
+							</h3>
+						</a>
+						<div class="catalogue-category-desc">
 							<?php echo $category->description; ?>
 						</div>
 					</div>

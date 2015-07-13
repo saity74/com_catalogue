@@ -43,7 +43,7 @@ $params		= array('style' => 'bootstrap');
 				<?php
 					foreach ($modules as $module)
 					{
-						echo JModuleHelper::renderModule($module, $params);
+						echo JModuleHelper::renderModule($module, ['style' => 'xhtml']);
 					}
 				?>
 			</div>

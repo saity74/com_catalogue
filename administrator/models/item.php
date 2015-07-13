@@ -277,6 +277,7 @@ class CatalogueModelItem extends JModelAdmin
 			}
 
 			$item->itemtext = trim($item->fulltext) != '' ? $item->introtext . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
+
 			if(isset($item->similar_items)) {
 				$similar_items = new Registry;
 				$similar_items->loadString($item->similar_items);
