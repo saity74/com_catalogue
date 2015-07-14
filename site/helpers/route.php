@@ -51,99 +51,121 @@ abstract class CatalogueHelperRoute
 		{
 			$link .= '&Itemid=' . $item;
 		}
+
 		return $link;
 	}
 
 	/**
-	 * Find menu item ID
+	 * Find an item ID.
 	 *
-	 * @param   array  $needles  Search params
+	 * @param   array  $needles  An array of language codes.
 	 *
-	 * @return  null
+	 * @return  mixed  The ID found or null otherwise.
+	 *
+	 * @since   1.5
 	 */
 	protected static function _findItem($needles = null)
 	{
-		$app = JFactory::getApplication();
-		$menus = $app->getMenu('site');
+		$app      = JFactory::getApplication();
+		$menus    = $app->getMenu('site');
 		$language = isset($needles['language']) ? $needles['language'] : '*';
+
 		// Prepare the reverse lookup array.
-		if (!isset(self::$lookup[$language])) {
-			self::$lookup[$language] = array();
-			$component = JComponentHelper::getComponent('com_catalogue');
-			$attributes = array('component_id');
-			$values = array($component->id);
-			if ($language != '*') {
-				$attributes[] = 'language';
-				$values[] = array($needles['language'], '*');
+		self::$lookup[$language] = array();
+
+		$component  = JComponentHelper::getComponent('com_catalogue');
+
+		$attributes = array('component_id');
+		$values     = array($component->id);
+
+		if ($language != '*')
+		{
+			$attributes[] = 'language';
+			$values[]     = array($needles['language'], '*');
+		}
+
+		$items = $menus->getItems($attributes, $values);
+
+		foreach ($items as $item)
+		{
+			if (isset($item->query) && isset($item->query['view']))
+			{
+				$view = $item->query['view'];
+
+				if (!isset(self::$lookup[$language][$view]))
+				{
+					self::$lookup[$language][$view] = array();
+				}
+
+				if (isset($item->query['cid']))
+				{
+					/**
+					 * Here it will become a bit tricky
+					 * language != * can override existing entries
+					 * language == * cannot override existing entries
+					 */
+					if (!isset(self::$lookup[$language][$view][$item->query['cid']]) || $item->language != '*')
+					{
+						self::$lookup[$language][$view][$item->query['cid']] = $item->id;
+					}
+				}
+
 			}
-			$items = $menus->getItems($attributes, $values);
-			foreach ($items as $item) {
-				if (isset($item->query) && isset($item->query['view'])) {
-					$view = $item->query['view'];
-					if (!isset(self::$lookup[$language][$view])) {
-						self::$lookup[$language][$view] = array();
-					}
-					if (isset($item->query['cid'])) {
-						/**
-						 * Here it will become a bit tricky
-						 * language != * can override existing entries
-						 * language == * cannot override existing entries
-						 */
-						if (!isset(self::$lookup[$language][$view][$item->query['cid']]) || $item->language != '*') {
-							self::$lookup[$language][$view][$item->query['cid']] = $item->id;
-						}
-					}
-					if (isset($item->query['id'])) {
-						/**
-						 * Here it will become a bit tricky
-						 * language != * can override existing entries
-						 * language == * cannot override existing entries
-						 */
-						if (!isset(self::$lookup[$language][$view][$item->query['id']]) || $item->language != '*') {
-							self::$lookup[$language][$view][$item->query['id']] = $item->id;
+
+		}
+		if ($needles)
+		{
+			foreach ($needles as $view => $ids)
+			{
+				if (isset(self::$lookup[$language][$view]))
+				{
+					foreach ((array) $ids as $id)
+					{
+						if (isset(self::$lookup[$language][$view][(int) $id]))
+						{
+							return self::$lookup[$language][$view][(int) $id];
 						}
 					}
 				}
 			}
 		}
-		if ($needles) {
-			foreach ($needles as $view => $ids) {
-				if (isset(self::$lookup[$language][$view]) && (is_array($ids) || $ids instanceof Traversable)) {
-					foreach ($ids as $id) {
-						if (isset(self::$lookup[$language][$view][(int)$id])) {
-							return self::$lookup[$language][$view][(int)$id];
-						}
-					}
-				}
-			}
-		}
+
 		// Check if the active menuitem matches the requested language
 		$active = $menus->getActive();
-		if ($active && $active->component == 'com_catalogue' && ($language == '*' || in_array($active->language, array('*', $language)) || !JLanguageMultilang::isEnabled())) {
+
+		if ($active
+			&& $active->component == 'com_catalogue'
+			&& ($language == '*' || in_array($active->language, array('*', $language)) || !JLanguageMultilang::isEnabled()))
+		{
 			return $active->id;
 		}
+
 		// If not found, return language specific home link
 		$default = $menus->getDefault($language);
+
 		return !empty($default->id) ? $default->id : null;
 	}
 
 	/**
-	 * Method to get url for category
+	 * Get the category route.
 	 *
-	 * @param   int  $catid  Category ID
+	 * @param   integer  $catid     The category ID.
+	 * @param   integer  $language  The language code.
 	 *
-	 * @return  string
+	 * @return  string  The article route.
+	 *
+	 * @since   1.5
 	 */
-	public static function getCategoryRoute($catid)
+	public static function getCategoryRoute($catid, $language = 0)
 	{
 		if ($catid instanceof JCategoryNode)
 		{
-			$id = $catid->id;
+			$id       = $catid->id;
 			$category = $catid;
 		}
 		else
 		{
-			$id = (int) $catid;
+			$id       = (int) $catid;
 			$category = JCategories::getInstance('Catalogue')->get($id);
 		}
 
@@ -153,11 +175,17 @@ abstract class CatalogueHelperRoute
 		}
 		else
 		{
-			$needles = array();
-			$link = 'index.php?option=com_catalogue&view=category&cid=' . $id;
-			$catids = array_reverse($category->getPath());
-			$needles['category'] = $id;
+			$needles               = array();
+			$link                  = 'index.php?option=com_catalogue&view=category&cid=' . $id;
+			$catids                = array_reverse($category->getPath());
+			$needles['category']   = $id;
 			$needles['categories'] = $catids;
+
+			if ($language && $language != "*" && JLanguageMultilang::isEnabled())
+			{
+				$link .= '&lang=' . $language;
+				$needles['language'] = $language;
+			}
 
 			if ($item = self::_findItem($needles))
 			{

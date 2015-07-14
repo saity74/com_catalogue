@@ -31,8 +31,7 @@ if (!empty($item->images))
 
 <a href="<?php echo $ilink; ?>" title="<?php echo $item->title; ?>">
 	<img src="<?php echo $src ?>" title="<?php echo $item->title; ?>"
-		 alt="<?php echo $item->title; ?>" width="<?php echo $img_width; ?>"
-		 height="<?php echo $img_height; ?>"
-		 style="width: <?php echo $img_width; ?>;height: <?php echo $img_height; ?>"
-		 itemprop="image"/>
+	     alt="<?php echo $item->title; ?>" width="<?php echo $img_width; ?>"
+	     height="<?php echo $img_height; ?>"
+	     itemprop="image"/>
 </a>

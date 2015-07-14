@@ -15,9 +15,9 @@ $params = $item->params;
 ?>
 
 <?php if (!$params->get('itemtext_head', '')) : ?>
-	<h4><?php echo JText::_('COM_CATALOGUE_ITEM_DESC_HEAD'); ?></h4>
+	<h2><?php echo 'Цены на ' . $item->title; ?></h2>
 <?php else : ?>
-	<h4><?php echo $params->get('itemtext_head') ?></h4>
+	<h2><?php echo $params->get('itemtext_head') ?></h2>
 <?php endif; ?>
 
 <?php

@@ -12,41 +12,46 @@ $params = JComponentHelper::getParams('com_catalogue');
 $img_width = $params->get('img_width', 326);
 $img_height = $params->get('img_height', 326);
 
-$item = $displayData;
-if ($item->images)
+$items = $displayData;
+$images = [];
+foreach($items as $item)
 {
-	$images = new \Joomla\Registry\Registry;
-	$images->loadString($item->images);
-	foreach ($images->toObject() as $image)
+	if ($item->images)
 	{
-		$name = basename($image->name);
+		$imagesObj = new \Joomla\Registry\Registry;
+		$imagesObj->loadString($item->images);
+		$oneImage = $imagesObj->toObject()->{0};
+
+		$name = basename($oneImage->name);
 		$path = implode(DIRECTORY_SEPARATOR, ['images', $item->id, $name]);
 		$path = JPath::clean($path);
-		$image->src = CatalogueHelper::createThumb($item->id, $path, $img_width, $img_height, 'mid');
-		$image->thumb = CatalogueHelper::createThumb($item->id, $path, 140, 140, 'thumb');
-		$image->attrs = explode(',', $image->attrs);
-		$image->info = getimagesize(JPATH_SITE . DIRECTORY_SEPARATOR . $path);
+		$oneImage->src = CatalogueHelper::createThumb($item->id, $path, $img_width, $img_height, 'mid');
+		$oneImage->thumb = CatalogueHelper::createThumb($item->id, $path, 140, 140, 'thumb');
+		$oneImage->attrs = explode(',', $oneImage->attrs);
+		$oneImage->info = getimagesize(JPATH_SITE . DIRECTORY_SEPARATOR . $path);
+
+		$images[] = $oneImage;
 	}
 }
 ?>
-<?php if ($item->images && $images) : ?>
+<?php if (!empty($images)) : ?>
 	<div class="catalogue-item-img gallery <?php echo ($item->item_sale) ? 'discount-label' : '' ?>">
 		<div itemscope itemtype="http://schema.org/ImageGallery">
 
 			<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
 				<a
-					href="<?php echo $images->get('0.name'); ?>"
-					data-size="<?php echo $images->get('0.info')[0] . 'x' . $images->get('0.info')[1] ?>"
+					href="<?php echo $images[0]->name; ?>"
+					data-size="<?php echo $images[0]->info[0] . 'x' . $images[0]->info[1] ?>"
 					itemprop="contentUrl">
 					<img
 						id="item-image"
-						src="<?php echo $images->get('0.src'); ?>"
+						src="<?php echo $images[0]->src; ?>"
 						width="<?php echo $img_width ?>"
 						height="<?php echo $img_height ?>" />
 				</a>
 			</figure>
 
-			<?php foreach($images->toObject() as $k => $image) : ?>
+			<?php foreach($images as $k => $image) : ?>
 				<?php if ($k != 0) : ?>
 					<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
 						<a
@@ -62,7 +67,7 @@ if ($item->images)
 	</div>
 
 	<ul class="catalogue-item-img-list">
-		<?php foreach($images->toObject() as $k => $image) : ?>
+		<?php foreach($images as $k => $image) : ?>
 			<li>
 				<a href="<?php echo $image->src ?>" data-orig="<?php echo $image->name ?>" data-attrs="['<?php echo implode('\',\'',
 					$image->attrs);	?>']" <?php if($k == 0 ) : ?> class="active" <?php endif;?>>

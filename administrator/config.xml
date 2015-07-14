@@ -231,6 +231,15 @@
             <option value="1">JSHOW</option>
         </field>
 
+        <field name="show_category_image" type="list"
+               description="JGLOBAL_SHOW_CATEGORY_IMAGE_DESC"
+               label="JGLOBAL_SHOW_CATEGORY_IMAGE_LABEL"
+                >
+            <option value="">JGLOBAL_USE_GLOBAL</option>
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
         <field name="show_price" type="list"
                description="COM_CATALOGUE_SHOW_CATEGORY_PRICE_DESC"
                label="COM_CATALOGUE_SHOW_CATEGORY_PRICE_LABEL"
