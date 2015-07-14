@@ -8,6 +8,7 @@
  */
 
 defined('_JEXEC') or die;
+define('DS', DIRECTORY_SEPARATOR);
 
 use Joomla\Registry\Registry;
 
@@ -277,7 +278,6 @@ class CatalogueModelItem extends JModelAdmin
 			}
 
 			$item->itemtext = trim($item->fulltext) != '' ? $item->introtext . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
-
 			if(isset($item->similar_items)) {
 				$similar_items = new Registry;
 				$similar_items->loadString($item->similar_items);
@@ -528,8 +528,9 @@ class CatalogueModelItem extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$input = JFactory::getApplication()->input;
-		$filter  = JFilterInput::getInstance();
+		$app        = JFactory::getApplication();
+		$input      = $app->input;
+		$filter     = JFilterInput::getInstance();
 
 		$techs = array_map(array($this, '_restructTechData'), $data['techs']['name'], $data['techs']['value'], $data['techs']['show_short']);
 
@@ -590,6 +591,7 @@ class CatalogueModelItem extends JModelAdmin
 			if ($data['title'] == $origTable->title)
 			{
 				list($title, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
+
 				$data['title'] = $title;
 				$data['alias'] = $alias;
 			}
@@ -599,16 +601,18 @@ class CatalogueModelItem extends JModelAdmin
 				{
 					$data['alias'] = '';
 				}
+				echo 1;
 			}
 
 			$data['state'] = 0;
 		}
 
 		// Automatic handling of alias for empty fields
-		if (in_array($input->get('task'), array('apply', 'save', 'save2new')) && (int) $input->get('id') == 0)
+		if (in_array($input->get('task'), array('apply', 'save', 'save2new')) && (!isset($data['id']) || (int) $data['id'] == 0))
 		{
 			if ($data['alias'] == null)
 			{
+
 				if (JFactory::getConfig()->get('unicodeslugs') == 1)
 				{
 					$data['alias'] = JFilterOutput::stringURLUnicodeSlug($data['title']);
@@ -637,6 +641,53 @@ class CatalogueModelItem extends JModelAdmin
 
 		if (parent::save($data))
 		{
+			$imagesFolder = $app->getUserState('com_catalogue.edit.item.images_folder', '');
+
+			if($imagesFolder)
+			{
+				$id = (int)$this->getState($this->getName() . '.id');
+
+				$srcFolder = join(DS, [JPATH_SITE, 'images', $imagesFolder]);
+				$dstFolder = join(DS, [JPATH_SITE, 'images', $id]);
+
+				if (!JFolder::exists($dstFolder))
+				{
+					JFolder::create($dstFolder);
+				}
+
+				foreach (glob($srcFolder . DS . '*.*') as $file)
+				{
+					$srcFileName = str_replace($srcFolder . DS, '', $file);
+					if (JFile::exists($dstFolder . DS . $srcFileName))
+					{
+						$actual_name = JFile::stripExt($file);
+						$original_name = $actual_name;
+						$extension = JFile::getExt($file);
+
+						$i = 1;
+						while (JFile::exists($dstFolder . DS . $srcFileName)) {
+							$actual_name = (string)$original_name . '(' . ++$i . ')';
+							$srcFileName = $actual_name . "." . $extension;
+						}
+					}
+
+					$dstFilePath = implode(DS, [$dstFolder, $srcFileName]);
+
+					JFile::move($file, $dstFilePath);
+				}
+
+				$app->setUserState('com_catalogue.edit.item.images_folder', '');
+				JFolder::delete($srcFolder);
+
+				if (!isset($data['id']) || (int)$data['id'] == 0)
+				{
+					$data['images'] = str_replace('\/0\/', '\/' . $id . '\/', $data['images']);
+
+					$data['id'] = $id;
+
+					$a = parent::save($data);
+				}
+			}
 
 			$assoc = JLanguageAssociations::isEnabled();
 			if ($assoc)

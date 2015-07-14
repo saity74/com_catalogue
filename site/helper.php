@@ -105,8 +105,8 @@ class CatalogueHelper
 		}
 
 		$sizeOptions = array(
-			'width' => $width,
-			'height' => $height,
+			'width'  => (int) $width,
+			'height' => (int) $height,
 			'method' => THUMBNAIL_METHOD_SCALE_MIN,
 		);
 

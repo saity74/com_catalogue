@@ -18,14 +18,14 @@ $app = JFactory::getApplication();
 $jinput = $app->input;
 $view = $this->getName();
 $layout = $this->getLayout();
-$params = $this->state->get('params');
+//$params = $this->state->get('params');
 $menu = $this->menu;
 $category = $this->category;
 
 jimport('joomla.application.module.helper');
 
 $modules	= JModuleHelper::getModules('catalogue-left');
-$params		= array('style' => 'bootstrap');
+$params		= array('style' => 'xhtml');
 
 ?>
 <div class="catalogue-<?php echo $view ?>-<?php echo $layout ?>">
@@ -43,7 +43,7 @@ $params		= array('style' => 'bootstrap');
 				<?php
 					foreach ($modules as $module)
 					{
-						echo JModuleHelper::renderModule($module, ['style' => 'xhtml']);
+						echo JModuleHelper::renderModule($module, $params);
 					}
 				?>
 			</div>

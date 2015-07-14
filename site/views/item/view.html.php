@@ -39,12 +39,15 @@ class CatalogueViewItem extends JViewLegacy
 		$this->state = $this->get('State');
 		$this->attrs = $this->get('Attrs');
 
+		$item = $this->item;
+		$offset = $this->state->get('list.offset');
+
 		$dispatcher = JEventDispatcher::getInstance();
 
 		// Process the content plugins.
 
 		JPluginHelper::importPlugin('content');
-		$dispatcher->trigger('onContentPrepare', array ('com_catalogue.item', &$item, &$item->params, $offset));
+		//$dispatcher->trigger('onContentPrepare', array ('com_catalogue.item', &$item, &$item->params, $offset));
 
 		$item->event = new stdClass;
 		$results = $dispatcher->trigger('onContentAfterTitle', array('com_catalogue.item', &$item, &$item->params, $offset));
@@ -83,7 +86,7 @@ class CatalogueViewItem extends JViewLegacy
 
 		if ($menu && ($menu->query['option'] != 'com_catalogue' || $menu->query['view'] == 'category' || $cid != $this->category->id))
 		{
-			$pathway->addItem($this->item->item_name, '');
+			$pathway->addItem($this->item->title, '');
 		}
 
 		if ($menu && $cid == $this->state->get('item.id'))

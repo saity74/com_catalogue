@@ -156,19 +156,20 @@ class CatalogueControllerItem extends JControllerForm
 		jimport('joomla.filesystem.folder');
 
 		$app = JFactory::getApplication();
-		$id = $app->getUserState('com_catalogue.edit.item.id');
+		$id = $app->getUserState('com_catalogue.edit.item.id', [0]);
+		$beforeSaveFolder = $app->getUserState('com_catalogue.edit.item.images_folder', '');
+		if(!$beforeSaveFolder)
+		{
+			$beforeSaveFolder = uniqid();
+			$app->setUserState('com_catalogue.edit.item.images_folder', $beforeSaveFolder);
+		}
 
 		$params = JComponentHelper::getParams('com_media');
 
-		$file        = $this->input->files->get('file', '', 'array');
+		$file = $this->input->files->get('file', '', 'array');
 
-		$this->folder = 'images/' . $id[0];
-
-		// Create upload folder if not exist
-		if (!JFolder::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->folder))
-		{
-			JFolder::create(JPATH_SITE . DIRECTORY_SEPARATOR . $this->folder);
-		}
+		//$this->folder = 'images/' . $id[0];
+		$this->folder = 'images/' . $beforeSaveFolder;
 
 		// Authorize the user
 		if (!JFactory::getUser()->authorise('core.create', 'com_catalogue'))
@@ -176,6 +177,13 @@ class CatalogueControllerItem extends JControllerForm
 			header('HTTP/1.1 403 Restricred access!');
 			return false;
 		}
+
+		// Create upload folder if not exist
+		if (!JFolder::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->folder))
+		{
+			JFolder::create(JPATH_SITE . DIRECTORY_SEPARATOR . $this->folder);
+		}
+
 
 		// Total length of post back data in bytes.
 		$contentLength = (int) $_SERVER['CONTENT_LENGTH'];
@@ -201,8 +209,9 @@ class CatalogueControllerItem extends JControllerForm
 
 		// Perform basic checks on file info before attempting anything
 
-		$file['name']     = JFile::makeSafe($file['name']);
-		$file['filepath'] = JPath::clean(implode(DIRECTORY_SEPARATOR, array(JPATH_SITE, $this->folder, $file['name'])));
+		$path               = JPath::clean(implode(DIRECTORY_SEPARATOR, array(JPATH_SITE, $this->folder)));
+		$file['name']       = JFile::makeSafe($file['name']);
+		$file['filepath']   = implode(DIRECTORY_SEPARATOR, array($path, $file['name']));
 
 		if (($uploadMaxSize > 0 && $file['size'] > $uploadMaxSize)
 			|| ($uploadMaxFileSize > 0 && $file['size'] > $uploadMaxFileSize))
@@ -218,27 +227,33 @@ class CatalogueControllerItem extends JControllerForm
 		{
 			if (JFile::exists($file['filepath']))
 			{
-				// A file with this name already exists
-				header('HTTP/1.1 409 Conflict!');
-				echo 'A file with this name already exists';
+				$actual_name = JFile::stripExt($file['name']);
+				$original_name = $actual_name;
+				$extension = JFile::getExt($file['name']);
+
+				$i = 1;
+				while(JFile::exists(implode(DIRECTORY_SEPARATOR, [$path, $file['name']])))
+				{
+					$actual_name = (string)$original_name.'('.++$i.')';
+					$file['name'] = $actual_name.".".$extension;
+				}
+				$file['filepath']   = implode(DIRECTORY_SEPARATOR, array($path, $file['name']));
+			}
+
+			// Set FTP credentials, if given
+			JClientHelper::setCredentialsFromRequest('ftp');
+
+			// Trigger the onContentBeforeSave event.
+			$object_file = new JObject($file);
+
+			if (!JFile::upload($object_file->tmp_name, $object_file->filepath))
+			{
+				// Error in upload
+				echo 'can\'t upload file';
 			}
 			else
 			{
-				// Set FTP credentials, if given
-				JClientHelper::setCredentialsFromRequest('ftp');
-
-				// Trigger the onContentBeforeSave event.
-				$object_file = new JObject($file);
-
-				if (!JFile::upload($object_file->tmp_name, $object_file->filepath))
-				{
-					// Error in upload
-					echo 'can\'t upload file';
-				}
-				else
-				{
-					echo '1';
-				}
+				echo '1';
 			}
 		}
 

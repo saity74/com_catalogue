@@ -43,7 +43,8 @@
             <field name="category_title_tag_size" type="list"
                    label="COM_CATALOGUE_CATEGORY_TITLE_TAG_SIZE_LABEL"
                    description="COM_CATALOGUE_CATEGORY_TITLE_TAG_SIZE_LABEL"
-                   default="2">
+                   default="">
+                <option value="">JGLOBAL_USE_GLOBAL</option>
                 <option value="1">h1</option>
                 <option value="2">h2</option>
                 <option value="3">h3</option>

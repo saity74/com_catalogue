@@ -229,7 +229,7 @@ class CatalogueModelItem extends JModelList
 		$this->setState('item.name', $item->title);
 		$this->setState('item.params', $item->params);
 		$this->setState('item.metadata', $item->metadata);
-		$this->setState('item.desc', $item->item_description);
+		$this->setState('item.desc', $item->introtext);
 
 		// Load the parameters.
 		$params = $app->getParams();

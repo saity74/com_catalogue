@@ -89,7 +89,7 @@ class CatalogueHelper
 		$query->select('id As value, title As text');
 		$query->from('#__catalogue_item AS i');
 
-		if (!empty($id))
+		if (!empty($id) && isset($id[0]))
 		{
 			$query->where('id <> ' . (int) $id[0]);
 		}

@@ -6,4 +6,15 @@
             <![CDATA[com_catalogue_view_item_default_desc]]>
         </message>
     </layout>
+
+    <fields name="request">
+        <fieldset name="request" addfieldpath="/administrator/components/com_catalogue/models/fields">
+            <field name="id" type="itemslist"
+                   label="COM_CATALOGUE_FIELD_ITEM_LABEL"
+                   required="true"
+                   description="COM_CATALOGUE_FIELD_ITEM_DESC"
+                    />
+        </fieldset>
+
+    </fields>
 </metadata>

@@ -8,19 +8,14 @@
  */
 
 defined('_JEXEC') or die;
-
 $params = JComponentHelper::getParams('com_catalogue');
-
 $img_width = $params->get('img_width', 326);
 $img_height = $params->get('img_height', 326);
-
 $item = $displayData;
-
 if ($item->images)
 {
 	$images = new \Joomla\Registry\Registry;
 	$images->loadString($item->images);
-
 	foreach ($images->toObject() as $image)
 	{
 		$name = basename($image->name);
@@ -33,46 +28,48 @@ if ($item->images)
 	}
 }
 ?>
+<?php if ($item->images && $images) : ?>
+	<div class="item-img gallery <?php echo ($item->item_sale) ? 'discount-label' : '' ?>">
+		<div itemscope itemtype="http://schema.org/ImageGallery">
 
-<div class="image-slider-wrapper">
-	<ul class="image-slider">
-		<?php foreach($images->toObject() as $image) : ?>
-			<li>
-				<a href="<?php echo $image->src ?>" data-attrs="['<?php echo implode('\',\'', $image->attrs); ?>']">
-					<img src="<?php echo $image->thumb; ?>"/>
+			<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+				<a
+					href="<?php echo $images->get('0.name'); ?>"
+					data-size="<?php echo $images->get('0.info')[0] . 'x' . $images->get('0.info')[1] ?>"
+					itemprop="contentUrl">
+					<img
+						id="item-image"
+						src="<?php echo $images->get('0.src'); ?>"
+						width="<?php echo $img_width ?>"
+						height="<?php echo $img_height ?>" />
 				</a>
-			</li>
-		<?php endforeach; ?>
-	</ul>
-</div>
+			</figure>
 
-<div class="item-img gallery <?php echo ($item->item_sale) ? 'discount-label' : '' ?>">
-	<div itemscope itemtype="http://schema.org/ImageGallery">
-
-		<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-			<a
-				href="<?php echo $images->get('0.name'); ?>"
-				data-size="<?php echo $images->get('0.info')[0] . 'x' . $images->get('0.info')[1] ?>"
-				itemprop="contentUrl">
-				<img
-					id="item-image"
-					src="<?php echo $images->get('0.src'); ?>"
-					width="<?php echo $img_width ?>"
-					height="<?php echo $img_height ?>" />
-			</a>
-		</figure>
-
-		<?php foreach($images->toObject() as $image) : $k++ ?>
-			<?php if ($k != 1) : ?>
-				<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-					<a
-						href="<?php echo $image->name ?>"
-						itemprop="contentUrl"
-						data-size="<?php echo $image->info[0] . 'x' . $image->info[1] ?>"">
-					<figcaption itemprop="caption description"><?php $image->title ?></figcaption>
-					</a>
-				</figure>
-			<?php endif; ?>
-		<?php endforeach; ?>
+			<?php foreach($images->toObject() as $k => $image) : ?>
+				<?php if ($k != 0) : ?>
+					<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+						<a
+							href="<?php echo $image->name; ?>"
+							itemprop="contentUrl"
+							data-size="<?php echo $image->info[0] . 'x' . $image->info[1]; ?>">
+							<figcaption itemprop="caption description"><?php $image->title; ?></figcaption>
+						</a>
+					</figure>
+				<?php endif; ?>
+			<?php endforeach; ?>
+		</div>
 	</div>
-</div>
+
+	<div class="image-slider-wrapper">
+		<ul class="image-slider">
+			<?php foreach($images->toObject() as $image) : ?>
+				<li>
+					<a href="<?php echo $image->src ?>" data-orig="<?php echo $image->name ?>" data-attrs="['<?php echo implode('\',\'',
+						$image->attrs);	?>']">
+						<img src="<?php echo $image->thumb; ?>"/>
+					</a>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	</div>
+<?php endif;

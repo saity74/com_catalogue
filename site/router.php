@@ -391,7 +391,7 @@ class CatalogueRouter extends JComponentRouterBase
 					if ($item->alias == $alias)
 					{
 						$vars['view'] = 'item';
-						$vars['cid'] = (int) $item->category_id;
+						$vars['cid'] = (int) $item->catid;
 						$vars['id'] = (int) $id;
 
 						return $vars;

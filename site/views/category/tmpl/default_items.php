@@ -24,25 +24,31 @@ $num_columns = $params->get('num_columns', 3);
 $items = array_chunk($this->items, $num_columns);
 ?>
 
-<div class="catalogue-category-items clearfix">
+<div class="catalogue-items catalogue<?php echo $this->pageclass_sfx; ?>">
+	<?php if ($this->params->get('show_page_heading')) : ?>
+		<div class="page-header">
+			<h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
+		</div>
+	<?php endif; ?>
+
 	<?php if (!empty($this->items[0]->category_description)): ?>
 		<div class="category-desc-wrapper">
 			<?php echo $this->items[0]->category_description; ?>
 		</div>
 	<?php endif; ?>
 
-	<div class="items-wrapper">
+	<div class="catalogue-items-wrapper">
 		<?php foreach ($items as $i => $row) : ?>
-			<div class="row clearfix row-<?php echo $i; ?>">
+			<div class="row row-<?php echo $i; ?>">
 				<?php foreach ($row as $j => $item) : ?>
 					<?php
-					$bootstrapSize = round(12 / $num_columns);
-					$itemClass = "col-lg-$bootstrapSize col-md-$bootstrapSize col-sm-12 col-xs-12";
-
+						$bootstrapSize = round(12 / $num_columns);
+						$itemClass = "col-lg-$bootstrapSize col-md-$bootstrapSize col-sm-12 col-xs-12";
+						$ilink = JRoute::_(CatalogueHelperRoute::getItemRoute($item->id, $item->catid));
 					?>
 					<div class="<?php echo $itemClass ?>">
-						<div class="catalogue-one-item white-box" itemscope="" itemtype="http://schema.org/Product">
-							<div class="catalogue-one-item-img <?php if ($item->item_sale)
+						<div class="catalogue-items-one" itemscope="" itemtype="http://schema.org/Product">
+							<div class="catalogue-items-one-img <?php if ($item->item_sale)
 							{
 								echo 'discount-label';
 							} ?>">
@@ -50,14 +56,14 @@ $items = array_chunk($this->items, $num_columns);
 								<?php echo JLayoutHelper::render('catalogue.category.image', $item); ?>
 
 							</div>
-							<div class="catalogue-one-item-desc">
+							<div class="catalogue-items-one-desc">
 								<h5 itemprop="name">
 									<a class="product-name item-head" href="<?php echo $ilink; ?>"
 									   title="<?php echo $item->title; ?>"
 									   itemprop="url"><?php echo $item->title; ?></a>
 								</h5>
 
-								<div class="item-shortdesc">
+								<div class="catalogue-items-one-shortdesc">
 									<?php if (!empty($item->introtext))
 									{
 										echo $item->introtext;
@@ -74,8 +80,8 @@ $items = array_chunk($this->items, $num_columns);
 									<?php endif; ?>
 								</div>
 								<?php if (!$item->item_sale): ?>
-									<div class="item-price-wrapper">
-										<p class="item-price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+									<div class="catalogue-items-one-price">
+										<p class="catalogue-items-one-price-inner" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
 											<?php if ($item->price)
 											{
 												echo number_format($item->price, 0, '.', ' ') . ' ' . $params->get('catalogue_currency', 'руб.');
@@ -85,13 +91,14 @@ $items = array_chunk($this->items, $num_columns);
 									</div>
 								<?php else: ?>
 									<?php $new_price = $item->price - (($item->price / 100) * $item->item_sale); ?>
-									<div class="item-price-wrapper">
-										<p class="item-old-price" itemprop="offers" itemscope=""
+									<div class="catalogue-items-one-price">
+										<p class="catalogue-items-one-old-price-inner" itemprop="offers" itemscope=""
 										   itemtype="http://schema.org/Offer">
 											<?php echo number_format($item->price, 0, '.', ' '); ?>
 											<meta itemprop="priceCurrency" content="0">
 										</p>
-										<p class="item-price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+										<p class="catalogue-items-one-price-inner" itemprop="offers" itemscope=""
+										   itemtype="http://schema.org/Offer">
 											<?php echo number_format($new_price, 0, '.', ' ') . ' ' . $params->get('catalogue_currency', 'руб.'); ?>
 											<meta itemprop="priceCurrency" content="0">
 										</p>
