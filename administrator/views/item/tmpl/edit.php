@@ -129,7 +129,7 @@ $doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() })
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'assoc', JText::_('COM_CATALOGUE_ASSOC', true)); ?>
-		<?php echo $this->loadTemplate('assoc'); ?>
+		<?php echo JLayoutHelper::render('edit.similar', $this);?>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'reviews', JText::_('COM_CATALOGUE_REVIEWS', true)); ?>

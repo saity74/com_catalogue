@@ -79,6 +79,7 @@ $items = array_chunk($this->items, $num_columns);
 										</ul>
 									<?php endif; ?>
 								</div>
+<<<<<<< HEAD
 								<?php if (!$item->item_sale): ?>
 									<div class="catalogue-items-one-price">
 										<p class="catalogue-items-one-price-inner" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
@@ -104,6 +105,11 @@ $items = array_chunk($this->items, $num_columns);
 										</p>
 									</div>
 								<?php endif; ?>
+=======
+								<div class="item-price-wrapper">
+									<?php echo JLayoutHelper::render('catalogue.item.price', $item); ?>
+								</div>
+>>>>>>> add similar layout
 							</div>
 						</div>
 					</div>

@@ -13,7 +13,8 @@ $item = $displayData;
 $params = $item->params;
 
 ?>
-<?php foreach ($item->similar_items as $similar) : ?>
+<div class="row">
+<?php if ($item->similar_items) foreach ($item->similar_items as $similar) : ?>
 	<?php
 	$bootstrapSize = 3;
 	$itemClass = "col-lg-$bootstrapSize col-md-$bootstrapSize col-sm-12 col-xs-12";
@@ -31,7 +32,8 @@ $params = $item->params;
 			</div>
 			<div class="catalogue-one-item-desc">
 				<h5 itemprop="name">
-					<a class="product-name item-head" href="<?php echo $ilink; ?>"
+					<a class="product-name item-head"
+					   href="<?php echo $ilink; ?>"
 					   title="<?php echo $similar->title; ?>"
 					   itemprop="url"><?php echo $similar->title; ?></a>
 				</h5>
@@ -42,31 +44,9 @@ $params = $item->params;
 						echo $similar->introtext;
 					} ?>
 				</div>
-				<?php if (!$similar->item_sale): ?>
-					<div class="item-price-wrapper">
-						<p class="item-price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-							<?php if ($similar->price)
-							{
-								echo number_format($similar->price, 0, '.', ' ') . ' ' . $params->get('catalogue_currency', 'руб.');
-							} ?>
-							<meta itemprop="priceCurrency" content="0">
-						</p>
-					</div>
-				<?php else: ?>
-					<?php $new_price = $similar->price - (($similar->price / 100) * $similar->item_sale); ?>
-					<div class="item-price-wrapper">
-						<p class="item-old-price" itemprop="offers" itemscope=""
-						   itemtype="http://schema.org/Offer">
-							<?php echo number_format($similar->price, 0, '.', ' '); ?>
-							<meta itemprop="priceCurrency" content="0">
-						</p>
-						<p class="item-price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-							<?php echo number_format($new_price, 0, '.', ' ') . ' ' . $params->get('catalogue_currency', 'руб.'); ?>
-							<meta itemprop="priceCurrency" content="0">
-						</p>
-					</div>
-				<?php endif; ?>
+				<?php echo JLayoutHelper::render('catalogue.item.price', $similar); ?>
 			</div>
 		</div>
 	</div>
-<?php endforeach;
+<?php endforeach; ?>
+</div>
