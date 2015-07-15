@@ -139,13 +139,6 @@
 				type="text"/>
 
 		<field
-				name="similar_items"
-				type="itemslist"
-				multiple="true"
-				label="COM_CATALOGUE_FIELD_ASSOC_LABEL"
-				description="COM_CATALOGUE_FIELD_ASSOC_DESC"/>
-
-		<field
 				name="buttonspacer"
 				description="JGLOBAL_ACTION_PERMISSIONS_DESCRIPTION"
 				type="spacer"/>

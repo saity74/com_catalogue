@@ -82,8 +82,12 @@ $params		= array('style' => 'xhtml');
 		</div>
 	</div>
 </div>
+
 <?php if ($params->get('show_similar_items', 1)) : ?>
-<div class="catalogue-item-similar-items">
-	<?php echo JLayoutHelper::render('catalogue.item.similar', $item); ?>
+<div class="col-lg-12 col-md-12">
+	<div class="catalogue-item-similar-items">
+		<h3><?php echo JText::_('COM_CATALOGUE_ITEM_SIMILAR_HEAD'); ?></h3>
+		<?php echo JLayoutHelper::render('catalogue.item.similar', $item); ?>
+	</div>
 </div>
 <?php endif;
