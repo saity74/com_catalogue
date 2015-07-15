@@ -9,19 +9,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-DROP TABLE IF EXISTS `#__catalogue_assoc`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `#__catalogue_assoc` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `item_id` int(11) NOT NULL,
-  `assoc_id` int(11) NOT NULL,
-  `published` int(11) NOT NULL,
-  `ordering` int(11) NOT NULL,
-  `state` tinyint(3) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_attr`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -40,18 +27,7 @@ CREATE TABLE `#__catalogue_attr` (
   `attr_description` varchar(255) NOT NULL,
   `attr_default` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `#__catalogue_attr_image`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `#__catalogue_attr_image` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `attr_id` int(11) NOT NULL,
-  `item_id` int(11) NOT NULL,
-  `attr_image` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_attr_price`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -78,7 +54,7 @@ CREATE TABLE `#__catalogue_attrdir` (
   `state` int(11) NOT NULL,
   `published` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_attrdir_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -107,19 +83,6 @@ CREATE TABLE `#__catalogue_country` (
   `checked_out` int(11) NOT NULL,
   `params` text NOT NULL,
   `metadata` text NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-DROP TABLE IF EXISTS `#__catalogue_image`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `#__catalogue_image` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `image_path` varchar(255) NOT NULL,
-  `image_name` varchar(100) NOT NULL,
-  `image_desc` varchar(255) NOT NULL,
-  `ordering` int(11) NOT NULL,
-  `published` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -167,8 +130,9 @@ CREATE TABLE `#__catalogue_item` (
   `comments_count` int(11) NOT NULL,
   `sticker` tinyint(4) NOT NULL DEFAULT '0',
   `params` text NOT NULL,
+  `similar_items` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_item_review`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

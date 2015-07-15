@@ -28,11 +28,26 @@ if ($item->images)
 		$image->info = getimagesize(JPATH_SITE . DIRECTORY_SEPARATOR . $path);
 	}
 }
+$sliderPosition = $params->get('catalogue_item_image_slider_position', 'bottom');
 ?>
 <?php if ($item->images && $images) : ?>
+
+	<?php if($sliderPosition === 'top') : ?>
+		<div class="image-slider-wrapper">
+			<ul class="image-slider">
+				<?php foreach($images->toObject() as $image) : ?>
+					<li>
+						<a href="<?php echo $image->src ?>" data-attrs="['<?php echo implode('\',\'', $image->attrs); ?>']">
+							<img src="<?php echo $image->thumb; ?>"/>
+						</a>
+					</li>
+				<?php endforeach; ?>
+			</ul>
+		</div>
+	<?php endif; ?>
+
 	<div class="catalogue-item-img gallery <?php echo ($item->item_sale) ? 'discount-label' : '' ?>">
 		<div itemscope itemtype="http://schema.org/ImageGallery">
-
 			<figure itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
 				<a
 					href="<?php echo $images->get('0.name'); ?>"
@@ -61,17 +76,19 @@ if ($item->images)
 		</div>
 	</div>
 
-	<ul class="catalogue-item-img-list">
-		<?php foreach($images->toObject() as $k => $image) : ?>
-			<li>
-				<a href="<?php echo $image->src ?>"
-				   data-orig="<?php echo $image->name ?>"
-				   data-attrs="['<?php echo implode('\',\'', $image->attrs);	?>']"
-					<?php if($k == 0 ) : ?> class="active" <?php endif;?>
-				>
-					<img src="<?php echo $image->thumb; ?>"/>
-				</a>
-			</li>
-		<?php endforeach; ?>
-	</ul>
+	<?php if($sliderPosition === 'bottom') : ?>
+		<ul class="catalogue-item-img-list">
+			<?php foreach($images->toObject() as $k => $image) : ?>
+				<li>
+					<a href="<?php echo $image->src ?>"
+					   data-orig="<?php echo $image->name ?>"
+					   data-attrs="['<?php echo implode('\',\'', $image->attrs);	?>']"
+						<?php if($k == 0 ) : ?> class="active" <?php endif;?>
+					>
+						<img src="<?php echo $image->thumb; ?>"/>
+					</a>
+				</li>
+			<?php endforeach; ?>
+		</ul>
+	<?php endif; ?>
 <?php endif;

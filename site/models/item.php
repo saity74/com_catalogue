@@ -89,25 +89,6 @@ class CatalogueModelItem extends JModelList
 		$data->params->merge($registry);
 
 		$query = $this->_db->getQuery(true);
-		$query->select('i.*')
-			->from('#__catalogue_assoc as a')
-			->join('LEFT', '#__catalogue_item as i ON i.id = a.assoc_id')
-			->where('item_id = ' . (int) $data->id)
-			->order('ordering ASC');
-		$this->_db->setQuery($query);
-
-		$data->assoc = $this->_db->loadObjectList();
-
-		// Load assoc attr size..
-
-		$ids = array_map(
-			function($el){
-				return $el->id;
-			},
-			$data->assoc
-		);
-
-		$query = $this->_db->getQuery(true);
 		if (!empty($ids))
 		{
 			$query->select('p.*, a.attr_name')
@@ -124,14 +105,23 @@ class CatalogueModelItem extends JModelList
 			{
 				$item_attrs[$attr->item_id][] = $attr;
 			}
+		}
 
-			foreach ($data->assoc as $item)
-			{
-				if (isset($item_attrs[$item->id]))
-				{
-					$item->sizes = $item_attrs[$item->id];
-				}
-			}
+		$registry = new Registry;
+		$registry->loadString($data->similar_items);
+		$similar_items = $registry->toArray();
+
+		if (!empty($similar_items))
+		{
+			$query = $this->_db->getQuery(true);
+			$query->select('i.*')
+				->from('#__catalogue_item as i')
+				->where('i.id in (' . implode(', ', $similar_items) . ')')
+				->order('i.ordering');
+
+			$this->_db->setQuery($query);
+
+			$data->similar_items = $this->_db->loadObjectList();
 		}
 
 		return $data;
