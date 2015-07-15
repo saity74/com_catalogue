@@ -64,8 +64,11 @@ if ($item->images)
 	<ul class="catalogue-item-img-list">
 		<?php foreach($images->toObject() as $k => $image) : ?>
 			<li>
-				<a href="<?php echo $image->src ?>" data-orig="<?php echo $image->name ?>" data-attrs="['<?php echo implode('\',\'',
-					$image->attrs);	?>']" <?php if($k == 0 ) : ?> class="active" <?php endif;?>>
+				<a href="<?php echo $image->src ?>"
+				   data-orig="<?php echo $image->name ?>"
+				   data-attrs="['<?php echo implode('\',\'', $image->attrs);	?>']"
+					<?php if($k == 0 ) : ?> class="active" <?php endif;?>
+				>
 					<img src="<?php echo $image->thumb; ?>"/>
 				</a>
 			</li>

@@ -278,7 +278,8 @@ class CatalogueModelItem extends JModelAdmin
 			}
 
 			$item->itemtext = trim($item->fulltext) != '' ? $item->introtext . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
-			if(isset($item->similar_items)) {
+			if (isset($item->similar_items))
+			{
 				$similar_items = new Registry;
 				$similar_items->loadString($item->similar_items);
 				$item->similar_items = $similar_items->toArray();
@@ -643,9 +644,9 @@ class CatalogueModelItem extends JModelAdmin
 		{
 			$imagesFolder = $app->getUserState('com_catalogue.edit.item.images_folder', '');
 
-			if($imagesFolder)
+			if ($imagesFolder)
 			{
-				$id = (int)$this->getState($this->getName() . '.id');
+				$id = (int) $this->getState($this->getName() . '.id');
 
 				$srcFolder = join(DS, [JPATH_SITE, 'images', $imagesFolder]);
 				$dstFolder = join(DS, [JPATH_SITE, 'images', $id]);
@@ -665,8 +666,9 @@ class CatalogueModelItem extends JModelAdmin
 						$extension = JFile::getExt($file);
 
 						$i = 1;
-						while (JFile::exists($dstFolder . DS . $srcFileName)) {
-							$actual_name = (string)$original_name . '(' . ++$i . ')';
+						while (JFile::exists($dstFolder . DS . $srcFileName))
+						{
+							$actual_name = (string) $original_name . '(' . (++$i) . ')';
 							$srcFileName = $actual_name . "." . $extension;
 						}
 					}
@@ -679,7 +681,7 @@ class CatalogueModelItem extends JModelAdmin
 				$app->setUserState('com_catalogue.edit.item.images_folder', '');
 				JFolder::delete($srcFolder);
 
-				if (!isset($data['id']) || (int)$data['id'] == 0)
+				if (!isset($data['id']) || (int) $data['id'] == 0)
 				{
 					$data['images'] = str_replace('\/0\/', '\/' . $id . '\/', $data['images']);
 

@@ -10,22 +10,19 @@ defined('_JEXEC') or die;
 
 JHtml::_('behavior.caption');
 
-$listOrder = $this->escape($this->state->get('list.ordering'));
-$listDirn = $this->escape($this->state->get('list.direction'));
+$listOrder  = $this->escape($this->state->get('list.ordering'));
+$listDirn   = $this->escape($this->state->get('list.direction'));
 
-$app = JFactory::getApplication();
-
-$jinput = $app->input;
-$view = $this->getName();
-$layout = $this->getLayout();
-//$params = $this->state->get('params');
-$menu = $this->menu;
-$category = $this->category;
+$app        = JFactory::getApplication();
+$jinput     = $app->input;
+$view       = $this->getName();
+$layout     = $this->getLayout();
+$menu       = $this->menu;
+$category   = $this->category;
 
 jimport('joomla.application.module.helper');
-
-$modules	= JModuleHelper::getModules('catalogue-left');
-$params		= array('style' => 'xhtml');
+$modules    = JModuleHelper::getModules('catalogue-left');
+$params     = array('style' => 'xhtml');
 
 ?>
 <div class="catalogue-<?php echo $view ?>-<?php echo $layout ?>">

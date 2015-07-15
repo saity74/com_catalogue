@@ -47,7 +47,8 @@ class CatalogueViewItem extends JViewLegacy
 		// Process the content plugins.
 
 		JPluginHelper::importPlugin('content');
-		//$dispatcher->trigger('onContentPrepare', array ('com_catalogue.item', &$item, &$item->params, $offset));
+
+		// $dispatcher->trigger('onContentPrepare', array ('com_catalogue.item', &$item, &$item->params, $offset));
 
 		$item->event = new stdClass;
 		$results = $dispatcher->trigger('onContentAfterTitle', array('com_catalogue.item', &$item, &$item->params, $offset));

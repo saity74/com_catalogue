@@ -34,6 +34,7 @@ abstract class CatalogueHelperRoute
 		$needles = array(
 			'item' => array((int) $id)
 		);
+
 		// Create the link
 		$link = 'index.php?option=com_catalogue&view=item&id=' . $id;
 		if ((int) $catid > 1)

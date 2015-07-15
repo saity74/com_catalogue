@@ -17,8 +17,8 @@ $category_title_after = $params->get('category_title_after', '');
 $category_title_before = $params->get('category_title_before', '');
 
 $category_title_text = $category_title_before ?
-	$category_title_before.mb_strtolower($category->title).$category_title_after :
-	$category->title.$category_title_after;
+	$category_title_before . mb_strtolower($category->title) . $category_title_after :
+	$category->title . $category_title_after;
 ?>
 
 <div class="page-header">

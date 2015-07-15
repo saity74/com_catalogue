@@ -158,7 +158,7 @@ class CatalogueControllerItem extends JControllerForm
 		$app = JFactory::getApplication();
 		$id = $app->getUserState('com_catalogue.edit.item.id', [0]);
 		$beforeSaveFolder = $app->getUserState('com_catalogue.edit.item.images_folder', '');
-		if(!$beforeSaveFolder)
+		if (!$beforeSaveFolder)
 		{
 			$beforeSaveFolder = uniqid();
 			$app->setUserState('com_catalogue.edit.item.images_folder', $beforeSaveFolder);
@@ -168,7 +168,6 @@ class CatalogueControllerItem extends JControllerForm
 
 		$file = $this->input->files->get('file', '', 'array');
 
-		//$this->folder = 'images/' . $id[0];
 		$this->folder = 'images/' . $beforeSaveFolder;
 
 		// Authorize the user
@@ -183,7 +182,6 @@ class CatalogueControllerItem extends JControllerForm
 		{
 			JFolder::create(JPATH_SITE . DIRECTORY_SEPARATOR . $this->folder);
 		}
-
 
 		// Total length of post back data in bytes.
 		$contentLength = (int) $_SERVER['CONTENT_LENGTH'];
@@ -232,12 +230,12 @@ class CatalogueControllerItem extends JControllerForm
 				$extension = JFile::getExt($file['name']);
 
 				$i = 1;
-				while(JFile::exists(implode(DIRECTORY_SEPARATOR, [$path, $file['name']])))
+				while (JFile::exists(implode(DIRECTORY_SEPARATOR, [$path, $file['name']])))
 				{
-					$actual_name = (string)$original_name.'('.++$i.')';
-					$file['name'] = $actual_name.".".$extension;
+					$actual_name = (string) $original_name . '(' . (++$i) . ')';
+					$file['name'] = $actual_name . "." . $extension;
 				}
-				$file['filepath']   = implode(DIRECTORY_SEPARATOR, array($path, $file['name']));
+				$file['filepath'] = implode(DIRECTORY_SEPARATOR, array($path, $file['name']));
 			}
 
 			// Set FTP credentials, if given

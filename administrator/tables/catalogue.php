@@ -454,12 +454,13 @@ class CatalogueTableCatalogue extends JTable
 				$this->metadata = '{}';
 			}
 
-			// If we don't have any access rules set at this point just use an empty JAccessRules class
-			/*if (!$this->getRules())
+			/* If we don't have any access rules set at this point just use an empty JAccessRules class
+			 if (!$this->getRules())
 			{
 				$rules = $this->getDefaultAssetValues('com_catalogue');
 				$this->setRules($rules);
-			}*/
+			}
+			*/
 		}
 
 		// Check the publish down date is not earlier than publish up.
