@@ -172,8 +172,8 @@
 
     <target name="zippa">
         <fileset dir="${base}" id="allfiles">
-            <include name="administrator/*" />
-            <include name="site/*" />
+            <include name="administrator/**" />
+            <include name="site/**" />
             <include name="com_catalogue.xml" />
             <include name="script.php" />
         </fileset>
