@@ -10,10 +10,9 @@
 defined('_JEXEC') or die;
 
 $item = $displayData;
-$params = $item->params;
+$params = JComponentHelper::getParams('com_catalogue');
 
 ?>
-
 <div class="open-item-price-wrap">
 	<?php if (!$item->item_sale): ?>
 		<p class="item-price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">

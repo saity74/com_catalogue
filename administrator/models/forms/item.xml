@@ -579,6 +579,15 @@
 		</fieldset>
 	</fields>
 
+	<fieldset name="similar">
+		<field
+				name="similar_items"
+				type="itemslist"
+				multiple="true"
+				label="COM_CATALOGUE_FIELD_ASSOC_LABEL"
+				description="COM_CATALOGUE_FIELD_ASSOC_DESC"/>
+	</fieldset>
+
 	<fieldset name="imagemodal"
 			label="COM_CATALOGUE_FIELDSET_IMAGEMODAL_OPTIONS">
 
