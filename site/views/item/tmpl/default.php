@@ -31,24 +31,10 @@ $doc = JFactory::getDocument();
 
 jimport('joomla.application.module.helper');
 
-$modules	= JModuleHelper::getModules('catalogue-left');
-$params		= array('style' => 'xhtml');
-
 ?>
 <div class="catalogue-<?php echo $view ?>-<?php echo $layout ?>">
 	<div class="row">
-		<?php if ($modules) : ?>
-			<div class="sidebar col-lg-3 col-md-3 col-sm-4">
-				<?php
-				foreach ($modules as $module)
-				{
-					echo JModuleHelper::renderModule($module, $params);
-				}
-				?>
-			</div>
-		<?php endif; ?>
-
-		<div class="catalogue-item <?php echo ($modules ? 'col-lg-9 col-md-9 col-sm-8' : '') ?>" itemscope itemtype="http://schema.org/Product">
+		<div class="catalogue-item col-lg-12 col-md-12 col-sm-12 col-xs-12" itemscope itemtype="http://schema.org/Product">
 			<?php if($item->params->get('show_title', 1)) : ?>
 				<div class="item-header">
 					<div class="row">

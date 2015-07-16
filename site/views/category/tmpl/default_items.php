@@ -79,43 +79,9 @@ $items = array_chunk($this->items, $num_columns);
 										</ul>
 									<?php endif; ?>
 								</div>
-<<<<<<< HEAD
 								<div class="item-price-wrapper">
 									<?php echo JLayoutHelper::render('catalogue.item.price', $item); ?>
 								</div>
-=======
-<<<<<<< HEAD
-								<?php if (!$item->item_sale): ?>
-									<div class="catalogue-items-one-price">
-										<p class="catalogue-items-one-price-inner" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-											<?php if ($item->price)
-											{
-												echo number_format($item->price, 0, '.', ' ') . ' ' . $params->get('catalogue_currency', 'руб.');
-											} ?>
-											<meta itemprop="priceCurrency" content="0">
-										</p>
-									</div>
-								<?php else: ?>
-									<?php $new_price = $item->price - (($item->price / 100) * $item->item_sale); ?>
-									<div class="catalogue-items-one-price">
-										<p class="catalogue-items-one-old-price-inner" itemprop="offers" itemscope=""
-										   itemtype="http://schema.org/Offer">
-											<?php echo number_format($item->price, 0, '.', ' '); ?>
-											<meta itemprop="priceCurrency" content="0">
-										</p>
-										<p class="catalogue-items-one-price-inner" itemprop="offers" itemscope=""
-										   itemtype="http://schema.org/Offer">
-											<?php echo number_format($new_price, 0, '.', ' ') . ' ' . $params->get('catalogue_currency', 'руб.'); ?>
-											<meta itemprop="priceCurrency" content="0">
-										</p>
-									</div>
-								<?php endif; ?>
-=======
-								<div class="item-price-wrapper">
-									<?php echo JLayoutHelper::render('catalogue.item.price', $item); ?>
-								</div>
->>>>>>> add similar layout
->>>>>>> dev
 							</div>
 						</div>
 					</div>
