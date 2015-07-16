@@ -69,13 +69,10 @@ $assoc = JLanguageAssociations::isEnabled();
 						<th class="hidden-phone" width="1%">
 							<?php echo JHtml::_('grid.sort', 'COM_CATALOGUE_HEADING_INTRO', 'i.fulltext', $listDirn, $listOrder); ?>
 						</th>
-						<th>
+						<th width="10%" class="nowrap center hidden-phone">
 							<?php echo JHtml::_('grid.sort', 'COM_CATALOGUE_HEADING_MANUFACTURER', 'mf.manufacturer_name', $listDirn, $listOrder); ?>
 						</th>
-						<th class="hidden-phone">
-							<?php echo JText::_('COM_CATALOGUE_HEADING_STIKER'); ?>
-						</th>
-						<th width="1%" class="nowrap center hidden-phone">
+						<th width="10%" class="nowrap center">
 							<?php echo JHtml::_('grid.sort', 'COM_CATALOGUE_HEADING_PRICE', 'i.price', $listDirn, $listOrder); ?>
 						</th>
 						<th width="10%" class="nowrap hidden-phone">
@@ -91,9 +88,6 @@ $assoc = JLanguageAssociations::isEnabled();
 						</th>
 						<th width="5%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
-						</th>
-						<th width="10%" class="nowrap hidden-phone">
-							<?php echo JHtml::_('searchtools.sort', 'JDATE', 'i.created', $listDirn, $listOrder); ?>
 						</th>
 						<th width="1%" class="nowrap hidden-phone">
 							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'i.hits', $listDirn, $listOrder); ?>
@@ -173,6 +167,20 @@ $assoc = JLanguageAssociations::isEnabled();
 										<?php echo $this->escape($item->title); ?>
 									</span>
 								<?php endif; ?>
+								<?php
+									switch ($item->sticker)
+									{
+										case 1:
+											echo '<span class="label label-important">hot</span>';
+											break;
+										case 2:
+											echo '<span class="label label-warning">new</span>';
+											break;
+										case 3:
+											echo '<span class="label label-success">sale</span>';
+											break;
+									}
+								?>
 								<br/>
 								<span class="small break-word">
 									<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
@@ -195,25 +203,6 @@ $assoc = JLanguageAssociations::isEnabled();
 								<?php echo $item->country_name; ?>
 							</div>
 						</td>
-						<td class="hidden-phone">
-							<?php
-							switch ($item->sticker)
-							{
-								case 0:
-									echo '<span class="label label-info">none</span>';
-									break;
-								case 1:
-									echo '<span class="label label-important">hot</span>';
-									break;
-								case 2:
-									echo '<span class="label label-warning">new</span>';
-									break;
-								case 3:
-									echo '<span class="label label-success">sale</span>';
-									break;
-							}
-							?>
-						</td>
 						<td class="center hidden-phone">
 							<?php echo $item->price; ?>
 						</td>
@@ -229,12 +218,11 @@ $assoc = JLanguageAssociations::isEnabled();
 							</td>
 						<?php endif;?>
 						<td class="small hidden-phone">
-							<?php if ($item->created_by_alias) : ?>
+							<?php if ($item->modified_by) : ?>
 								<a class="hasTooltip"
-								   href="<?php echo JRoute::_('index.php?option=com_users&task=user.edit&id=' . (int) $item->created_by); ?>"
+								   href="<?php echo JRoute::_('index.php?option=com_users&task=user.edit&id=' . (int) $item->modified_by); ?>"
 								   title="<?php echo JText::_('JAUTHOR'); ?>">
-									<?php echo $this->escape($item->author_name); ?></a>
-								<p class="smallsub"> <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->created_by_alias)); ?></p>
+									<?php echo $this->escape($item->editor_name); ?></a>
 							<?php else : ?>
 								<a class="hasTooltip"
 								   href="<?php echo JRoute::_('index.php?option=com_users&task=user.edit&id=' . (int) $item->created_by); ?>"
@@ -248,9 +236,6 @@ $assoc = JLanguageAssociations::isEnabled();
 							<?php else:?>
 								<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
 							<?php endif;?>
-						</td>
-						<td class="nowrap small hidden-phone">
-							<?php echo JHtml::_('date', $item->created, JText::_('DATE_FORMAT_LC4')); ?>
 						</td>
 						<td class="center hidden-phone">
 							<?php echo (int) $item->hits; ?>

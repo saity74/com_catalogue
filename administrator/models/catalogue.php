@@ -46,6 +46,7 @@ class CatalogueModelCatalogue extends JModelList
 				'created', 'i.created',
 				'created_by', 'i.created_by',
 				'created_by_alias', 'i.created_by_alias',
+				'modified_by', 'i.modified_by',
 				'ordering', 'i.ordering',
 				'language', 'i.language',
 				'hits', 'i.hits',
@@ -200,9 +201,10 @@ class CatalogueModelCatalogue extends JModelList
 		$query->select('c.title AS category_title')
 			->join('LEFT', '#__categories AS c ON c.id = i.catid');
 
-		// Join over the users for the author.
-		$query->select('uc.name AS author_name')
-			->join('LEFT', '#__users AS ua ON uc.id = i.created_by');
+		// Join over the users for the author and editor.
+		$query->select('ua.name AS author_name, ue.name AS editor_name')
+			->join('LEFT', '#__users AS ua ON ua.id = i.created_by')
+			->join('LEFT', '#__users AS ue ON ue.id = i.modified_by');
 
 		// Join over the manufacturers.
 		$query->select('mf.manufacturer_name')
