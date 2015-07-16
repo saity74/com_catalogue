@@ -76,4 +76,6 @@ jimport('joomla.application.module.helper');
 		<?php echo JLayoutHelper::render('catalogue.item.similar', $item); ?>
 	</div>
 </div>
-<?php endif;
+<?php endif; ?>
+
+<?php echo $this->item->event->afterDisplayContent; ?>
