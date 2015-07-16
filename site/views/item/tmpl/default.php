@@ -78,4 +78,4 @@ jimport('joomla.application.module.helper');
 </div>
 <?php endif; ?>
 
-<?php echo $this->item->event->afterDisplayContent; ?>
+<?php echo $this->item->event->afterDisplayContent;
