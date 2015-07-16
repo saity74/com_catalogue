@@ -60,6 +60,9 @@ class CatalogueViewItem extends JViewLegacy
 		$results = $dispatcher->trigger('onContentAfterDisplay', array('com_catalogue.item', &$item, &$item->params, $offset));
 		$item->event->afterDisplayContent = trim(implode("\n", $results));
 
+		$model = $this->getModel();
+		$model->hit();
+
 		$this->_prepareDocument();
 
 		parent::display($tpl);

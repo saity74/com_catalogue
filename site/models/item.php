@@ -163,7 +163,7 @@ class CatalogueModelItem extends JModelList
 		{
 			$pk = (!empty($pk)) ? $pk : (int) $this->getState('item.id');
 
-			$table = JTable::getInstance('Catalogue', 'JTable');
+			$table = JTable::getInstance('Catalogue', 'CatalogueTable');
 			$table->load($pk);
 			$table->hit($pk);
 		}
