@@ -67,6 +67,33 @@ CREATE TABLE `#__catalogue_attrdir_category` (
   PRIMARY KEY (`attrdir_id`,`category_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `#__catalogue_cart`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `#__catalogue_cart` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `track_id` varchar(32) NOT NULL,
+  `alias` varchar(255) NOT NULL,
+  `state` tinyint(3) NOT NULL,
+  `items` text NOT NULL,
+  `total` int(10) unsigned NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `created` datetime NOT NULL,
+  `created_by` int(10) unsigned NOT NULL,
+  `created_by_alias` varchar(255) NOT NULL,
+  `modified` datetime NOT NULL,
+  `modified_by` int(10) unsigned NOT NULL,
+  `checked_out` int(10) unsigned NOT NULL,
+  `checked_out_time` datetime NOT NULL,
+  `attribs` text NOT NULL,
+  `version` int(10) unsigned NOT NULL,
+  `access` int(10) unsigned NOT NULL,
+  `xreference` varchar(10) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `track_id` (`track_id`),
+  KEY `amount` (`amount`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_country`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -131,7 +158,10 @@ CREATE TABLE `#__catalogue_item` (
   `sticker` tinyint(4) NOT NULL DEFAULT '0',
   `params` text NOT NULL,
   `similar_items` text NOT NULL,
-  PRIMARY KEY (`id`)
+  `assoc_items` text NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_catid` (`catid`),
+  KEY `idx_access` (`access`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_item_review`;
@@ -168,6 +198,27 @@ CREATE TABLE `#__catalogue_manufacturer` (
   `metadata` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `#__catalogue_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `#__catalogue_order` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `cart_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `delivery_type` tinyint(3) unsigned NOT NULL,
+  `payment_method` tinyint(3) unsigned NOT NULL,
+  `state` tinyint(3) NOT NULL,
+  `created` datetime NOT NULL,
+  `created_by` int(10) unsigned NOT NULL,
+  `modified` datetime NOT NULL,
+  `modified_by` int(10) unsigned NOT NULL,
+  `checked_out` int(10) unsigned NOT NULL,
+  `checked_out_time` datetime NOT NULL,
+  `client_mail` varchar(255) NOT NULL,
+  `client_name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

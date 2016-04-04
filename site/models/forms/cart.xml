@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset>
+        <field
+                id="id"
+                name="id"
+                type="hidden"
+                class="inputbox"
+                label="COM_CONTENT_ID_LABEL"
+                size="10"
+                default="0"
+                readonly="true" />
+
+        <field
+                id="track_id"
+                name="track_id"
+                type="hidden"
+                readonly="true" />
+
+        <field
+                id="total"
+                name="total"
+                default="1"
+                filter="number"
+                type="hidden" />
+
+        <field
+                id="alias"
+                name="alias"
+                type="text"
+                label="JFIELD_ALIAS_LABEL"
+                description="JFIELD_ALIAS_DESC"
+                hint="JFIELD_ALIAS_PLACEHOLDER"
+                class="inputbox"
+                size="45" />
+
+        <field
+                id="items"
+                name="items"
+                type="cartitems"
+        />
+
+    </fieldset>
+</form>

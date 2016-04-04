@@ -17,6 +17,15 @@ require_once(dirname(__FILE__) . DS . 'helper.php');
  */
 class CatalogueController extends JControllerLegacy
 {
+
+	public function __construct(array $config)
+	{
+
+		$this->input = JFactory::getApplication('site')->input;
+
+		parent::__construct($config);
+	}
+
 	/**
 	 * Method to display a search view.
 	 *
@@ -24,6 +33,7 @@ class CatalogueController extends JControllerLegacy
 	 *
 	 * @since   1.5
 	 */
+
 	public function search()
 	{
 		$sphinx_search_model = $this->getModel('Search', 'CatalogueModel');
@@ -59,22 +69,16 @@ class CatalogueController extends JControllerLegacy
 
 	public function display($cachable = false, $urlparams = array())
 	{
-		$ids = array();
 
-		// $sphinx_search_model = $this->getModel('Search', 'CatalogueModel');
-		// $result = $sphinx_search_model->getItems();
+		$vName = $this->input->get('view');
 
-		$app = JFactory::getApplication('site');
-		$jinput = $app->input;
-		$category_id = $jinput->get('cid');
-
-		// $ids = JArrayHelper::getColumn($result, 'id');
-
-		if (!empty($ids))
+		if ($vName == 'order' && CatalogueCart::$isEmpty)
 		{
-			$app->setUserState('com_catalogue.category.' . $category_id . '.filter.sphinx_ids', $ids);
+			$this->setRedirect(JRoute::_(CatalogueHelperRoute::getCartRoute()), false);
 		}
 
-		parent::display($cachable, $urlparams);
+		parent::display();
+
+		return $this;
 	}
 }

@@ -38,10 +38,9 @@ class CatalogueModelItem extends JModelList
 		$db = $this->getDbo();
 
 		$query = $db->getQuery(true)
-			->select('itm.*, cat.title AS category_name, man.manufacturer_description')
+			->select('itm.*, itm.params as attrs_params, cat.title AS category_name')
 			->from('#__catalogue_item AS itm')
-			->join('LEFT', '#__categories AS cat ON cat.id = itm.catid')
-			->join('LEFT', '#__catalogue_manufacturer AS man ON man.id = itm.manufacturer_id');
+			->join('LEFT', '#__categories AS cat ON cat.id = itm.catid');
 
 		if ((!$user->authorise('core.edit.state', 'com_catalogue')) && (!$user->authorise('core.edit', 'com_catalogue')))
 		{
@@ -72,20 +71,19 @@ class CatalogueModelItem extends JModelList
 
 		if (empty($data))
 		{
-			return JError::raiseError(404, JText::_('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
+			return JError::raiseError(404, JText::_('COM_CATALOGUE_ERROR_ITEM_NOT_FOUND'));
 		}
 
 		// Check for published state if filter set.
 		if (((is_numeric($published)) || (is_numeric($archived))) && (($data->state != $published) && ($data->state != $archived)))
 		{
-			return JError::raiseError(404, JText::_('COM_CONTENT_ERROR_ARTICLE_NOT_FOUND'));
+			return JError::raiseError(404, JText::_('COM_CATALOGUE_ERROR_ITEM_NOT_FOUND'));
 		}
 
 		// Convert parameter fields to objects.
-		$registry = new Registry;
-		$registry->loadString($data->attribs);
+		$registry = new Registry($data->attribs);
 
-		$data->params = clone $this->getState('params');
+		$data->params = $this->getState('params', new Registry);
 		$data->params->merge($registry);
 
 		$query = $this->_db->getQuery(true);
@@ -124,6 +122,23 @@ class CatalogueModelItem extends JModelList
 			$data->similar_items = $this->_db->loadObjectList();
 		}
 
+		$registry = new Registry;
+		$registry->loadString($data->assoc_items);
+		$assoc_items = $registry->toArray();
+
+		if (!empty($assoc_items))
+		{
+			$query = $this->_db->getQuery(true);
+			$query->select('i.*')
+				->from('#__catalogue_item as i')
+				->where('i.id in (' . implode(', ', $assoc_items) . ')')
+				->order('i.ordering');
+
+			$this->_db->setQuery($query);
+
+			$data->assoc_items = $this->_db->loadObjectList();
+		}
+
 		return $data;
 	}
 
@@ -139,7 +154,8 @@ class CatalogueModelItem extends JModelList
 			->select('d.id AS dir_id, a.id AS attr_id, d.dir_name, a.attr_name')
 			->from('#__catalogue_attr AS a')
 			->join('LEFT', '#__catalogue_attrdir AS d ON d.id = a.attrdir_id')
-			->where('a.state = 1 AND d.state = 1');
+			->where('a.state = 1 AND d.state = 1')
+			->order('d.ordering ASC , a.ordering ASC');
 		$db->setQuery($query);
 
 		$data = $db->loadAssocList('attr_id');
@@ -197,33 +213,27 @@ class CatalogueModelItem extends JModelList
 		$id = $app->input->getUInt('id');
 		$this->setState('item.id', $id);
 
-		$db = JFactory::getDbo();
-
-		$db->setQuery(
-			$db->getQuery(true)
-				->select('title, introtext, `fulltext`, params, metadata')
-				->from('#__catalogue_item')
-				->where('state = 1 AND id = ' . $id)
-		);
-
-		$item = $db->loadObject();
-
 		$user = JFactory::getUser();
 
-		if ((!$user->authorise('core.edit.state', 'com_content')) && (!$user->authorise('core.edit', 'com_content')))
+		if ((!$user->authorise('core.edit.state', 'com_catalogue')) && (!$user->authorise('core.edit', 'com_catalogue')))
 		{
 			$this->setState('filter.published', 1);
 			$this->setState('filter.archived', 2);
 		}
 
-		$this->setState('item.name', $item->title);
-		$this->setState('item.params', $item->params);
-		$this->setState('item.metadata', $item->metadata);
-		$this->setState('item.desc', $item->introtext);
+		// Load the parameters. Merge Global and Menu Item params into new object
+		$params = JComponentHelper::getParams('com_catalogue');
+		$menuParams = new Registry;
 
-		// Load the parameters.
-		$params = $app->getParams();
-		$this->setState('params', $params);
+		if ($menu = $app->getMenu()->getActive())
+		{
+			$menuParams->loadString($menu->params);
+		}
+
+		$mergedParams = clone $menuParams;
+		$mergedParams->merge($params);
+
+		$this->setState('params', $mergedParams);
 
 	}
 }

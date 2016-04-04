@@ -6,12 +6,8 @@
  * @copyright   Copyright (C) 2012 - 2015 Saity74, LLC. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 defined('_JEXEC') or die;
-define('DS', DIRECTORY_SEPARATOR);
-
 use Joomla\Registry\Registry;
-
 JLoader::register('CatalogueHelper', JPATH_ADMINISTRATOR . '/components/com_catalogue/helpers/catalogue.php');
 
 /**
@@ -26,7 +22,6 @@ class CatalogueModelItem extends JModelAdmin
 	 * @since   1.6
 	 */
 	protected $text_prefix = 'COM_CATALOGUE';
-
 	/**
 	 * The type alias for this content type (for example, 'com_catalogue.item').
 	 *
@@ -35,6 +30,8 @@ class CatalogueModelItem extends JModelAdmin
 	 */
 	public $typeAlias = 'com_catalogue.item';
 
+
+	protected $_item;
 	/**
 	 * Batch copy items to a new category or current.
 	 *
@@ -49,22 +46,17 @@ class CatalogueModelItem extends JModelAdmin
 	protected function batchCopy($value, $pks, $contexts)
 	{
 		$categoryId = (int) $value;
-
 		$newIds = array();
-
 		if (!parent::checkCategoryId($categoryId))
 		{
 			return false;
 		}
-
 		// Parent exists so we let's proceed
 		while (!empty($pks))
 		{
 			// Pop the first ID off the stack
 			$pk = array_shift($pks);
-
 			$this->table->reset();
-
 			// Check that the row actually exists
 			if (!$this->table->load($pk))
 			{
@@ -72,7 +64,6 @@ class CatalogueModelItem extends JModelAdmin
 				{
 					// Fatal error
 					$this->setError($error);
-
 					return false;
 				}
 				else
@@ -82,56 +73,42 @@ class CatalogueModelItem extends JModelAdmin
 					continue;
 				}
 			}
-
 			// Alter the title & alias
 			$data = $this->generateNewTitle($categoryId, $this->table->alias, $this->table->title);
 			$this->table->title = $data['0'];
 			$this->table->alias = $data['1'];
-
 			// Reset the ID because we are making a copy
 			$this->table->id = 0;
-
 			// Reset hits because we are making a copy
 			$this->table->hits = 0;
-
 			// Unpublish because we are making a copy
 			$this->table->state = 0;
-
 			// New category ID
 			$this->table->catid = $categoryId;
-
 			// TODO: Deal with ordering?
 			// $table->ordering	= 1;
-
 			// Check the row.
 			if (!$this->table->check())
 			{
 				$this->setError($this->table->getError());
 				return false;
 			}
-
 			parent::createTagsHelper($this->tagsObserver, $this->type, $pk, $this->typeAlias, $this->table);
-
 			// Store the row.
 			if (!$this->table->store())
 			{
 				$this->setError($this->table->getError());
 				return false;
 			}
-
 			// Get the new item ID
 			$newId = $this->table->get('id');
-
 			// Add the new ID to the array
 			$newIds[$pk] = $newId;
 		}
-
 		// Clean the cache
 		$this->cleanCache();
-
 		return $newIds;
 	}
-
 	/**
 	 * Method to test whether a record can be deleted.
 	 *
@@ -150,13 +127,10 @@ class CatalogueModelItem extends JModelAdmin
 				return false;
 			}
 			$user = JFactory::getUser();
-
 			return $user->authorise('core.delete', 'com_catalogue.item.' . (int) $record->id);
 		}
-
 		return false;
 	}
-
 	/**
 	 * Method to test whether a record can have its state edited.
 	 *
@@ -169,7 +143,6 @@ class CatalogueModelItem extends JModelAdmin
 	protected function canEditState($record)
 	{
 		$user = JFactory::getUser();
-
 		// Check for existing item.
 		if (!empty($record->id))
 		{
@@ -186,7 +159,6 @@ class CatalogueModelItem extends JModelAdmin
 			return parent::canEditState('com_catalogue');
 		}
 	}
-
 	/**
 	 * Prepare and sanitise the table data prior to saving.
 	 *
@@ -200,24 +172,20 @@ class CatalogueModelItem extends JModelAdmin
 	{
 		// Set the publish date to now
 		$db = $this->getDbo();
-
 		if ($table->state == 1 && (int) $table->publish_up == 0)
 		{
 			$table->publish_up = JFactory::getDate()->toSql();
 		}
-
 		if ($table->state == 1 && intval($table->publish_down) == 0)
 		{
 			$table->publish_down = $db->getNullDate();
 		}
-
 		// Reorder the items within the category so the new item is first
 		if (empty($table->id))
 		{
 			$table->reorder('catid = ' . (int) $table->catid . ' AND state >= 0');
 		}
 	}
-
 	/**
 	 * Method to get a table object, load it if necessary.
 	 *
@@ -234,7 +202,6 @@ class CatalogueModelItem extends JModelAdmin
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
-
 	/**
 	 * Method to get a single record.
 	 *
@@ -246,30 +213,31 @@ class CatalogueModelItem extends JModelAdmin
 	 */
 	public function getItem($pk = null)
 	{
-
-		if ($item = parent::getItem($pk))
+		if ($this->_item)
 		{
+			return $this->_item;
+		}
+		else
+		{
+			$this->_item = parent::getItem($pk);
+
 			// Convert the params field to an array.
 			$registry = new Registry;
-			$registry->loadString($item->attribs);
-			$item->attribs = $registry->toArray();
+			$registry->loadString($this->_item->attribs);
+			$this->_item->attribs = $registry->toArray();
 
 			// Convert the metadata field to an array.
 			$registry = new Registry;
-			$registry->loadString($item->metadata);
-			$item->metadata = $registry->toArray();
-
-			$techs = new Registry;
-			$techs->loadString($item->techs);
-			$item->techs = $techs->toArray();
+			$registry->loadString($this->_item->metadata);
+			$this->_item->metadata = $registry->toArray();
 
 			// Convert the images field to an array.
-			if (isset($item->images) && !empty($item->images))
+			if (isset($this->_item->images) && !empty($this->_item->images))
 			{
 				$registry = new Registry;
-				$registry->loadString($item->images);
-				$item->images = $registry->toArray();
-				foreach ($item->images as &$image)
+				$registry->loadString($this->_item->images);
+				$this->_item->images = $registry->toArray();
+				foreach ($this->_item->images as &$image)
 				{
 					$image['url'] = $image['name'];
 					$image['dir'] = dirname($image['name']);
@@ -277,35 +245,30 @@ class CatalogueModelItem extends JModelAdmin
 				}
 			}
 
-			$item->itemtext = trim($item->fulltext) != '' ? $item->introtext . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
-			if (isset($item->similar_items))
+			$this->_item->itemtext = trim($this->_item->fulltext) != '' ? $this->_item->introtext . "<hr id=\"system-readmore\" />" . $this->_item->fulltext : $this->_item->introtext;
+
+			if (isset($this->_item->similar_items))
 			{
 				$similar_items = new Registry;
-				$similar_items->loadString($item->similar_items);
-				$item->similar_items = $similar_items->toArray();
+				$similar_items->loadString($this->_item->similar_items);
+				$this->_item->similar_items = $similar_items->toArray();
 			}
 
-			// Load reviews..
-			$query = $this->_db->getQuery(true);
-			$query->select('rv.*')
-				->from('#__catalogue_item_review as rv')
-				->where('rv.item_id = ' . (int) $item->id)
-				->order('rv.ordering ASC');
-			$this->_db->setQuery($query);
+			if (isset($this->_item->assoc_items))
+			{
+				$assoc_items = new Registry;
+				$assoc_items->loadString($this->_item->assoc_items);
+				$this->_item->assoc_items = $assoc_items->toArray();
+			}
 
-			$item->reviews = $this->_db->loadObjectList();
-
-			// ..load reviews
-
-			$query = $this->_db->getQuery(true);
-
-			$query->select('a.id as attr_id, a.attr_name')
-				->from('#__catalogue_attr as a')
-				->where('a.published = 1');
-
-			$this->_db->setQuery($query);
-
-			$item->attrs = $this->_db->loadAssocList('attr_id');
+			$this->_db->setQuery(
+				$this->_db->getQuery(true)
+					->select('a.id as attr_id, a.attr_name')
+					->from('#__catalogue_attr as a')
+					->where('a.published = 1')
+					->order('a.attrdir_id, a.ordering ASC')
+			);
+			$this->_item->attrs = $this->_db->loadAssocList('attr_id');
 
 			$query = $this->_db->getQuery(true);
 
@@ -323,62 +286,55 @@ class CatalogueModelItem extends JModelAdmin
 				->join('LEFT', '#__catalogue_attrdir as d ON d.id = a.attrdir_id')
 				->where('a.published = 1 AND d.published = 1')
 				// ->order('a.attrdir_id ASC')
-				->order('a.attrdir_id ASC, a.attr_name ASC')
+				->order('a.attrdir_id ASC, a.ordering ASC')
 				->group('a.id');
-
 			$this->_db->setQuery($query);
-
-			$item->attrdirs = $this->_db->loadObjectList();
+			$this->_item->attrdirs = $this->_db->loadObjectList();
 
 			$query = $this->_db->getQuery(true);
 
 			$query->select('p.attr_id, p.attr_price')
 				->from('#__catalogue_attr_price as p')
-				->where('p.item_id = ' . (int) $item->id);
+				->where('p.item_id = ' . (int) $this->_item->id);
 
 			$this->_db->setQuery($query);
 
 			$attr_prices = $this->_db->loadAssocList('attr_id');
 
-			foreach ($item->attrdirs as $attr_dir)
+			foreach ($this->_item->attrdirs as $attr_dir)
 			{
-
-				if (isset($item->params['attr_' . $attr_dir->attr_id]))
+				if (isset($this->_item->params['attr_' . $attr_dir->attr_id]))
 				{
-					$attr_dir->attr_value = $item->params['attr_' . $attr_dir->attr_id];
+					$attr_dir->attr_value = $this->_item->params['attr_' . $attr_dir->attr_id];
 				}
 
 				if (isset($attr_prices[$attr_dir->attr_id]))
 				{
 					$attr_dir->attr_price = $attr_prices[$attr_dir->attr_id]['attr_price'];
 				}
-
 			}
-			$item->attrs = JArrayHelper::toObject($item->attrs);
-		}
 
-		// Load associated catalogue items
-		$app = JFactory::getApplication();
-		$assoc = JLanguageAssociations::isEnabled();
+			$this->_item->attrs = JArrayHelper::toObject($this->_item->attrs);
 
-		if ($assoc)
-		{
-			$item->associations = array();
-
-			if ($item->id != null)
+			// Load associated catalogue items
+			$app = JFactory::getApplication();
+			$assoc = JLanguageAssociations::isEnabled();
+			if ($assoc)
 			{
-				$associations = JLanguageAssociations::getAssociations('com_catalogue', '#__catalogue_item', 'com_catalogue.item', $item->id);
-
-				foreach ($associations as $tag => $association)
+				$this->_item->associations = array();
+				if ($this->_item->id != null)
 				{
-					$item->associations[$tag] = $association->id;
+					$associations = JLanguageAssociations::getAssociations('com_catalogue', '#__catalogue_item', 'com_catalogue.item', $this->_item->id);
+					foreach ($associations as $tag => $association)
+					{
+						$this->_item->associations[$tag] = $association->id;
+					}
 				}
 			}
 		}
 
-		return $item;
+		return $this->_item;
 	}
-
 	/**
 	 * Method for getting the form from the model.
 	 *
@@ -398,7 +354,6 @@ class CatalogueModelItem extends JModelAdmin
 			return false;
 		}
 		$jinput = JFactory::getApplication()->input;
-
 		// The front end calls this model and uses a_id to avoid id clashes so we need to check for that first.
 		if ($jinput->get('a_id'))
 		{
@@ -413,10 +368,8 @@ class CatalogueModelItem extends JModelAdmin
 		if ($this->getState('item.id'))
 		{
 			$id = $this->getState('item.id');
-
 			// Existing record. Can only edit in selected categories.
 			$form->setFieldAttribute('catid', 'action', 'core.edit');
-
 			// Existing record. Can only edit own items in selected categories.
 			$form->setFieldAttribute('catid', 'action', 'core.edit.own');
 		}
@@ -425,9 +378,7 @@ class CatalogueModelItem extends JModelAdmin
 			// New record. Can only create in selected categories.
 			$form->setFieldAttribute('catid', 'action', 'core.create');
 		}
-
 		$user = JFactory::getUser();
-
 		// Check for existing item.
 		// Modify the form based on Edit State access controls.
 		if ($id != 0 && (!$user->authorise('core.edit.state', 'com_catalogue.item.' . (int) $id))
@@ -439,7 +390,6 @@ class CatalogueModelItem extends JModelAdmin
 			$form->setFieldAttribute('publish_up', 'disabled', 'true');
 			$form->setFieldAttribute('publish_down', 'disabled', 'true');
 			$form->setFieldAttribute('state', 'disabled', 'true');
-
 			// Disable fields while saving.
 			// The controller has already verified this is an item you can edit.
 			$form->setFieldAttribute('featured', 'filter', 'unset');
@@ -448,16 +398,13 @@ class CatalogueModelItem extends JModelAdmin
 			$form->setFieldAttribute('publish_down', 'filter', 'unset');
 			$form->setFieldAttribute('state', 'filter', 'unset');
 		}
-
 		// Prevent messing with item language and category when editing existing item with associations
 		$app = JFactory::getApplication();
 		$assoc = JLanguageAssociations::isEnabled();
-
 		// Check if item is associated
 		if ($this->getState('item.id') && $app->isSite() && $assoc)
 		{
 			$associations = JLanguageAssociations::getAssociations('com_catalogue', '#__catalogue_item', 'com_catalogue.item', $id);
-
 			// Make fields read only
 			if ($associations)
 			{
@@ -467,10 +414,8 @@ class CatalogueModelItem extends JModelAdmin
 				$form->setFieldAttribute('catid', 'filter', 'unset');
 			}
 		}
-
 		return $form;
 	}
-
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
@@ -483,26 +428,20 @@ class CatalogueModelItem extends JModelAdmin
 		// Check the session for previously entered form data.
 		$app = JFactory::getApplication();
 		$data = $app->getUserState('com_catalogue.edit.item.data', array());
-
 		if (empty($data))
 		{
 			$data = $this->getItem();
-
 			// Prime some default values.
 			if ($this->getState('item.id') == 0)
 			{
 				$filters = (array) $app->getUserState('com_catalogue.items.filter');
 				$filterCatId = isset($filters['category_id']) ? $filters['category_id'] : null;
-
 				$data->set('catid', $app->input->getInt('catid', $filterCatId));
 			}
 		}
-
 		$this->preprocessData('com_catalogue.item', $data);
-
 		return $data;
 	}
-
 	/**
 	 * Method to save the form data.
 	 *
@@ -514,25 +453,20 @@ class CatalogueModelItem extends JModelAdmin
 	 */
 	public function save($data)
 	{
+		jimport('joomla.filesystem.folder');
+
 		$app        = JFactory::getApplication();
 		$input      = $app->input;
 		$filter     = JFilterInput::getInstance();
-
-		$techs = array_map(array($this, '_restructTechData'), $data['techs']['name'], $data['techs']['value'], $data['techs']['show_short']);
-
-		$registry = new JRegistry($techs);
-		$data['techs'] = $registry->toString();
 
 		if (isset($data['metadata']) && isset($data['metadata']['author']))
 		{
 			$data['metadata']['author'] = $filter->clean($data['metadata']['author'], 'TRIM');
 		}
-
 		if (isset($data['created_by_alias']))
 		{
 			$data['created_by_alias'] = $filter->clean($data['created_by_alias'], 'TRIM');
 		}
-
 		if (isset($data['images']) && is_array($data['images']))
 		{
 			$root = JUri::root(true);
@@ -573,11 +507,9 @@ class CatalogueModelItem extends JModelAdmin
 		{
 			$origTable = clone $this->getTable();
 			$origTable->load($input->getInt('id'));
-
 			if ($data['title'] == $origTable->title)
 			{
 				list($title, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
-
 				$data['title'] = $title;
 				$data['alias'] = $alias;
 			}
@@ -587,18 +519,14 @@ class CatalogueModelItem extends JModelAdmin
 				{
 					$data['alias'] = '';
 				}
-				echo 1;
 			}
-
 			$data['state'] = 0;
 		}
-
 		// Automatic handling of alias for empty fields
 		if (in_array($input->get('task'), array('apply', 'save', 'save2new')) && (!isset($data['id']) || (int) $data['id'] == 0))
 		{
 			if ($data['alias'] == null)
 			{
-
 				if (JFactory::getConfig()->get('unicodeslugs') == 1)
 				{
 					$data['alias'] = JFilterOutput::stringURLUnicodeSlug($data['title']);
@@ -607,24 +535,19 @@ class CatalogueModelItem extends JModelAdmin
 				{
 					$data['alias'] = JFilterOutput::stringURLSafe($data['title']);
 				}
-
 				$table = JTable::getInstance('Catalogue', 'CatalogueTable');
-
 				if ($table->load(array('alias' => $data['alias'], 'catid' => $data['catid'])))
 				{
 					$msg = JText::_('COM_CONTENT_SAVE_WARNING');
 				}
-
 				list($title, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['title']);
 				$data['alias'] = $alias;
-
 				if (isset($msg))
 				{
 					JFactory::getApplication()->enqueueMessage($msg, 'warning');
 				}
 			}
 		}
-
 		if (parent::save($data))
 		{
 			$imagesFolder = $app->getUserState('com_catalogue.edit.item.images_folder', '');
@@ -681,10 +604,8 @@ class CatalogueModelItem extends JModelAdmin
 			{
 				$id = (int) $this->getState($this->getName() . '.id');
 				$item = $this->getItem($id);
-
 				// Adding self to the association
 				$associations = $data['associations'];
-
 				foreach ($associations as $tag => $id)
 				{
 					if (empty($id))
@@ -692,17 +613,13 @@ class CatalogueModelItem extends JModelAdmin
 						unset($associations[$tag]);
 					}
 				}
-
 				// Detecting all item menus
 				$all_language = $item->language == '*';
-
 				if ($all_language && !empty($associations))
 				{
 					JError::raiseNotice(403, JText::_('COM_CONTENT_ERROR_ALL_LANGUAGE_ASSOCIATED'));
 				}
-
 				$associations[$item->language] = $item->id;
-
 				// Deleting old association for these items
 				$db = JFactory::getDbo();
 				$query = $db->getQuery(true)
@@ -711,29 +628,23 @@ class CatalogueModelItem extends JModelAdmin
 					->where('id IN (' . implode(',', $associations) . ')');
 				$db->setQuery($query);
 				$db->execute();
-
 				if ($error = $db->getErrorMsg())
 				{
 					$this->setError($error);
-
 					return false;
 				}
-
 				if (!$all_language && count($associations))
 				{
 					// Adding new association for these items
 					$key = md5(json_encode($associations));
 					$query->clear()
 						->insert('#__associations');
-
 					foreach ($associations as $id)
 					{
 						$query->values($id . ',' . $db->quote('com_catalogue.item') . ',' . $db->quote($key));
 					}
-
 					$db->setQuery($query);
 					$db->execute();
-
 					if ($error = $db->getErrorMsg())
 					{
 						$this->setError($error);
@@ -741,10 +652,8 @@ class CatalogueModelItem extends JModelAdmin
 					}
 				}
 			}
-
 			return true;
 		}
-
 		return false;
 	}
 	/**
@@ -756,15 +665,12 @@ class CatalogueModelItem extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-
 	protected function getReorderConditions($table)
 	{
 		$condition = array();
 		$condition[] = 'catid = ' . (int) $table->catid;
-
 		return $condition;
 	}
-
 	/**
 	 * Auto-populate the model state.
 	 *
@@ -783,7 +689,6 @@ class CatalogueModelItem extends JModelAdmin
 		// Association content items
 		$app = JFactory::getApplication();
 		$assoc = JLanguageAssociations::isEnabled();
-
 		if ($assoc)
 		{
 			$languages = JLanguageHelper::getLanguages('lang_code');
@@ -794,7 +699,6 @@ class CatalogueModelItem extends JModelAdmin
 			$fieldset->addAttribute('name', 'item_associations');
 			$fieldset->addAttribute('description', 'COM_CONTENT_ITEM_ASSOCIATIONS_FIELDSET_DESC');
 			$add = false;
-
 			foreach ($languages as $tag => $language)
 			{
 				if (empty($data->language) || $tag != $data->language)
@@ -815,10 +719,8 @@ class CatalogueModelItem extends JModelAdmin
 				$form->load($addform, false);
 			}
 		}
-
 		parent::preprocessForm($form, $data, $group);
 	}
-
 	/**
 	 * Custom clean the cache of com_content and content modules
 	 *
@@ -834,41 +736,4 @@ class CatalogueModelItem extends JModelAdmin
 		parent::cleanCache('com_content');
 	}
 
-	/**
-	 * _restructData
-	 *
-	 * @param   int  $name   Name
-	 * @param   int  $price  Price
-	 * @param   int  $count  Count
-	 *
-	 * @return  array
-	 */
-	protected function _restructData($name, $price, $count)
-	{
-		if ($name && $price && $count)
-		{
-			return array('name' => $name, 'price' => $price, 'count' => $count);
-		}
-
-		return array();
-	}
-
-	/**
-	 * _restructData
-	 *
-	 * @param   int  $name        Name
-	 * @param   int  $value       Price
-	 * @param   int  $show_short  Count
-	 *
-	 * @return  array
-	 */
-	protected function _restructTechData($name, $value, $show_short)
-	{
-		if ($name && $value)
-		{
-			return array('name' => $name, 'value' => $value, 'show_short' => $show_short);
-		}
-
-		return array();
-	}
 }

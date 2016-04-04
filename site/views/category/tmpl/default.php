@@ -24,19 +24,19 @@ jimport('joomla.application.module.helper');
 $modules    = JModuleHelper::getModules('catalogue-left');
 $params     = array('style' => 'xhtml');
 
+$prefix = "catalogue-$view-$layout";
 ?>
-<div class="catalogue-<?php echo $view ?>-<?php echo $layout ?>">
-	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <?php
+<div class="<?php echo $prefix ?>">
+	<?php
 		if ($category->params->get('show_page_heading'))
 		{
 			echo JLayoutHelper::render('catalogue.page.title', $category);
 		}
 	?>
-	</div>
-	<div class="row">
-		<?php if ($modules) : ?>
-			<div class="sidebar col-lg-3 col-md-3 col-sm-4">
+
+	<?php if ($modules) : ?>
+		<div class="col-lg-3 col-md-3 col-sm-4 xs-hidden">
+			<div class="sidebar">
 				<?php
 					foreach ($modules as $module)
 					{
@@ -44,42 +44,46 @@ $params     = array('style' => 'xhtml');
 					}
 				?>
 			</div>
-		<?php endif; ?>
-
-		<div class="catalogue <?php echo ($modules ? 'col-lg-9 col-md-9 col-sm-8' : '') ?>">
-			<?php
-				if ($category->params->get('show_category_title', 1))
-				{
-					echo JLayoutHelper::render('catalogue.category.title', $category);
-				}
-
-				if ($category->params->get('show_subcategories_list', 0))
-				{
-					echo $this->loadTemplate('subcategories');
-				}
-
-				if ($category->params->get('show_description', 0))
-				{
-					echo JLayoutHelper::render('catalogue.category.description', $category);
-				}
-			?>
-
-			<?php if (!empty($this->items)): ?>
-				<form
-					action="<?php echo JRoute::_(CatalogueHelperRoute::getCategoryRoute($this->state->get('category.id'))); ?>"
-					method="post" id="catalogueForm">
-
-					<?php echo $this->loadTemplate('filters'); ?>
-
-					<?php echo $this->loadTemplate('items'); ?>
-
-					<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>"/>
-					<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>"/>
-					<input type="hidden" name="option" value="com_catalogue"/>
-				</form>
-			<?php else: ?>
-
-			<?php endif; ?>
 		</div>
+		<div class="col-lg-9 col-md-9 col-sm-8 col-xs-12">
+	<?php endif; ?>
+
+	<?php
+
+		echo JLayoutHelper::render('catalogue.category.title', $category);
+
+		if ($category->params->get('show_subcategories_list', 0))
+		{
+			echo $this->loadTemplate('subcategories');
+		}
+		// TODO: Add check category description length TEXT
+		if ($category->params->get('show_description', 0) && $category->description)
+		{
+			echo JLayoutHelper::render('catalogue.category.description', $category);
+		}
+	?>
+
+	<div class="catalogue-category-default-filter">
+		<form
+			action="<?php echo JRoute::_(CatalogueHelperRoute::getCategoryRoute($this->state->get('category.id'))); ?>"
+			method="post" id="catalogueForm" class="catalogue-category-default-filter-form">
+
+			<?php echo JLayoutHelper::render('catalogue.filters.bar', array('view' => $this)); ?>
+
+			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>"/>
+			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>"/>
+			<input type="hidden" name="option" value="com_catalogue"/>
+		</form>
 	</div>
+
+	<?php if (!empty($this->items)): ?>
+		<?php echo $this->loadTemplate('items'); ?>
+	<?php else: ?>
+
+	<?php endif; ?>
+
+	<?php if ($modules) : ?>
+		</div>
+	<?php endif; ?>
 </div>
+

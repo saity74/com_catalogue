@@ -9,16 +9,13 @@
 
 defined('_JEXEC') or die;
 
-$params = $displayData->params;
-$pageclass_sfx = $params->get('pageclass_sfx');
-$item = $this->item;
+$category = $displayData;
+
+$params = $category->params;
 ?>
 
-<div class="item-page<?php echo $pageclass_sfx; ?>" itemscope itemtype="http://schema.org/Article">
-	<meta
-		itemprop="inLanguage"
-		content="<?php echo ($item->language === '*') ? JFactory::getConfig()->get('language') : $item->language; ?>" />
-	<div class="page-header">
-		<h1> <?php echo $this->escape($params->get('page_heading')); ?> </h1>
-	</div>
+<?php if($params->get('show_page_heading', 0)) : ?>
+<div class="page-header">
+	<h1> <?php echo $this->escape($params->get('page_heading')); ?> </h1>
 </div>
+<?php endif;

@@ -7,6 +7,8 @@
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
+
+use \Joomla\Registry\Registry;
 $app = JFactory::getApplication();
 $params = $app->getParams();
 
@@ -18,7 +20,7 @@ $categories = array_chunk($this->category->getChildren(), $num_columns);
 	<?php foreach ($categories as $i => $row) : ?>
 		<div class="row catalogue-category-row row-<?php echo $i; ?>">
 			<?php foreach ($row as $category) : ?>
-				<?php $category->params = new JRegistry($category->params); ?>
+				<?php $category->params = new Registry($category->params); ?>
 				<?php $clink = CatalogueHelperRoute::getCategoryRoute($category->id, $category->language); ?>
 				<?php $img = json_decode($category->params)->image; ?>
 				<?php

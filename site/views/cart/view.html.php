@@ -16,6 +16,16 @@ defined('_JEXEC') or die;
 class CatalogueViewCart extends JViewLegacy
 {
 
+	public $item;
+
+	public $items;
+
+	public $form;
+
+	protected $state;
+
+	protected $params;
+
 	/**
 	 * Execute and display a template script.
 	 *
@@ -28,6 +38,23 @@ class CatalogueViewCart extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
+		$app = JFactory::getApplication('site');
+
+		$this->item = $this->get('Item');
+		$this->items = $this->get('Items');
+		$this->state = $this->get('State');
+		$this->form = $this->get('Form');
+
+		$this->params = $this->state->get('params');
+		$active       = $app->getMenu()->getActive();
+
+		// Check to see which parameters should take priority
+		if ($active)
+		{
+			$this->params->merge($active->params);
+		}
+
 		parent::display($tpl);
 	}
+
 }

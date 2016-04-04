@@ -67,25 +67,6 @@
             <option value="">JOPTION_SELECT_LANGUAGE</option>
             <option value="*">JALL</option>
         </field>
-        <field
-                name="manufacturer_id"
-                type="manufacturerslist"
-                label="JOPTION_SELECT_MANUFACTURER"
-                description="JOPTION_SELECT_MANUFACTURER_DESC"
-                onchange="this.form.submit();"
-                >
-            <option value="">JOPTION_SELECT_MANUFACTURER</option>
-        </field>
-
-        <field
-                name="country_id"
-                type="countrieslist"
-                label="JOPTION_SELECT_COUNTRY"
-                description="JOPTION_SELECT_COUNTRY_DESC"
-                onchange="this.form.submit();"
-                >
-            <option value="">JOPTION_SELECT_COUNTRY</option>
-        </field>
     </fields>
     <fields name="list">
         <field

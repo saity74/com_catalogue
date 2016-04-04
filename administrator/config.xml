@@ -1,186 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-    <fieldset
-            name="permissions"
-            label="JCONFIG_PERMISSIONS_LABEL"
-            description="JCONFIG_PERMISSIONS_DESC"
-            >
+  <fieldset name="advanced">
+      <field
+              name="addprice"
+              type="text"
+              label="COM_CATALOGUE_CONFIG_ADDPRICE_LABEL"
+              description="COM_CATALOGUE_CONFIG_ADDPRICE_DESC"
+              class="inputbox"
+              default="0"
+              />
 
+      <field
+              name="watcheditems_enable"
+              type="radio"
+              label="COM_CATALOGUE_CONFIG_WATCHEDITEMS_LABEL"
+              description="COM_CATALOGUE_CONFIG_WATCHEDITEMS_DESC"
+              class="btn-group"
+              default="0">
+          <option value="0">JHIDE</option>
+          <option value="1">JSHOW</option>
+      </field>
+
+      <field
+              name="item_discount_priority"
+              type="list"
+              label="COM_CATALOGUE_CONFIG_DISCOUNT_PRIORITY_LABEL"
+              description="COM_CATALOGUE_CONFIG_DISCOUNT_PRIORITY_DESC"
+              filter="intval"
+              size="1"
+              default="0">
+          <option value="0">COM_CATALOGUE_CONFIG_DISCPRIOR_ITEM
+          </option>
+          <option value="1">COM_CATALOGUE_CONFIG_DISCPRIOR_CATEGORY</option>
+      </field>
+
+      <field
+              name="catalogue_currency"
+              type="text"
+              label="COM_CATALOGUE_CONFIG_CURRENCY_LABEL"
+              description="COM_CATALOGUE_CONFIG_CURRENCY_DESC"
+              class="inputbox"
+              default="руб."
+              />
+
+      <field
+              name="add_id_alias"
+              type="radio"
+              label="COM_CATALOGUE_CONFIG_ADD_ID_ALIAS_LABEL"
+              class="btn-group"
+              default="1">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+      </field>
+
+      <field
+              name="show_reviews"
+              type="radio"
+              label="COM_CATALOGUE_CONFIG_SHOW_REVIEWS_LABEL"
+              class="btn-group"
+              default="0">
+          <option value="0">JNO</option>
+          <option value="1">JYES</option>
+      </field>
+  </fieldset>
+
+    <fieldset name="category" label="JCATEGORY">
         <field
-                name="rules"
-                type="rules"
-                label="JCONFIG_PERMISSIONS_LABEL"
-                class="inputbox"
-                filter="rules"
-                validate="rules"
-                component="com_catalogue"
-                section="component"/>
-    </fieldset>
-
-
-    <fieldset name="advanced">
-        <field
-                name="addprice"
-                type="text"
-                label="COM_CATALOGUE_CONFIG_ADDPRICE_LABEL"
-                description="COM_CATALOGUE_CONFIG_ADDPRICE_DESC"
-                class="inputbox"
-                component="com_catalogue"
-                section="component"
-                default="0"
+                name="category_layout"
+                type="componentlayout"
+                label="JGLOBAL_FIELD_LAYOUT_LABEL"
+                description="JGLOBAL_FIELD_LAYOUT_DESC"
+                menuitems="true"
+                extension="com_catalogue"
+                view="category"
                 />
-
-        <field
-                name="slice_desc"
-                type="radio"
-                label="COM_CATALOGUE_CONFIG_SLICEDESC_LABEL"
-                description="COM_CATALOGUE_CONFIG_SLICEDESC_DESC"
-                class="btn-group"
-                component="com_catalogue"
-                section="component"
-                default="1"
-                >
-            <option
-                    value="0">JNO
-            </option>
-            <option
-                    value="1">JYES
-            </option>
-        </field>
-
-        <field
-                name="short_desc_len"
-                type="text"
-                label="COM_CATALOGUE_CONFIG_SHORT_DESC_LEN_LABEL"
-                description="COM_CATALOGUE_CONFIG_SHORT_DESC_LEN_DESC"
-                class="inputbox"
-                component="com_catalogue"
-                section="component"
-                default="150"
-                />
-
-        <field
-                name="catalague_order_type"
-                type="radio"
-                label="COM_CATALOGUE_CONFIG_ORDER_TYPE_LABEL"
-                description="COM_CATALOGUE_CONFIG_ORDER_TYPE_DESC"
-                class="btn-group"
-                component="com_catalogue"
-                section="component"
-                default="1"
-                >
-            <option
-                    value="1">COM_CATALOGUE_CONFIG_ORDER_TYPE_CART
-            </option>
-            <option
-                    value="2">COM_CATALOGUE_CONFIG_ORDER_TYPE_ONECLICK
-            </option>
-            <option
-                    value="3">COM_CATALOGUE_CONFIG_ORDER_TYPE_ALL
-            </option>
-        </field>
-
-        <field
-                name="watcheditems_enable"
-                type="radio"
-                label="COM_CATALOGUE_CONFIG_WATCHEDITEMS_LABEL"
-                description="COM_CATALOGUE_CONFIG_WATCHEDITEMS_DESC"
-                class="btn-group"
-                component="com_catalogue"
-                section="component"
-                default="0"
-                >
-            <option
-                    value="0">JHIDE
-            </option>
-            <option
-                    value="1">JSHOW
-            </option>
-        </field>
-
-        <field
-                name="item_discount_priority"
-                type="list"
-                label="COM_CATALOGUE_CONFIG_DISCOUNT_PRIORITY_LABEL"
-                description="COM_CATALOGUE_CONFIG_DISCOUNT_PRIORITY_DESC"
-                component="com_catalogue"
-                section="component"
-                filter="intval"
-                size="1"
-                default="0"
-                >
-            <option
-                    value="0">COM_CATALOGUE_CONFIG_DISCPRIOR_ITEM
-            </option>
-            <option
-                    value="1">COM_CATALOGUE_CONFIG_DISCPRIOR_CATEGORY
-            </option>
-            <option
-                    value="2">COM_CATALOGUE_CONFIG_DISCPRIOR_SECTION
-            </option>
-            <option
-                    value="3">COM_CATALOGUE_CONFIG_DISCPRIOR_SUPERSECTION
-            </option>
-        </field>
-
-        <field
-                name="catalogue_currency"
-                type="text"
-                label="COM_CATALOGUE_CONFIG_CURRENCY_LABEL"
-                description="COM_CATALOGUE_CONFIG_CURRENCY_DESC"
-                class="inputbox"
-                component="com_catalogue"
-                section="component"
-                default="руб."
-                />
-
-        <field
-                name="catalogue_sort"
-                type="radio"
-                label="COM_CATALOGUE_CONFIG_SORT_LABEL"
-                description="COM_CATALOGUE_CONFIG_SORT_DESC"
-                component="com_catalogue"
-                section="component"
-                class="btn-group"
-                default="1"
-                >
-            <option
-                    value="1">COM_CATALOGUE_CONFIG_SORT_ORDERING
-            </option>
-            <option
-                    value="2">COM_CATALOGUE_CONFIG_SORT_NAME
-            </option>
-        </field>
-
-
-        <field name="order_info" type="text"
-               label="COM_CATALOGUE_ORDERINFO_LABEL"
-               size="10" class="span10"
-                />
-        <field name="manager_phone" type="text"
-               description="COM_CATALOGUE_MANPHONE_DESC"
-               label="COM_CATALOGUE_MANPHONE_LABEL"
-               size="3"
-                />
-
-        <field
-                name="add_id_alias"
-                type="radio"
-                label="COM_CATALOGUE_CONFIG_ADD_ID_ALIAS_LABEL"
-                class="btn-group"
-                component="com_catalogue"
-                section="component"
-                default="1">
-            <option
-                    value="0">JNO
-            </option>
-            <option
-                    value="1">JYES
-            </option>
-        </field>
-    </fieldset>
-
-    <fieldset name="category" label="JGLOBAL_LAYOUT_OPTIONS">
 
         <field
                 name="label1"
@@ -189,16 +82,19 @@
                 description="JGLOBAL_SHOW_CATEGORY_NOTE_DESCRIPTION"
                 />
 
-        <field name="show_category_title" type="list"
+        <field name="show_category_title"
+               type="radio"
+               class="btn-group"
                label="JGLOBAL_SHOW_CATEGORY_TITLE"
                description="JGLOBAL_SHOW_CATEGORY_TITLE_DESC"
+               default="1"
                 >
-            <option value="">JGLOBAL_USE_GLOBAL</option>
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="category_title_tag_size" type="list"
+        <field name="category_title_tag_size"
+               type="list"
                label="COM_CATALOGUE_CATEGORY_TITLE_TAG_SIZE_LABEL"
                description="COM_CATALOGUE_CATEGORY_TITLE_TAG_SIZE_LABEL"
                default="2">
@@ -210,41 +106,24 @@
             <option value="6">h6</option>
         </field>
 
-        <field name="category_title_before"
-               type="input"
-               label="COM_CATALOGUE_CATEGORY_BEFORE_TITLE_HEADER"
-               description="COM_CATALOGUE_CATEGORY_BEFORE_TITLE_DESCRIPTION"
-                />
-
-        <field name="category_title_after"
-               type="input"
-               label="COM_CATALOGUE_CATEGORY_AFTER_TITLE_HEADER"
-               description="COM_CATALOGUE_CATEGORY_AFTER_TITLE_DESCRIPTION"
-                />
-
-        <field name="show_description" type="list"
+        <field name="show_description"
+               type="radio"
+               class="btn-group"
                description="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_DESC"
                label="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_LABEL"
+               default="1"
                 >
-            <option value="">JGLOBAL_USE_GLOBAL</option>
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="show_category_image" type="list"
+        <field name="show_category_image"
+               type="radio"
+               class="btn-group"
                description="JGLOBAL_SHOW_CATEGORY_IMAGE_DESC"
                label="JGLOBAL_SHOW_CATEGORY_IMAGE_LABEL"
+               default="0"
                 >
-            <option value="">JGLOBAL_USE_GLOBAL</option>
-            <option value="0">JHIDE</option>
-            <option value="1">JSHOW</option>
-        </field>
-
-        <field name="show_price" type="list"
-               description="COM_CATALOGUE_SHOW_CATEGORY_PRICE_DESC"
-               label="COM_CATALOGUE_SHOW_CATEGORY_PRICE_LABEL"
-                >
-            <option value="">JGLOBAL_USE_GLOBAL</option>
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
@@ -291,8 +170,8 @@
 
                description="JGLOBAL_SHOW_SUBCATEGORY_CONTENT_DESC"
                label="JGLOBAL_SHOW_SUBCATEGORY_CONTENT_LABEL"
+               default="-1"
                 >
-            <option value="">JGLOBAL_USE_GLOBAL</option>
             <option value="0">JNONE</option>
             <option value="-1">JALL</option>
             <option value="1">J1</option>
@@ -320,12 +199,12 @@
         </field>
 
         <field name="orderby_sec" type="list"
-               description="JGLOBAL_ARTICLE_ORDER_DESC"
-               label="JGLOBAL_ARTICLE_ORDER_LABEL"
+               description="COM_CATALOGUE_ITEM_ORDER_DESC"
+               label="COM_CATALOGUE_ITEM_ORDER_LABEL"
                 >
             <option value="">JGLOBAL_USE_GLOBAL</option>
-            <option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
-            <option value="date">JGLOBAL_OLDEST_FIRST</option>
+            <option value="price">COM_CATALOGUE_ITEM_PRICE_MIN_FIRST</option>
+            <option value="rprice">COM_CATALOGUE_ITEM_PRICE_MAX_FIRST</option>
             <option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
             <option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
             <option value="hits">JGLOBAL_MOST_HITS</option>
@@ -336,22 +215,233 @@
         <field name="show_pagination" type="list"
                description="JGLOBAL_PAGINATION_DESC"
                label="JGLOBAL_PAGINATION_LABEL"
+               default="1"
                 >
-            <option value="">JGLOBAL_USE_GLOBAL</option>
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
             <option value="2">JGLOBAL_AUTO</option>
         </field>
 
-        <field name="show_pagination_results" type="list"
+        <field name="show_pagination_results"
+               type="radio"
+               class="btn-group"
                label="JGLOBAL_PAGINATION_RESULTS_LABEL"
-               description="JGLOBAL_PAGINATION_RESULTS_DESC">
+               description="JGLOBAL_PAGINATION_RESULTS_DESC"
+               default="0">
 
-            <option value="">JGLOBAL_USE_GLOBAL</option>
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
 
+    </fieldset>
+
+    <fieldset name="items"
+              label="COM_CATALOGUE_CATEGORY_ITEMS_LAYOUT_OPTIONS">
+
+        <field name="item_show_title"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_TITLE_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_TITLE_DESC"
+               default="1">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="item_show_link_title"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_LINK_TITLE_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_LINK_TITLE_DESC"
+               default="0">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field name="item_show_image"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_IMAGE_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_IMAGE_DESC"
+               default="1">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="item_show_link_image"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_LINK_IMAGE_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_LINK_IMAGE_DESC"
+               default="1">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field name="item_show_hit"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_HIT_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_HIT_DESC"
+               default="0">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="item_show_like"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_LIKE_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_LIKE_DESC"
+               default="0">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="item_show_description"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_DESCRIPTION_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_DESCRIPTION_DESC"
+               default="0">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="item_slice_desc"
+                type="radio"
+                label="COM_CATALOGUE_CONFIG_SLICEDESC_LABEL"
+                description="COM_CATALOGUE_CONFIG_SLICEDESC_DESC"
+                class="btn-group"
+                default="1">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field name="item_short_desc_len"
+                type="text"
+                label="COM_CATALOGUE_CONFIG_SHORT_DESC_LEN_LABEL"
+                description="COM_CATALOGUE_CONFIG_SHORT_DESC_LEN_DESC"
+                class="inputbox"
+                default="150"/>
+
+        <field name="item_show_cart_btn"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_DESC"
+               default="0">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="item_cart_btn_text"
+                type="text"
+                class="inputbox"
+                label="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_TEXT_LABEL"
+                description="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_TEXT_DESC"/>
+
+        <field name="item_cart_btn_class"
+               type="text"
+               class="inputbox"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_CLASS_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_CLASS_DESC"/>
+
+        <field name="item_cart_btn_id"
+               type="text"
+               class="inputbox"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_ID_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_ID_DESC"/>
+
+        <field name="item_cart_btn_onclick"
+               type="text"
+               class="inputbox"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_ONCLICK_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_ONCLICK_DESC"/>
+    </fieldset>
+
+    <fieldset name="item"
+              label="COM_CATALOGUE_ITEM_LAYOUT_OPTIONS">
+
+        <field name="open_item_show_title"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_TITLE_LABEL"
+               description="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_TITLE_DESC"
+               default="1">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="open_item_show_link_title"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_LINK_TITLE_LABEL"
+               description="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_LINK_TITLE_DESC"
+               default="0">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field name="open_item_show_image"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_IMAGE_LABEL"
+               description="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_IMAGE_DESC"
+               default="1">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="open_item_show_link_image"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_LINK_IMAGE_LABEL"
+               description="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_LINK_IMAGE_DESC"
+               default="1">
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field name="open_item_show_hit"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_HIT_LABEL"
+               description="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_HIT_DESC"
+               default="0">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="open_item_show_like"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_LIKE_LABEL"
+               description="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_LIKE_DESC"
+               default="0">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="open_item_show_intro"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_INTRO_LABEL"
+               description="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_INTRO_DESC"
+               default="0">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="open_item_show_description"
+               type="radio"
+               class="btn-group"
+               label="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_DESCRIPTION_LABEL"
+               description="COM_CATALOGUE_CONFIG_OPEN_ITEM_SHOW_DESCRIPTION_DESC"
+               default="0">
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
     </fieldset>
 
     <fieldset name="IMAGES">
@@ -376,233 +466,20 @@
                 />
     </fieldset>
 
-    <fieldset name="CART_OPTIONS">
+    <fieldset
+            name="permissions"
+            label="JCONFIG_PERMISSIONS_LABEL"
+            description="JCONFIG_PERMISSIONS_DESC"
+            >
+
         <field
-                name="cart_manager_email"
-                type="text"
-                label="COM_CATALOGUE_CONFIG_CART_MANAGER_EMAIL_LABEL"
-                description="COM_CATALOGUE_CONFIG_CART_MANAGER_EMAIL_DESC"
+                name="rules"
+                type="rules"
+                label="JCONFIG_PERMISSIONS_LABEL"
                 class="inputbox"
+                filter="rules"
+                validate="rules"
                 component="com_catalogue"
-                section="component"
-                />
-        <field
-                name="cart_manager_email_subject"
-                label="COM_CATALOGUE_CONFIG_CART_MANAGER_EMAIL_SUBJECT_LABEL"
-                description="COM_CATALOGUE_CONFIG_CART_MANAGER_EMAIL_SUBJECT_DESC"
-                component="com_catalogue"
-                section="component"
-                type="text"
-                class="inputbox"
-                default="Заказ товаров с сайта"
-                />
-        <field
-                name="cart_manager_introtext"
-                label="COM_CATALOGUE_CONFIG_CART_MANAGER_INTROTEXT_LABEL"
-                description="COM_CATALOGUE_CONFIG_CART_MANAGER_INTROTEXT_DESC"
-                component="com_catalogue"
-                section="component"
-                type="editor"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                default="Новый заказ с сайта %sitename%"
-                />
-        <field
-                name="cart_client_email_subject"
-                type="text"
-                label="COM_CATALOGUE_CONFIG_CART_CLIENT_EMAIL_SUBJECT_LABEL"
-                description="COM_CATALOGUE_CONFIG_CART_CLIENT_EMAIL_SUBJECT_DESC"
-                class="inputbox"
-                component="com_catalogue"
-                section="component"
-                default="Заказ с сайта %sitename%"
-                />
-        <field
-                name="cart_client_introtext"
-                label="COM_CATALOGUE_CONFIG_CART_CLIENT_INTROTEXT_LABEL"
-                description="COM_CATALOGUE_CONFIG_CART_CLIENT_INTROTEXT_DESC"
-                component="com_catalogue"
-                section="component"
-                type="editor"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                default="Спасибо за обращение в нашу компанию."
-                />
-        <field
-                name="cart_email_sign"
-                label="COM_CATALOGUE_CONFIG_CART_SIGN_LABEL"
-                description="COM_CATALOGUE_CONFIG_CART_SIGN_DESC"
-                component="com_catalogue"
-                section="component"
-                type="editor"
-                class="inputbox"
-                filter="JComponentHelper::filterText"
-                buttons="true"
-                />
-    </fieldset>
-
-    <fieldset name="CART_FORM_OPTIONS">
-        <field
-                name="cart_form_header"
-                type="text"
-                label="COM_CATALOGUE_CONFIG_CART_FORM_HEADER_LABEL"
-                description="COM_CATALOGUE_CONFIG_CART_FORM_HEADER_DESC"
-                class="inputbox"
-                component="com_catalogue"
-                section="component"
-                default="Отправить заявку"
-                />
-
-        <field
-                name="cart_form_desc"
-                type="text"
-                label="COM_CATALOGUE_CONFIG_CART_FORM_DESC_LABEL"
-                description="COM_CATALOGUE_CONFIG_CART_FORM_DESC_DESC"
-                class="inputbox"
-                component="com_catalogue"
-                section="component"
-                />
-
-        <field
-                name="cart_form_showname"
-                type="radio"
-                label="COM_CATALOGUE_CONFIG_CART_FORM_SHOWNAME_LABEL"
-                description="COM_CATALOGUE_CONFIG_CART_FORM_SHOWNAME_DESC"
-                class="btn-group"
-                component="com_catalogue"
-                section="component"
-                default="2"
-                >
-            <option
-                    value="0">JHIDE
-            </option>
-            <option
-                    value="1">JSHOW
-            </option>
-            <option
-                    value="2">JREQUIRED
-            </option>
-        </field>
-
-        <field
-                name="cart_form_showemail"
-                type="radio"
-                label="COM_CATALOGUE_CONFIG_CART_FORM_SHOWEMAIL_LABEL"
-                description="COM_CATALOGUE_CONFIG_CART_FORM_SHOWEMAIL_DESC"
-                class="btn-group"
-                component="com_catalogue"
-                section="component"
-                default="2"
-                >
-            <option
-                    value="0">JHIDE
-            </option>
-            <option
-                    value="1">JSHOW
-            </option>
-            <option
-                    value="2">JREQUIRED
-            </option>
-        </field>
-
-        <field
-                name="cart_form_showphone"
-                type="radio"
-                label="COM_CATALOGUE_CONFIG_CART_FORM_SHOWPHONE_LABEL"
-                description="COM_CATALOGUE_CONFIG_CART_FORM_SHOWPHONE_DESC"
-                class="btn-group"
-                component="com_catalogue"
-                section="component"
-                default="1"
-                >
-            <option
-                    value="0">JHIDE
-            </option>
-            <option
-                    value="1">JSHOW
-            </option>
-            <option
-                    value="2">JREQUIRED
-            </option>
-        </field>
-
-        <field
-                name="cart_form_showdesc"
-                type="radio"
-                label="COM_CATALOGUE_CONFIG_CART_FORM_SHOWDESC_LABEL"
-                description="COM_CATALOGUE_CONFIG_CART_FORM_SHOWDESC_DESC"
-                class="btn-group"
-                component="com_catalogue"
-                section="component"
-                default="1"
-                >
-            <option
-                    value="0">JHIDE
-            </option>
-            <option
-                    value="1">JSHOW
-            </option>
-            <option
-                    value="2">JREQUIRED
-            </option>
-        </field>
-
-        <field
-                name="cart_form_showfileupload"
-                type="radio"
-                label="COM_CATALOGUE_CONFIG_CART_FORM_SHOWFILEUPLOAD_LABEL"
-                description="COM_CATALOGUE_CONFIG_CART_FORM_SHOWFILEUPLOAD_DESC"
-                class="btn-group"
-                component="com_catalogue"
-                section="component"
-                default="0"
-                >
-            <option
-                    value="0">JHIDE
-            </option>
-            <option
-                    value="1">JSHOW
-            </option>
-            <option
-                    value="2">JREQUIRED
-            </option>
-        </field>
-
-        <field
-                name="cart_form_btn"
-                type="text"
-                label="COM_CATALOGUE_CONFIG_CART_FORM_BTN_LABEL"
-                class="inputbox"
-                component="com_catalogue"
-                section="component"
-                default="Сделайте заказ"
-                />
-
-        <field name="cart_form_redirect"
-               type="menuitem"
-               label="COM_CATALOGUE_CONFIG_CART_FORM_REDIRECT_LABEL"
-               description="COM_CATALOGUE_CONFIG_CART_FORM_REDIRECT_DESC"/>
-
-    </fieldset>
-
-    <fieldset name="REVIEW_FORM_OPTIONS">
-        <field
-                name="review_form_redirect"
-                type="menuitem"
-                label="COM_CATALOGUE_CONFIG_REVIEW_FORM_REDIRECT_LABEL"
-                component="com_catalogue"
-                section="component"
-                />
-
-        <field
-                name="review_manager_email"
-                type="text"
-                label="COM_CATALOGUE_CONFIG_REVIEW_MANAGER_EMAIL_LABEL"
-                class="inputbox"
-                component="com_catalogue"
-                section="component"
-                />
+                section="component"/>
     </fieldset>
 </config>

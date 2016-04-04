@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  com_catalogue
  *
- * @copyright   Copyright (C) 20012 - 2015 Saity74, LLC. All rights reserved.
+ * @copyright   Copyright (C) 2012 - 2016 Saity74, LLC. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
@@ -54,6 +54,7 @@ class CatalogueViewCategory extends JViewCategory
 	 */
 	protected $pagination;
 
+
 	/**
 	 * Execute and display a template script.
 	 *
@@ -67,13 +68,13 @@ class CatalogueViewCategory extends JViewCategory
 	{
 		parent::commonCategoryDisplay();
 
-		$this->items = $this->get('Items');
-		$this->state = $this->get('State');
-		$this->pagination = $this->get('Pagination');
+		$this->items         = $this->get('Items');
+		$this->state         = $this->get('State');
+		$this->pagination    = $this->get('Pagination');
 
-		$this->filters = $this->get('Filters');
-
-		$this->params = $this->state->get('params');
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
+		$this->params        = $this->state->get('params');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

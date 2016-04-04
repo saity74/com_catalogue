@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fieldset>
+        <field
+                id="id"
+                name="id"
+                type="hidden"
+                class="inputbox"
+                label="COM_CATALOGUE_ID_LABEL"
+                size="10"
+                default="0"
+                readonly="true" />
+
+        <field
+                id="delivery_type"
+                name="delivery_type"
+                type="radio"
+                default="0"
+                required="true"
+                label="COM_CATALOGUE_DELIVERY_TYPE_LABEL"
+                description="COM_CATALOGUE_DELIVERY_TYPE_DESC">
+            <option value="0">COM_CATALOGUE_DELIVERY_TYPE_PICKUP</option>
+            <option value="1">COM_CATALOGUE_DELIVERY_TYPE_COURIER</option>
+        </field>
+
+        <field
+                id="delivery_period"
+                name="delivery_period"
+                type="radio"
+                default="0"
+                required="true"
+                label="COM_CATALOGUE_DELIVERY_TIME_LABEL"
+                description="COM_CATALOGUE_DELIVERY_TIME_DESC"
+        >
+            <option value="0">COM_CATALOGUE_DELIVERY_TIME_NEAREST</option>
+            <option value="1">COM_CATALOGUE_DELIVERY_TIME_DEFINED</option>
+        </field>
+
+        <field
+                id="delivery_datetime"
+                name="delivery_datetime"
+                type="datetime"
+                require="true"
+                timeinerval="DT3H"
+                class="rounded"
+                required="true"
+                rule="datetime"
+                hint="COM_CATALOGUE_DELIVERY_DATETIME_HINT"
+                label="COM_CATALOGUE_DELIVERY_DATETIME_LABEL"
+                description="COM_CATALOGUE_DELIVERY_DATETIME_DESC">
+            <option value="09:00-12:00">COM_CATALOGUE_DELIVERY_DATETIME_S</option>
+            <option value="12:00-15:00">COM_CATALOGUE_DELIVERY_DATETIME_S</option>
+            <option value="15:00-18:00">COM_CATALOGUE_DELIVERY_DATETIME_S</option>
+            <option value="18:00-21:00">COM_CATALOGUE_DELIVERY_DATETIME_S</option>
+        </field>
+
+        <field
+            id="no_delivery_address"
+            name="no_delivery_address"
+            type="checkbox"
+            label="COM_CATALOGUE_DELIVERY_TIME_FROM_PHONE">
+        </field>
+
+        <field
+                id="delivery_address"
+                name="delivery_address"
+                type="atext"
+                class="rounded"
+                label="COM_CATALOGUE_DELIVERY_ADDRESS_LABEL">
+        </field>
+
+        <field
+                id="payment_method"
+                name="payment_method"
+                type="radio"
+                default="0"
+                required="true"
+                label="COM_CATALOGUE_PAYMENT_METHOD_LABEL"
+                description="COM_CATALOGUE_PAYMENT_METHOD_DESC">
+            <option value="0">COM_CATALOGUE_PAYMENT_METHOD_CARD</option>
+            <option value="1">COM_CATALOGUE_PAYMENT_METHOD_CACHE</option>
+        </field>
+
+        <field
+                id="client_mail"
+                name="client_mail"
+                type="atext"
+                validate="email"
+                required="true"
+                label="COM_CATALOGUE_CLIENT_EMAIL_LABEL"
+                hint="COM_CATALOGUE_CLIENT_EMAIL_hint"
+                data-validation="length email"
+                data-validation-length="min5"
+                description="COM_CATALOGUE_CLIENT_EMAIL_DESC"/>
+        <field
+                id="client_name"
+                name="client_name"
+                type="text"
+                required="true"
+                data-validation="length"
+                data-validation-length="min2"
+                label="COM_CATALOGUE_CLIENT_NAME_LABEL"
+                hint="COM_CATALOGUE_CLIENT_NAME_HINT"
+                description="COM_CATALOGUE_CLIENT_NAME_DESC"/>
+
+        <field
+                id="client_phone"
+                name="client_phone"
+                type="text"
+                required="true"
+                label="COM_CATALOGUE_CLIENT_PHONE_LABEL"
+                hint="COM_CATALOGUE_CLIENT_PHONE_HINT"
+                description="COM_CATALOGUE_CLIENT_PHONE_DESC"/>
+        <field
+                id="client_subscribe"
+                name="client_subscribe"
+                type="checkbox"
+                checked="true"
+                label="COM_CATALOGUE_CLIENT_SUBSCRIBE_LABEL"
+                description="COM_CATALOGUE_CLIENT_SUBSCRIBE_DESC"/>
+
+        <field
+                id="items"
+                name="items"
+                type="orderitems"
+                label="COM_CATALOGUE_ORDER_LIST_LABEL"
+        />
+
+
+    </fieldset>
+</form>

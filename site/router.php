@@ -24,8 +24,7 @@ class CatalogueRouter extends JComponentRouterBase
 	 *
 	 * @since   3.3
 	 */
-	public function build(&$query)
-	{
+	public function build(&$query){
 		$segments = array();
 
 		// Get a menu item based on Itemid or currently active
@@ -202,34 +201,9 @@ class CatalogueRouter extends JComponentRouterBase
 			unset($query['cid']);
 		}
 
-		if ($view == 'archive')
-		{
-			if (!$menuItemGiven)
-			{
-				$segments[] = $view;
-				unset($query['view']);
-			}
 
-			if (isset($query['year']))
-			{
-				if ($menuItemGiven)
-				{
-					$segments[] = $query['year'];
-					unset($query['year']);
-				}
-			}
 
-			if (isset($query['year']) && isset($query['month']))
-			{
-				if ($menuItemGiven)
-				{
-					$segments[] = $query['month'];
-					unset($query['month']);
-				}
-			}
-		}
-
-		if ($view == 'featured')
+		if ($view == 'api')
 		{
 			if (!$menuItemGiven)
 			{
@@ -485,17 +459,8 @@ class CatalogueRouter extends JComponentRouterBase
 				}
 
 				$vars['id'] = $cid;
+				$vars['view'] = 'item';
 
-				if ($item->query['view'] == 'archive' && $count != 1)
-				{
-					$vars['year'] = $count >= 2 ? $segments[$count - 2] : null;
-					$vars['month'] = $segments[$count - 1];
-					$vars['view'] = 'archive';
-				}
-				else
-				{
-					$vars['view'] = 'item';
-				}
 			}
 
 			$found = 0;

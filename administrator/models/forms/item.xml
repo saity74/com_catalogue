@@ -45,6 +45,20 @@
 				required="false"/>
 
 		<field
+						name="similar_items"
+						type="itemslist"
+						multiple="true"
+						label="COM_CATALOGUE_FIELD_SIMILAR_LABEL"
+						description="COM_CATALOGUE_FIELD_SIMILAR_DESC"/>
+
+		<field
+						name="assoc_items"
+						type="itemslist"
+						multiple="true"
+						label="COM_CATALOGUE_FIELD_ASSOC_LABEL"
+						description="COM_CATALOGUE_FIELD_ASSOC_DESC"/>
+
+		<field
 				name="sale"
 				type="text"
 				class="inputbox"
@@ -125,12 +139,6 @@
 				type="dropimages"/>
 
 		<field
-				name="manufacturer_id"
-				type="manufacturerslist"
-				label="COM_CATALOGUE_FIELD_MANUFACTURER_LABEL"
-				description="COM_CATALOGUE_FIELD_MANUFACTURER_DESC"/>
-
-		<field
 				name="params"
 				type="text"/>
 
@@ -146,8 +154,8 @@
 		<field
 				name="created"
 				type="calendar"
-				label="COM_CONTENT_FIELD_CREATED_LABEL"
-				description="COM_CONTENT_FIELD_CREATED_DESC"
+				label="COM_CATALOGUE_FIELD_CREATED_LABEL"
+				description="COM_CATALOGUE_FIELD_CREATED_DESC"
 				size="22"
 				format="%Y-%m-%d %H:%M:%S"
 				filter="user_utc"/>
@@ -155,14 +163,14 @@
 		<field
 				name="created_by"
 				type="user"
-				label="COM_CONTENT_FIELD_CREATED_BY_LABEL"
-				description="COM_CONTENT_FIELD_CREATED_BY_DESC"/>
+				label="COM_CATALOGUE_FIELD_CREATED_BY_LABEL"
+				description="COM_CATALOGUE_FIELD_CREATED_BY_DESC"/>
 
 		<field
 				name="created_by_alias"
 				type="text"
-				label="COM_CONTENT_FIELD_CREATED_BY_ALIAS_LABEL"
-				description="COM_CONTENT_FIELD_CREATED_BY_ALIAS_DESC"
+				label="COM_CATALOGUE_FIELD_CREATED_BY_ALIAS_LABEL"
+				description="COM_CATALOGUE_FIELD_CREATED_BY_ALIAS_DESC"
 				size="20"/>
 
 		<field
@@ -170,7 +178,7 @@
 				type="calendar"
 				class="readonly"
 				label="JGLOBAL_FIELD_MODIFIED_LABEL"
-				description="COM_CONTENT_FIELD_MODIFIED_DESC"
+				description="COM_CATALOGUE_FIELD_MODIFIED_DESC"
 				size="22"
 				readonly="true"
 				format="%Y-%m-%d %H:%M:%S"
@@ -198,8 +206,8 @@
 		<field
 				name="publish_up"
 				type="calendar"
-				label="COM_CONTENT_FIELD_PUBLISH_UP_LABEL"
-				description="COM_CONTENT_FIELD_PUBLISH_UP_DESC"
+				label="COM_CATALOGUE_FIELD_PUBLISH_UP_LABEL"
+				description="COM_CATALOGUE_FIELD_PUBLISH_UP_DESC"
 				format="%Y-%m-%d %H:%M:%S"
 				size="22"
 				filter="user_utc"/>
@@ -207,8 +215,8 @@
 		<field
 				name="publish_down"
 				type="calendar"
-				label="COM_CONTENT_FIELD_PUBLISH_DOWN_LABEL"
-				description="COM_CONTENT_FIELD_PUBLISH_DOWN_DESC"
+				label="COM_CATALOGUE_FIELD_PUBLISH_DOWN_LABEL"
+				description="COM_CATALOGUE_FIELD_PUBLISH_DOWN_DESC"
 				format="%Y-%m-%d %H:%M:%S"
 				size="22"
 				filter="user_utc"/>
@@ -248,7 +256,7 @@
 				name="hits"
 				type="text"
 				label="JGLOBAL_HITS"
-				description="COM_CONTENT_FIELD_HITS_DESC"
+				description="COM_CATALOGUE_FIELD_HITS_DESC"
 				class="readonly"
 				size="6"
 				readonly="true"
@@ -258,7 +266,7 @@
 				name="language"
 				type="contentlanguage"
 				label="JFIELD_LANGUAGE_LABEL"
-				description="COM_CONTENT_FIELD_LANGUAGE_DESC"
+				description="COM_CATALOGUE_FIELD_LANGUAGE_DESC"
 				>
 			<option value="*">JALL</option>
 		</field>
@@ -277,16 +285,30 @@
 	</fieldset>
 
 	<fields name="attribs"
-			label="COM_CATALOGUE_ATTRIBS_FIELDSET_LABEL">
+			label="COM_CATALOGUE_FIELDSET_VIEW_LABEL">
 
 		<fieldset name="basic"
-				label="COM_CONTENT_ATTRIBS_FIELDSET_LABEL">
+				label="COM_CATALOGUE_FIELDSET_VIEW_LABEL">
 
 			<field
 					name="label1"
 					type="note"
 					label="JGLOBAL_SHOW_ITEM_NOTE_HEADER"
 					/>
+
+			<field
+					name="page_title"
+					type="text"
+					class="span6"
+					label="COM_CATALOGUE_FIELD_PAGE_TITLE_LABEL"
+					description="COM_CATALOGUE_FIELD_PAGE_TITLE_DESC"/>
+
+			<field
+					name="alt_title"
+					type="text"
+					class="span6"
+					label="COM_CATALOGUE_FIELD_ALT_TITLE_LABEL"
+					description="COM_CATALOGUE_FIELD_ALT_TITLE_DESC"/>
 
 			<field
 					name="show_title"
@@ -410,7 +432,7 @@
 		</fieldset>
 
 		<fieldset name="basic-limited"
-				label="COM_CONTENT_ATTRIBS_FIELDSET_LABEL">
+				label="COM_CATALOGUE_ATTRIBS_FIELDSET_LABEL">
 			<field
 					name="show_title"
 					type="hidden"
@@ -565,21 +587,13 @@
 					rows="2"/>
 			<field name="xreference"
 					type="text"
-					label="COM_CONTENT_FIELD_XREFERENCE_LABEL"
-					description="COM_CONTENT_FIELD_XREFERENCE_DESC"
+					label="COM_CATALOGUE_FIELD_XREFERENCE_LABEL"
+					description="COM_CATALOGUE_FIELD_XREFERENCE_DESC"
 					size="20"/>
 
 		</fieldset>
 	</fields>
 
-	<fieldset name="similar">
-		<field
-				name="similar_items"
-				type="itemslist"
-				multiple="true"
-				label="COM_CATALOGUE_FIELD_ASSOC_LABEL"
-				description="COM_CATALOGUE_FIELD_ASSOC_DESC"/>
-	</fieldset>
 
 	<fieldset name="imagemodal"
 			label="COM_CATALOGUE_FIELDSET_IMAGEMODAL_OPTIONS">
@@ -607,12 +621,11 @@
 				description="COM_CATALOGUE_IMAGE_ATTRSLIST_DESC"
 				/>
 	</fieldset>
-
 	<!-- These fields are used to get labels for the Content History Preview and Compare Views -->
 	<fields>
 		<field name="introtext"
-				label="COM_CONTENT_FIELD_INTROTEXT"/>
+				label="COM_CATALOGUE_FIELD_INTROTEXT"/>
 		<field name="fulltext"
-				label="COM_CONTENT_FIELD_FULLTEXT"/>
+				label="COM_CATALOGUE_FIELD_FULLTEXT"/>
 	</fields>
 </form>

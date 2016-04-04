@@ -8,6 +8,7 @@
  */
 
 defined('_JEXEC') or die;
+define('DS', DIRECTORY_SEPARATOR);
 JHtml::_('behavior.tabstate');
 
 if (!JFactory::getUser()->authorise('core.manage', 'com_catalogue'))

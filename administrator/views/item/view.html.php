@@ -35,23 +35,11 @@ class CatalogueViewItem extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		JFactory::getLanguage()->load('com_content', JPATH_ADMINISTRATOR);
+		JFactory::getLanguage()->load('com_catalogue', JPATH_ADMINISTRATOR);
 
-		if ($this->getLayout() == 'pagebreak')
-		{
-			// TODO: This is really dogy - should change this one day.
-			$input = JFactory::getApplication()->input;
-			$eName = $input->getCmd('e_name');
-			$eName    = preg_replace('#[^A-Z0-9\-\_\[\]]#i', '', $eName);
-			$document = JFactory::getDocument();
-			$document->setTitle(JText::_('COM_CATALOGUE_PAGEBREAK_DOC_TITLE'));
-			$this->eName = &$eName;
-			parent::display($tpl);
-			return;
-		}
 
-		$this->form     = $this->get('Form');
 		$this->item     = $this->get('Item');
+		$this->form     = $this->get('Form');
 		$this->state    = $this->get('State');
 
 		$this->canDo    = JHelperContent::getActions('com_catalogue', 'item', $this->item->id);

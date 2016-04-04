@@ -13,31 +13,11 @@ $item = $displayData;
 $params = JComponentHelper::getParams('com_catalogue');
 
 ?>
-<div class="open-item-price-wrap">
-	<?php if (!$item->item_sale): ?>
-		<p class="item-price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-			<?php if ($item->price)
-			{
-				echo number_format($item->price, 0, '.', ' ') . ' ' . $params->get('catalogue_currency', 'руб.');
-			} ?>
-			<meta itemprop="priceCurrency" content="RUB">
-		</p>
-	<?php else: ?>
-		<?php $new_price = $item->price - (($item->price / 100) * $item->item_sale); ?>
-		<div class="item-price-wrapper clearfix">
-			<p class="item-old-price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-				<?php echo number_format($item->price, 0, '.', ' '); ?>
-			</p>
 
-			<p class="item-price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
-				<?php echo number_format($new_price, 0, '.', ' ') . ' ' . $params->get('catalogue_currency', 'руб.'); ?>
-			</p>
-			<meta itemprop="priceCurrency" content="RUB">
-		</div>
-		<div class="discount-sum-wrap">
-			<p>Экономия <span
-					class="bold-text"><?php echo number_format((($item->price / 100) * $item->item_sale), 0, '.', ' '); ?></span>
-				руб.</p>
-		</div>
-	<?php endif; ?>
-</div>
+<span class="item-price" itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+	<?php if ($item->price)
+	{
+		echo number_format($item->price, 0, '.', ' ') . ' ' . $params->get('catalogue_currency', 'руб.');
+	} ?>
+	<meta itemprop="priceCurrency" content="RUB">
+</span>

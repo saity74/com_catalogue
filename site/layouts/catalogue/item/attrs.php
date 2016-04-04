@@ -9,8 +9,8 @@
 
 defined('_JEXEC') or die;
 
-$attrs = $displayData->get('attrs');
-$item = $displayData->get('item');
+$attrs = $displayData->attrs;
+$item = $displayData->item;
 
 if ($item->images) {
 	$images = new \Joomla\Registry\Registry;

@@ -110,9 +110,7 @@ abstract class CatalogueHelperRoute
 						self::$lookup[$language][$view][$item->query['cid']] = $item->id;
 					}
 				}
-
 			}
-
 		}
 		if ($needles)
 		{
@@ -191,6 +189,94 @@ abstract class CatalogueHelperRoute
 			if ($item = self::_findItem($needles))
 			{
 				$link .= '&Itemid=' . $item;
+			}
+		}
+
+		return $link;
+	}
+
+	public static function getCartRoute($language = 0)
+	{
+		$needles = array();
+		$link    = 'index.php?option=com_catalogue';
+
+		if ($language && $language != "*" && JLanguageMultilang::isEnabled())
+		{
+			$link .= '&lang=' . $language;
+			$needles['language'] = $language;
+		}
+
+		$app      = JFactory::getApplication();
+		$menus    = $app->getMenu('site');
+		$language = isset($needles['language']) ? $needles['language'] : '*';
+
+		// Prepare the reverse lookup array.
+		self::$lookup[$language] = array();
+
+		$component  = JComponentHelper::getComponent('com_catalogue');
+
+		$attributes = array('component_id');
+		$values     = array($component->id);
+
+		if ($language != '*')
+		{
+			$attributes[] = 'language';
+			$values[]     = array($needles['language'], '*');
+		}
+
+		$items = $menus->getItems($attributes, $values);
+
+		foreach ($items as $item) {
+			if (isset($item->query)
+				&& isset($item->query['view'])
+				&& $item->query['view'] == 'cart')
+			{
+				$link .= '&Itemid=' . $item->id;
+				break;
+			}
+		}
+
+		return $link;
+	}
+
+	public static function getOrderRoute($language = 0)
+	{
+		$needles = array();
+		$link    = 'index.php?option=com_catalogue';
+
+		if ($language && $language != "*" && JLanguageMultilang::isEnabled())
+		{
+			$link .= '&lang=' . $language;
+			$needles['language'] = $language;
+		}
+
+		$app      = JFactory::getApplication();
+		$menus    = $app->getMenu('site');
+		$language = isset($needles['language']) ? $needles['language'] : '*';
+
+		// Prepare the reverse lookup array.
+		self::$lookup[$language] = array();
+
+		$component  = JComponentHelper::getComponent('com_catalogue');
+
+		$attributes = array('component_id');
+		$values     = array($component->id);
+
+		if ($language != '*')
+		{
+			$attributes[] = 'language';
+			$values[]     = array($needles['language'], '*');
+		}
+
+		$items = $menus->getItems($attributes, $values);
+
+		foreach ($items as $item) {
+			if (isset($item->query)
+				&& isset($item->query['view'])
+				&& $item->query['view'] == 'order')
+			{
+				$link .= '&Itemid=' . $item->id;
+				break;
 			}
 		}
 

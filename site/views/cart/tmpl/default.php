@@ -8,129 +8,120 @@
  */
 defined('_JEXEC') or die;
 
-JHtml::_('behavior.caption');
-/** @noinspection PhpIncludeInspection */
-require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'cart.php');
+$params = $this->state->get('params');
 
-$app = JFactory::getApplication();
+// TODO: Remove this
 
-$items = CatalogueHelperCart::getCartItems();
-$img_width = 130;
-$img_height = 95;
-$cart_items = $app->getUserState('com_catalogue.cart');
-$cart_items = unserialize($cart_items);
-$i = 0;
-$items_count = 0;
+//$data = unserialize('a:2:{i:0;a:10:{s:13:"grade_average";s:6:"7.6000";s:13:"grade_quality";s:1:"7";s:21:"grade_professionalism";s:1:"8";s:10:"grade_cost";s:1:"7";s:14:"grade_schedule";s:1:"8";s:18:"grade_connectivity";s:1:"8";s:14:"review_comment";s:0:"";s:11:"review_time";s:19:"2015/05/07 16:42:14";s:4:"from";a:9:{s:3:"url";s:53:"https://freelancehunt.com/profile/show/Eruntales.html";s:7:"url_api";s:48:"https://api.freelancehunt.com/profiles/Eruntales";s:10:"profile_id";s:6:"102429";s:5:"login";s:9:"Eruntales";s:5:"fname";s:0:"";s:5:"sname";s:0:"";s:6:"avatar";s:63:"http://content.freelancehunt.com/profile/photo/50/Eruntales.png";s:6:"rating";s:3:"268";s:15:"rating_position";s:3:"854";}s:7:"project";a:12:{s:10:"project_id";s:5:"63377";s:4:"name";s:0:"";s:11:"description";s:0:"";s:16:"description_html";s:0:"";s:3:"url";s:99:"https://freelancehunt.com/project/novaya-verstkaplussverstat-dlya-mobilnogo-planshetnogo/63377.html";s:7:"url_api";s:44:"https://api.freelancehunt.com/projects/63377";s:19:"is_personal_project";i:0;s:15:"is_safe_project";i:0;s:11:"status_name";s:0:"";s:13:"budget_amount";s:4:"3000";s:20:"budget_currency_code";s:3:"UAH";s:15:"currency_symbol";s:0:"";}}i:1;a:5:{s:13:"grade_average";N;s:14:"review_comment";s:0:"";s:11:"review_time";s:19:"2014/10/31 22:22:02";s:4:"from";a:5:{s:13:"grade_average";N;s:14:"review_comment";s:0:"";s:11:"review_time";s:19:"2014/10/31 22:22:02";s:4:"from";a:5:{s:13:"grade_average";N;s:14:"review_comment";s:0:"";s:11:"review_time";s:19:"2014/10/31 22:22:02";s:4:"from";N;s:7:"project";a:12:{s:10:"project_id";s:5:"37072";s:4:"name";s:0:"";s:11:"description";s:0:"";s:16:"description_html";s:0:"";s:3:"url";s:82:"https://freelancehunt.com/project/nuzhno-dorabotat-sayt-oplata-po-faktu/37072.html";s:7:"url_api";s:44:"https://api.freelancehunt.com/projects/37072";s:19:"is_personal_project";i:0;s:15:"is_safe_project";i:0;s:11:"status_name";s:0:"";s:13:"budget_amount";s:4:"5000";s:20:"budget_currency_code";s:3:"RUB";s:15:"currency_symbol";s:0:"";}}s:7:"project";a:12:{s:10:"project_id";s:5:"37072";s:4:"name";s:0:"";s:11:"description";s:0:"";s:16:"description_html";s:0:"";s:3:"url";s:82:"https://freelancehunt.com/project/nuzhno-dorabotat-sayt-oplata-po-faktu/37072.html";s:7:"url_api";s:44:"https://api.freelancehunt.com/projects/37072";s:19:"is_personal_project";i:0;s:15:"is_safe_project";i:0;s:11:"status_name";s:0:"";s:13:"budget_amount";s:4:"5000";s:20:"budget_currency_code";s:3:"RUB";s:15:"currency_symbol";s:0:"";}}s:7:"project";a:12:{s:10:"project_id";s:5:"37072";s:4:"name";s:70:"Нужно доработать сайт! Оплата по факту";s:11:"description";s:0:"";s:16:"description_html";s:0:"";s:3:"url";s:82:"https://freelancehunt.com/project/nuzhno-dorabotat-sayt-oplata-po-faktu/37072.html";s:7:"url_api";s:44:"https://api.freelancehunt.com/projects/37072";s:19:"is_personal_project";i:0;s:15:"is_safe_project";i:0;s:11:"status_name";s:0:"";s:13:"budget_amount";s:4:"5000";s:20:"budget_currency_code";s:3:"RUB";s:15:"currency_symbol";s:8:" руб.";}}}');
+//
+//$reviews = null;
+//
+//function traverseStructure(&$array, $recursive) {
+//	while($recursive)
+//	{
+//		@list($key, $value) = each($array);
+//		yield $value;
+//		$recursive = ($key !== null);
+//		$array = $value;
+//	}
+//};
+
+//$user_format = 'd.m.Y H:i';
+//$dates = [
+//	['rewiew_date' => '2015/05/07 16:42:14'],
+//	['rewiew_date' => '2014/10/31 22:22:02']
+//];
+//
+//foreach( $dates as $val )
+//{
+//	$val['rewiew_date'] = JFactory::getDate($val['rewiew_date'])->format('d.m.Y H:i');
+//}
+//
+//var_dump($dates);
+
+//
+//$date_arr = $p->get('date_arr');
+//foreach($date_arr as &$date)
+//{
+//	$date = (string) JFactory::getDate($date)->format($user_format, true);
+//}
+//$p->set('date_arr', $date_arr);
+//
+//var_dump($p); die();
+//
+//echo JFactory::getDate('2015-05-07T16:42:14+03:00')->format('d.m.Y H:i');
+//echo '<br/>';
+//echo date_format(date_create('2015-05-07T16:42:14+03:00', $tz), "d.m.Y H:i");
+
 ?>
-<div class="cart-items">
-	<div class="page-header">
-		<h1 class="catalogue-head">Корзина</h1>
-	</div>
-	<?php if (!empty($items)): ?>
-		<form action="cart.html" method="POST" id="orderForm" class="cart-form form-validate">
-			<ul class="cart-list unstyled">
-				<?php foreach ($items as $item): ?>
-					<li class="white-box cart-item clearfix">
-						<div class="cart-item-num"><?php echo ++$i; ?></div>
-						<div class="cart-item-img <?php if ($item->item_sale)
-						{
-							echo 'discount-label';
-						} ?>"
-							 id="zoom-gallery<?php echo $item->id; ?>">
-							<a href="<?php echo $item->item_image; ?>" data-source="<?php echo $item->item_image; ?>"
-							   title="<?php echo $item->item_image_desc; ?>">
-								<img
-									src="<?php echo CatalogueHelper::createThumb($item->id, $item->item_image, $img_width, $img_height, 'cart'); ?>"
-									width="<?php echo $img_width; ?>" height="<?php echo $img_height; ?>">
-							</a>
-						</div>
-						<div class="cart-item-desc-wrap">
-							<div class="item-name">
-								<h4><?php echo $item->item_name; ?></h4>
+
+<div class="catalogue-cart-default">
+	<?php if ($this->params->get('show_page_heading')) : ?>
+		<div class="page-header">
+			<h1> <?php echo $this->escape($this->params->get('page_heading')); ?> </h1>
+		</div>
+	<?php endif; ?>
+	<?php if ($total = CatalogueCart::getInstance()->getProperty('total', 0)) : ?>
+		<div class="catalogue-cart-default-items">
+			<div class="cart-head">
+				<div class="row">
+					<div class="col-lg-push-1 col-lg-10 col-lg-pull-1 col-md-push-1 col-md-10 col-md-pull-1 col-sm-push-1 col-sm-10 col-sm-pull-1">
+						<div class="row">
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+								<?php echo JText::_('COM_CATALOGUE_CART_HEAD_PHOTO'); ?>
 							</div>
-							<div class="cart-item-desc">
-								<?php echo $item->item_shortdesc; ?>
+							<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+								<?php echo JText::_('COM_CATALOGUE_CART_HEAD_TITLE'); ?>
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-2 hidden-xs">
+								<?php echo JText::_('COM_CATALOGUE_CART_HEAD_COUNT'); ?>
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+								<?php echo JText::_('COM_CATALOGUE_CART_HEAD_PRICE'); ?>
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-2 hidden-xs">
+								<?php echo JText::_('COM_CATALOGUE_CART_HEAD_DELETE'); ?>
 							</div>
 						</div>
-						<div class="cart-item-count">
-							<p class="cart-item-head">
-								Кол-во:
-							</p>
-							<select class="count-item-list" name="" item-id="<?php echo $item->id; ?>">
-								<?php foreach (range(1, 15) as $count) : ?>
-									<?php $selected = ($cart_items[$item->id]['count'] == $count) ? 'selected' : '' ?>
-									<option
-										value="<?php echo $count ?>" <?php echo $selected ?>><?php echo $count; ?></option>
-								<?php endforeach; ?>
-							</select>
-							<?php $items_count = $items_count + $cart_items[$item->id]['count']; ?>
-						</div>
-						<div class="cart-item-price">
-							<p class="cart-item-head">
-								Стоимость:
-							</p>
-
-							<p class="item-price"><?php echo number_format($item->price, 0, '.', ' ') . ' руб.'; ?></p>
-						</div>
-						<div class="cart-item-remove-wrap">
-							<a href="/index.php?option=com_catalogue&task=cart.remove&tmpl=raw&id=<?php echo $item->id ?>"
-							   item-id="<?php echo $item->id; ?>" title="Удалить товар из корзины"
-							   class="close-icon removeItem">x</a>
-						</div>
-					</li>
-				<?php endforeach; ?>
-			</ul>
-			<div class="total-sum-wrap" id="totalSum">
-				<p>Итого: <span class="bold-text"
-								id="cartTotalItems"><?php echo $items_count . ' ' . CatalogueHelperCart::item_form($items_count); ?></span>
-					на сумму <span class="bold-text" id="cartTotalSum"></span></p>
+					</div>
+				</div>
 			</div>
-
-			<div class="form-wrapper white-box cart-form" id="cartForm">
-				<div class="form-header">
-					<h4>Оформить заказ</h4>
+			<div class="row">
+				<div class="col-lg-push-1 col-lg-10 col-lg-pull-1 col-md-push-1 col-md-10 col-md-pull-1 col-sm-push-1 col-sm-10 col-sm-pull-1">
+					<?php echo $this->form->getInput('items') ?>
 				</div>
-				<div class="form-lables">
-					<div class="controlls">
-						<input type="text" placeholder="Ваше имя" class="field" value="" name="name"/>
-					</div>
-					<div class="controlls">
-						<input type="text" placeholder="Ваш телефон" data-validation="custom"
-							   data-validation-regexp="^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$"
-							   class="field required" value="" name="phone"/>
-					</div>
-					<div class="controlls">
-						<input type="text" placeholder="Ваш E-mail" data-validation="email" class="field required"
-							   value="" name="email"/>
-					</div>
-					<div class="controlls">
-                        <textarea 
-				title="Подробный адрес доставки" 
-				placeholder="Подробный адрес доставки" 
-				class="field" 
-				name="address"></textarea>
-					</div>
-					<div class="controlls">
-                        <textarea 
-				title="Пожелания по доставке" 
-				placeholder="Пожелания по доставке" 
-				class="field"
-				name="desc"></textarea>
-					</div>
-				</div>
-				<div>
-					<a href="#" class="orange-btn order-btn order-send">Оформить заказ</a>
-
-					<div class="secure-wrap">
-						Ваши данные останутся конфиденциальными
-					</div>
-				</div>
-				<?php echo JHtml::_('form.token'); ?>
-				<input type="hidden" name="task" value="cart.order">
 			</div>
-		</form>
-		<p class="empty-cart" style="display: none;">Корзина пуста</p>
-	<?php else: ?>
-		<p class="empty-cart">Корзина пуста</p>
+		</div>
+
+		<div class="cart-info">
+			<div class="row">
+				<div class="col-lg-push-6 col-lg-6 col-md-push-6 col-md-6 col-md-push-6 col-sm-push-1 col-sm-10 col-sm-pull-1">
+					<span class="cart-count">
+						<?php echo JText::plural('COM_CATALOGUE_CART_N_ITEMS_IN', $total); ?>
+					</span>
+					<span class="amount">
+						<?php echo CatalogueCart::getInstance()->getProperty('amount', 0); ?>
+						<?php echo $params->get('catalogue_currency', 'руб.'); ?>
+					</span>
+				</div>
+			</div>
+		</div>
+
+		<div class="cart-buttons">
+			<div class="row">
+				<div class="col-lg-push-6 col-lg-6 col-md-push-6 col-md-6 col-md-push-6 col-sm-push-1 col-sm-10 col-sm-pull-1">
+					<form action="<?php echo JRoute::_(CatalogueHelperRoute::getOrderRoute()); ?>" method="post">
+						<button class="order-button">
+							<?php echo JText::_('COM_CATALOGUE_CART_BTN_CHECKOUT') ?>
+						</button>
+						<input type="hidden" name="task" value="order.checkout" />
+						<input type="hidden" name="option" value="com_catalogue" />
+						<?php echo JHtml::_('form.token'); ?>
+					</form>
+				</div>
+			</div>
+		</div>
+	<?php else : ?>
+		<p><?php echo JText::_('COM_CATALOGUE_CART_EMPTY'); ?></p>
 	<?php endif; ?>
 </div>

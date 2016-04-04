@@ -32,10 +32,6 @@ class CatalogueModelCatalogue extends JModelList
 				'id', 'i.id',
 				'title', 'i.title',
 				'alias', 'i.alias',
-				'manufacturer_name', 'mf.manufacturer_name',
-				'country_name', 'ct.country_name',
-				'manufacturer_id', 'i.manufacturer_id',
-				'country_id', 'mf.country_id',
 				'price', 'i.price',
 				'checked_out', 'i.checked_out',
 				'checked_out_time', 'i.checked_out_time',
@@ -115,12 +111,6 @@ class CatalogueModelCatalogue extends JModelList
 		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
 		$this->setState('filter.language', $language);
 
-		$manufacturerId = $this->getUserStateFromRequest($this->context . '.filter.manufacturer_id', 'filter_manufacturer_id', '');
-		$this->setState('filter.manufacturer_id', $manufacturerId);
-
-		$countryId = $this->getUserStateFromRequest($this->context . '.filter.country_id', 'filter_country_id', '');
-		$this->setState('filter.country_id', $countryId);
-
 		// List state information.
 		parent::populateState('i.id', 'desc');
 
@@ -154,8 +144,6 @@ class CatalogueModelCatalogue extends JModelList
 		$id .= ':' . $this->getState('filter.access');
 		$id .= ':' . $this->getState('filter.published');
 		$id .= ':' . $this->getState('filter.category_id');
-		$id .= ':' . $this->getState('filter.country_id');
-		$id .= ':' . $this->getState('filter.manufacturer_id');
 		$id .= ':' . $this->getState('filter.author_id');
 		$id .= ':' . $this->getState('filter.language');
 
@@ -205,14 +193,6 @@ class CatalogueModelCatalogue extends JModelList
 		$query->select('ua.name AS author_name, ue.name AS editor_name')
 			->join('LEFT', '#__users AS ua ON ua.id = i.created_by')
 			->join('LEFT', '#__users AS ue ON ue.id = i.modified_by');
-
-		// Join over the manufacturers.
-		$query->select('mf.manufacturer_name')
-			->join('LEFT', '#__catalogue_manufacturer AS mf ON mf.id = i.manufacturer_id');
-
-		// Join over the counties.
-		$query->select('ct.country_name')
-			->join('LEFT', '#__catalogue_country AS ct ON ct.id = mf.country_id');
 
 		// Join over the associations.
 		if (JLanguageAssociations::isEnabled())
@@ -282,20 +262,6 @@ class CatalogueModelCatalogue extends JModelList
 		{
 			$type = $this->getState('filter.author_id.include', true) ? '= ' : '<>';
 			$query->where('i.created_by ' . $type . (int) $authorId);
-		}
-
-		// Filter by manufacturer.
-		$manufacturerId = $this->getState('filter.manufacturer_id');
-		if (is_numeric($manufacturerId))
-		{
-			$query->where('i.manufacturer_id = ' . (int) $manufacturerId);
-		}
-
-		// Filter by country.
-		$countryId = $this->getState('filter.country_id');
-		if (is_numeric($countryId))
-		{
-			$query->where('mf.country_id = ' . (int) $countryId);
 		}
 
 		// Filter by search in title.

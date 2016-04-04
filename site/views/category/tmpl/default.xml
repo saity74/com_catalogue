@@ -232,5 +232,115 @@
         </fieldset>
     </fields>
 
+    <fieldset name="items"
+              label="COM_CATALOGUE_CATEGORY_ITEMS_LAYOUT_OPTIONS">
+
+        <field name="item_show_title"
+               type="list"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_TITLE_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_TITLE_DESC">
+            <option value="">JDEFAULT</option>
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="item_show_link_title"
+               type="list"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_LINK_TITLE_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_LINK_TITLE_DESC">
+            <option value="">JDEFAULT</option>
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field name="item_show_image"
+               type="list"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_IMAGE_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_IMAGE_DESC">
+            <option value="">JDEFAULT</option>
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="item_show_link_image"
+               type="list"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_LINK_IMAGE_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_LINK_IMAGE_DESC">
+            <option value="">JDEFAULT</option>
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field name="item_show_hit"
+               type="list"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_HIT_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_HIT_DESC">
+            <option value="">JDEFAULT</option>
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="item_show_like"
+               type="list"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_LIKE_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_LIKE_DESC">
+            <option value="">JDEFAULT</option>
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="item_show_description"
+               type="list"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_DESCRIPTION_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_DESCRIPTION_DESC">
+            <option value="">JDEFAULT</option>
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="item_slice_desc"
+               type="list"
+               label="COM_CATALOGUE_CONFIG_SLICEDESC_LABEL"
+               description="COM_CATALOGUE_CONFIG_SLICEDESC_DESC">
+            <option value="">JDEFAULT</option>
+            <option value="0">JNO</option>
+            <option value="1">JYES</option>
+        </field>
+
+        <field name="item_short_desc_len"
+               type="text"
+               label="COM_CATALOGUE_CONFIG_SHORT_DESC_LEN_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHORT_DESC_LEN_DESC"
+               class="inputbox"
+               default="150"/>
+
+        <field name="item_show_cart_btn"
+               type="list"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_DESC">
+            <option value="">JDEFAULT</option>
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
+        <field name="item_cart_btn_text"
+               type="text"
+               class="inputbox"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_TEXT_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_TEXT_DESC"/>
+
+        <field name="item_cart_btn_id"
+               type="text"
+               class="inputbox"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_ID_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_ID_DESC"/>
+
+        <field name="item_cart_btn_onclick"
+               type="text"
+               class="inputbox"
+               label="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_ONCLICK_LABEL"
+               description="COM_CATALOGUE_CONFIG_SHOW_ITEM_CART_BTN_ONCLICK_DESC"/>
+    </fieldset>
+
 
 </metadata>

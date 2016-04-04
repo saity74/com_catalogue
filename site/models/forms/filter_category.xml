@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+
+        <field
+                name="price"
+                type="radio"
+                class="radio-btn"
+                default="0"
+                label="COM_CATALOGUE_PRICE_FILTER_LABEL"
+                onchange="this.form.submit();"
+        >
+            <option
+                    value="0-1500"
+                    onchange="this.form.submit();">
+                COM_CATALOGUE_PRICE_FILTER_OPTION_1500
+            </option>
+            <option
+                    value="1500-2500"
+                    onchange="this.form.submit();">
+                COM_CATALOGUE_PRICE_FILTER_OPTION_1500_2500
+            </option>
+            <option
+                    value="2500-5000"
+                    onchange="this.form.submit();">
+                COM_CATALOGUE_PRICE_FILTER_OPTION_2500_5000
+            </option>
+            <option
+                    value="5000"
+                    onchange="this.form.submit();">
+                COM_CATALOGUE_PRICE_FILTER_OPTION_5000_MORE
+            </option>
+            <option
+                    value="0"
+                    onchange="this.form.submit();">
+                COM_CATALOGUE_PRICE_FILTER_OPTION_ALL
+            </option>
+        </field>
+
+        <field
+            name="composition"
+            type="alist"
+            readonly="true"
+            size="12"
+            hint="COM_CATALOGUE_COMPOSITION_FILTER_HINT"
+            label="COM_CATALOGUE_COMPOSITION_FILTER_LABEL"
+            onchange="this.form.submit();"
+        >
+            <option value="0" onchange="this.form.submit();">COM_CATALOGUE_COMPOSITION_FILTER_ALL</option>
+            <option value="1" onchange="this.form.submit();">COM_CATALOGUE_COMPOSITION_FILTER_ALL</option>
+            <option value="2" onchange="this.form.submit();">COM_CATALOGUE_COMPOSITION_FILTER_ALL</option>
+        </field>
+
+        <field
+                name="color"
+                type="radio"
+                class="radio-btn"
+                default="0"
+                label="COM_CATALOGUE_COLOR_FILTER_LABEL"
+                onchange="this.form.submit();"
+        >
+            <option value="1" onchange="this.form.submit();">COM_CATALOGUE_COLOR_FILTER_OPTION_1</option>
+            <option value="2" onchange="this.form.submit();">COM_CATALOGUE_COLOR_FILTER_OPTION_2</option>
+            <option value="0" onchange="this.form.submit();">COM_CATALOGUE_PRICE_FILTER_OPTION_ALL</option>
+        </field>
+    </fields>
+    <fields name="list">
+        <field
+                name="fullordering"
+                type="list"
+                label="COM_CONTENT_LIST_FULL_ORDERING"
+                description="COM_CONTENT_LIST_FULL_ORDERING_DESC"
+                onchange="this.form.submit();"
+                default="a.id DESC"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="i.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
+            <option value="i.ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
+            <option value="i.state ASC">JSTATUS_ASC</option>
+            <option value="i.state DESC">JSTATUS_DESC</option>
+            <option value="i.title ASC">JGLOBAL_TITLE_ASC</option>
+            <option value="i.title DESC">JGLOBAL_TITLE_DESC</option>
+            <option value="category_title ASC">JCATEGORY_ASC</option>
+            <option value="category_title DESC">JCATEGORY_DESC</option>
+            <option value="association ASC" requires="associations">JASSOCIATIONS_ASC</option>
+            <option value="association DESC" requires="associations">JASSOCIATIONS_DESC</option>
+            <option value="i.access ASC">JGRID_HEADING_ACCESS_ASC</option>
+            <option value="i.access DESC">JGRID_HEADING_ACCESS_DESC</option>
+            <option value="i.created_by ASC">JAUTHOR_ASC</option>
+            <option value="i.created_by DESC">JAUTHOR_DESC</option>
+            <option value="language ASC">JGRID_HEADING_LANGUAGE_ASC</option>
+            <option value="language DESC">JGRID_HEADING_LANGUAGE_DESC</option>
+            <option value="i.created ASC">JDATE_ASC</option>
+            <option value="i.created DESC">JDATE_DESC</option>
+            <option value="i.id ASC">JGRID_HEADING_ID_ASC</option>
+            <option value="i.id DESC">JGRID_HEADING_ID_DESC</option>
+            <option value="i.hits ASC">JGLOBAL_HITS_ASC</option>
+            <option value="i.hits DESC">JGLOBAL_HITS_DESC</option>
+        </field>
+        <field
+                name="limit"
+                type="limitbox"
+                class="input-mini"
+                default="25"
+                label="COM_CONTENT_LIST_LIMIT"
+                description="COM_CONTENT_LIST_LIMIT_DESC"
+                onchange="this.form.submit();"
+        />
+    </fields>
+</form>
+

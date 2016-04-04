@@ -14,12 +14,6 @@ $params = $item->params;
 
 ?>
 
-<?php if (!$params->get('itemtext_head', '')) : ?>
-	<h2><?php echo 'Цены на ' . $item->title; ?></h2>
-<?php else : ?>
-	<h2><?php echo $params->get('itemtext_head') ?></h2>
-<?php endif; ?>
-
 <?php
 if ($params->get('show_intro', 1))
 {

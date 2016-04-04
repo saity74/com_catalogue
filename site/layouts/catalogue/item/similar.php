@@ -23,13 +23,8 @@ $params = $item->params;
 		?>
 		<div class="<?php echo $itemClass ?>">
 			<div class="catalogue-one-item white-box" itemscope="" itemtype="http://schema.org/Product">
-				<div class="catalogue-one-item-img <?php if ($similar->item_sale)
-				{
-					echo 'discount-label';
-				} ?>">
-
+				<div class="catalogue-one-item-img">
 					<?php echo JLayoutHelper::render('catalogue.category.image', $similar); ?>
-
 				</div>
 				<div class="catalogue-one-item-desc">
 					<h5 itemprop="name">

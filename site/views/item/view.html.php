@@ -15,13 +15,13 @@ defined('_JEXEC') or die;
  */
 class CatalogueViewItem extends JViewLegacy
 {
-	protected $item;
+	public $item;
 
-	protected $state;
+	public $state;
 
-	protected $attrs;
+	public $attrs;
 
-	protected $category;
+	public $category;
 
 	/**
 	 * Execute and display a template script.
@@ -79,8 +79,7 @@ class CatalogueViewItem extends JViewLegacy
 		$menus = $app->getMenu();
 		$pathway = $app->getPathway();
 		$title = null;
-		$metadata = new JRegistry($this->state->get('item.metadata'));
-
+		$metadata = new \Joomla\Registry\Registry($this->item->metadata);
 		// Ссылка на активный пункт меню
 		$menu = $menus->getActive();
 
@@ -108,15 +107,15 @@ class CatalogueViewItem extends JViewLegacy
 
 		if (empty($title))
 		{
-			$title = $app->getCfg('sitename');
+			$title = $app->get('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+		elseif ($app->get('sitename_pagetitles', 0) == 1)
 		{
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		elseif ($app->get('sitename_pagetitles', 0) == 2)
 		{
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
 
 		$this->document->setTitle($title);

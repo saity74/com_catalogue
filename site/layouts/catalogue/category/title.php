@@ -10,19 +10,23 @@
 defined('_JEXEC') or die;
 
 $category = $displayData;
-$params = $category->params;
 
+$params = $category->params;
 $category_title_tag_size = $params->get('category_title_tag_size', 2);
-$category_title_after = $params->get('category_title_after', '');
-$category_title_before = $params->get('category_title_before', '');
+$category_title_after    = $params->get('category_title_after', '');
+$category_title_before   = $params->get('category_title_before', '');
 
 $category_title_text = $category_title_before ?
 	$category_title_before . mb_strtolower($category->title) . $category_title_after :
 	$category->title . $category_title_after;
+
+$show_category_title = (int) $params->get('show_category_title', 0);
 ?>
 
+<?php if($show_category_title) : ?>
 <div class="page-header">
     <h<?php echo $category_title_tag_size ?>>
         <?php echo $category_title_text; ?>
     </h<?php echo $category_title_tag_size ?>>
 </div>
+<?php endif;

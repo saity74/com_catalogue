@@ -21,6 +21,8 @@ $this->hiddenFieldsets[0] = 'basic-limited';
 $this->configFieldsets = array();
 $this->configFieldsets[0] = 'editorConfig';
 
+$this->ignore_fieldsets = array('imagemodal', 'jmetadata');
+
 // Create shortcut to parameters.
 $params = $this->state->get('params');
 
@@ -73,9 +75,6 @@ $doc->addScriptDeclaration('
     };
 ');
 
-$doc->addScript('components/com_catalogue/assets/js/tablednd.js');
-$doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() });');
-
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_catalogue&layout=edit&id=' . (int) $this->item->id); ?>"
@@ -99,7 +98,7 @@ $doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() })
 
 		<?php // Do not show the publishing options if the edit form is configured not to. ?>
 		<?php if ($params->show_publishing_options == 1) : ?>
-			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('COM_CONTENT_FIELDSET_PUBLISHING', true)); ?>
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('COM_CATALOGUE_FIELDSET_PUBLISHING', true)); ?>
 			<div class="row-fluid form-horizontal-desktop">
 				<div class="span6">
 					<?php echo JLayoutHelper::render('joomla.edit.publishingdata', $this); ?>
@@ -112,29 +111,29 @@ $doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() })
 		<?php endif; ?>
 
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'images', JText::_('COM_CATALOGUE_IMAGES', true)); ?>
-		<?php echo $this->loadTemplate('images'); ?>
+
+		<?php if(!$this->state->get('item.id')) : ?>
+			<div class="alert alert-info">
+				<?php echo JText::_('COM_CATALOGUE_SAVE_ITEM_PLEASE'); ?>
+			</div>
+		<?php else : ?>
+			<?php echo $this->loadTemplate('images'); ?>
+		<?php endif; ?>
+
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-		<?php if ($assoc) : ?>
-			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'associations', JText::_('JGLOBAL_FIELDSET_ASSOCIATIONS', true)); ?>
-			<?php echo $this->loadTemplate('associations'); ?>
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'similar', JText::_('COM_CATALOGUE_SIMILAR', true)); ?>
+		<?php if(!$this->state->get('item.id')) : ?>
+			<div class="alert alert-info">
+				<?php echo JText::_('COM_CATALOGUE_SAVE_ITEM_PLEASE'); ?>
+			</div>
+		<?php else : ?>
+			<?php echo $this->loadTemplate('similar'); ?>
 		<?php endif; ?>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 		<?php $this->show_options = $params->show_item_options; ?>
 		<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
-
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'techs', JText::_('COM_CATALOGUE_ITEMTECHS', true)); ?>
-		<?php echo $this->loadTemplate('techs'); ?>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'assoc', JText::_('COM_CATALOGUE_ASSOC', true)); ?>
-		<?php echo JLayoutHelper::render('edit.similar', $this);?>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'reviews', JText::_('COM_CATALOGUE_REVIEWS', true)); ?>
-		<?php echo $this->loadTemplate('reviews'); ?>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'attrs', JText::_('COM_CATALOGUE_ATTRS', true)); ?>
 		<?php if($this->item->attrdirs) : ?>
@@ -147,7 +146,7 @@ $doc->addScriptDeclaration('jQuery(function ($) { $("#techsTable").tableDnD() })
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 		<?php if ($this->canDo->get('core.admin')) : ?>
-			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_CONTENT_FIELDSET_RULES', true)); ?>
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_CATALOGUE_FIELDSET_RULES', true)); ?>
 			<?php echo $this->form->getInput('rules'); ?>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
 		<?php endif; ?>
