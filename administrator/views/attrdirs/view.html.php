@@ -38,9 +38,14 @@ class CatalogueViewAttrDirs extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->items = $this->get('Items');
-		$this->pagination = $this->get('Pagination');
-		$this->state = $this->get('State');
+		/** @noinspection PhpUndefinedClassInspection */
+		CatalogueHelper::addSubmenu('attrdirs');
+
+		$this->items         = $this->get('Items');
+		$this->pagination    = $this->get('Pagination');
+		$this->state         = $this->get('State');
+		$this->filterForm    = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -50,11 +55,7 @@ class CatalogueViewAttrDirs extends JViewLegacy
 			return false;
 		}
 
-		/** @noinspection PhpUndefinedClassInspection */
-		CatalogueHelper::addSubmenu('attrdirs');
-
 		$this->addToolbar();
-
 		$this->sidebar = JHtmlSidebar::render();
 
 		parent::display($tpl);
@@ -71,12 +72,11 @@ class CatalogueViewAttrDirs extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		/** @noinspection PhpIncludeInspection */
-		require_once JPATH_COMPONENT . '/helpers/catalogue.php';
-
 		$canDo = JHelperContent::getActions('com_catalogue', 'attr_dir', $this->state->get('filter.attr_dir_id'));
+		$user  = JFactory::getUser();
 
-		JToolbarHelper::title(JText::_('COM_MANUFACTURER_MANAGER'), 'component.png');
+		JToolbarHelper::title(JText::_('COM_CATALOGUE_ATTRDIRS_MANAGER_TITLE'), 'book');
+
 		if ($canDo->get('core.create'))
 		{
 			JToolbarHelper::addNew('attrdir.add');
@@ -85,6 +85,14 @@ class CatalogueViewAttrDirs extends JViewLegacy
 		if (($canDo->get('core.edit')))
 		{
 			JToolbarHelper::editList('attrdir.edit');
+		}
+
+		if ($canDo->get('core.edit.state'))
+		{
+			JToolbarHelper::publish('attrdir.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::unpublish('attrdir.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::archiveList('attrdir.archive');
+			JToolbarHelper::checkin('attrdir.checkin');
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
@@ -96,13 +104,10 @@ class CatalogueViewAttrDirs extends JViewLegacy
 			JToolbarHelper::trash('attrdirs.trash');
 		}
 
-		JHtmlSidebar::setAction('index.php?option=com_catalogue&view=manfacturers');
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_PUBLISHED'),
-			'filter_published',
-			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
-		);
+		if ($user->authorise('core.admin', 'com_catalogue') || $user->authorise('core.options', 'com_catalogue'))
+		{
+			JToolbarHelper::preferences('com_catalogue');
+		}
 	}
 
 	/**
@@ -115,9 +120,9 @@ class CatalogueViewAttrDirs extends JViewLegacy
 	protected function getSortFields()
 	{
 		return array(
-			'd.ordering' => JText::_('JGRID_HEADING_ORDERING'),
-			'd.dir_name' => JText::_('COM_CATALOGUE_ATTR_NAME'),
-			'd.id' => JText::_('JGRID_HEADING_ID')
+			'd.ordering'	=> JText::_('JGRID_HEADING_ORDERING'),
+			'd.title'	=> JText::_('COM_CATALOGUE_ATTR_NAME'),
+			'd.id' 			=> JText::_('JGRID_HEADING_ID')
 		);
 	}
 }

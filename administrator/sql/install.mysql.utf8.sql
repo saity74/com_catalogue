@@ -9,6 +9,17 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+DROP TABLE IF EXISTS `#__catalogue_agg_groups`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `#__catalogue_agg_groups` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `group_id` int(11) NOT NULL,
+  `package_id` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_attr`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -47,12 +58,17 @@ CREATE TABLE `#__catalogue_attrdir` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `alias` varchar(32) NOT NULL,
   `reset_attr_name` varchar(255) NOT NULL,
-  `dir_name` varchar(255) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `created` datetime NOT NULL,
+  `modified` datetime NOT NULL,
   `filter_type` enum('checkbox','radio','slider','range','input','listbox','none') NOT NULL,
   `filter_field` varchar(32) NOT NULL,
+  `agg_field` varchar(255) NOT NULL,
   `ordering` int(11) NOT NULL,
   `state` int(11) NOT NULL,
-  `published` int(11) NOT NULL,
+  `publish_up` datetime NOT NULL,
+  `publish_down` datetime NOT NULL,
+  `language` char(7) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -92,7 +108,7 @@ CREATE TABLE `#__catalogue_cart` (
   PRIMARY KEY (`id`),
   KEY `track_id` (`track_id`),
   KEY `amount` (`amount`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_country`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -162,7 +178,7 @@ CREATE TABLE `#__catalogue_item` (
   PRIMARY KEY (`id`),
   KEY `idx_catid` (`catid`),
   KEY `idx_access` (`access`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_item_review`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
@@ -218,7 +234,7 @@ CREATE TABLE `#__catalogue_order` (
   `client_mail` varchar(255) NOT NULL,
   `client_name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

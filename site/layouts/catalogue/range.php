@@ -56,7 +56,7 @@ $doc->addScriptDeclaration($script);
 
 ?>
 	<div class="filter-box">
-		<h4 class="filter-label"><?php echo $displayData->dir_name; ?></h4>
+		<h4 class="filter-label"><?php echo $displayData->title; ?></h4>
 
 		<div class="filter_wrap">
 			<input type="text" id="<?php echo $displayData->data[0]->input_name; ?>"

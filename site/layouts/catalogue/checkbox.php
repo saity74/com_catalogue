@@ -14,7 +14,7 @@ $cid = $app->input->get('cid');
 $jform = $app->getUserState('com_catalogue.category.' . $cid . '.filter.jform');
 ?>
 	<div class="filter-box">
-		<h4 class="filter-label"><?php echo $displayData->dir_name; ?></h4>
+		<h4 class="filter-label"><?php echo $displayData->title; ?></h4>
 		<ul>
 			<?php foreach ($displayData->data as $filterItem) : ?>
 				<li class="filter_wrap">

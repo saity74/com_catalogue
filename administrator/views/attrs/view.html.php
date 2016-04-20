@@ -38,9 +38,13 @@ class CatalogueViewAttrs extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->items = $this->get('Items');
-		$this->pagination = $this->get('Pagination');
-		$this->state = $this->get('State');
+		$this->items         = $this->get('Items');
+		$this->pagination    = $this->get('Pagination');
+		$this->state         = $this->get('State');
+
+		// TODO: add filters
+		// $this->filterForm    = $this->get('FilterForm');
+		// $this->activeFilters = $this->get('ActiveFilters');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -76,7 +80,8 @@ class CatalogueViewAttrs extends JViewLegacy
 
 		$canDo = JHelperContent::getActions('com_catalogue', 'attr_dir', $this->state->get('filter.attr_id'));
 
-		JToolbarHelper::title(JText::_('COM_MANUFACTURER_MANAGER'), 'component.png');
+		JToolbarHelper::title(JText::_('COM_CATALOGUE_ATTRS_MANAGER_TITLE'), 'file-check');
+
 		if ($canDo->get('core.create'))
 		{
 			JToolbarHelper::addNew('attr.add');

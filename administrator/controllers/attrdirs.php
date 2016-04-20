@@ -6,33 +6,18 @@
  * @copyright   Copyright (C) 2012 - 2015 Saity74, LLC. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 defined('_JEXEC') or die;
 
 /**
  * CatalogueControllerAttrDirs
  *
- * Controller (controllers are where you put all the actual code) Provides basic
- * functionality, such as rendering views (aka displaying templates).
+ * Controller for attribute directories
  *
  * @since  12.2
  */
 class CatalogueControllerAttrDirs extends JControllerAdmin
 {
-
-	/**
-	 * Constructor.
-	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
-	 *
-	 * @see     JControllerAdmin
-	 * @since   12.2
-	 * @throws  Exception
-	 */
-	public function __construct($config = array())
-	{
-		parent::__construct($config);
-	}
-
 	/**
 	 * Method to get a model object, loading it if required.
 	 *
@@ -49,18 +34,5 @@ class CatalogueControllerAttrDirs extends JControllerAdmin
 		$model = parent::getModel($name, $prefix, $config);
 
 		return $model;
-	}
-
-	/**
-	 * Method to redirect.
-	 *
-	 * @return  void
-	 *
-	 * @since   12.2
-	 */
-	public function edit()
-	{
-		$id = $this->input->getInt('id', 0);
-		$this->setRedirect('index.php?option=com_catalogue&view=attrdir&layout=edit&id=' . $id);
 	}
 }

@@ -28,102 +28,14 @@ JHtml::_('formbehavior.chosen', 'select');
 <form
 	action="<?php echo JRoute::_('index.php?option=com_catalogue&view=attrdir&layout=edit&id=' . (int) $this->item->id); ?>"
 	method="post" name="adminForm" id="item-form" class="form-validate form-vertical">
-	<div class="span8 form-vertical">
+	<div class="span12 form-horizontal">
 
 		<fieldset>
-			<ul class="nav nav-tabs">
-				<li class="active"><a href="#details"
-									  data-toggle="tab"><?php echo JText::_('COM_CATALOGUE_ATTRDIR_DETAILS'); ?></a>
-				</li>
-			</ul>
-			<div class="tab-content">
-				<div class="tab-pane active" id="details">
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('dir_name'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('dir_name'); ?>
-						</div>
-					</div>
-
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('alias'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('alias'); ?>
-						</div>
-					</div>
-
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('reset_attr_name'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('reset_attr_name'); ?>
-						</div>
-					</div>
-
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('dir_type'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('dir_type'); ?>
-						</div>
-					</div>
-
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('filter_field'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('filter_field'); ?>
-						</div>
-					</div>
-
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('filter_type'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('filter_type'); ?>
-						</div>
-					</div>
-
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('state'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('state'); ?>
-						</div>
-					</div>
-
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('category_id'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('category_id'); ?>
-						</div>
-					</div>
-
-
-					<div class="clearfix">
-					</div>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $this->form->getLabel('id'); ?>
-						</div>
-						<div class="controls">
-							<?php echo $this->form->getInput('id'); ?>
-						</div>
-					</div>
+			<?php foreach (['details', 'filter_details', 'options'] as $fieldset) : ?>
+				<div class="span4">
+					<?php echo $this->form->renderFieldset($fieldset); ?>
 				</div>
-
-			</div>
+			<?php endforeach; ?>
 		</fieldset>
 
 		<input type="hidden" name="task" value=""/>

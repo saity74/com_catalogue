@@ -29,30 +29,103 @@ class CatalogueModelAttrDirs extends JModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'id', 'd.id',
-				'ordering', 'd.ordering',
-				'dir_name', 'd.attr_name',
+				'id', 				'd.id',
+				'title',			'd.title',
+				'alias',			'd.alias',
+				'state',			'd.state',
+				'created',			'd.created',
+				'created_by',		'd.created_by',
+				'created_by_alias',	'd.created_by_alias',
+				'ordering', 		'd.ordering',
+				'publish_up',		'd.publish_up',
+				'publish_down',		'd.publish_down',
+				'published',		'd.published'
 			);
+
+			/*
+			TODO: langs
+			if (JLanguageAssociations::isEnabled())
+			{
+				$config['filter_fields'][] = 'association';
+			}*/
 		}
 
 		parent::__construct($config);
 	}
 
 	/**
-	 * Method to get a table object, load it if necessary.
+	 * Method to auto-populate the model state.
 	 *
-	 * @param   string  $type    The table name. Optional.
-	 * @param   string  $prefix  The class prefix. Optional.
-	 * @param   array   $config  Configuration array for model. Optional.
+	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @return  JTable  A JTable object
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
-	 * @since   12.2
-	 * @throws  Exception
+	 * @return  void
+	 *
+	 * @since   1.6
 	 */
-	public function getTable($type = 'AttrDir', $prefix = 'CatalogueTable', $config = array())
+	protected function populateState($ordering = 'd.id', $direction = 'desc')
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		$app = JFactory::getApplication();
+
+		// Adjust the context to support modal layouts.
+		if ($layout = $app->input->get('layout'))
+		{
+			$this->context .= '.' . $layout;
+		}
+
+		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
+		$this->setState('filter.search', $search);
+
+		$access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
+		$this->setState('filter.access', $access);
+
+		$authorId = $app->getUserStateFromRequest($this->context . '.filter.author_id', 'filter_author_id');
+		$this->setState('filter.author_id', $authorId);
+
+		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
+		$this->setState('filter.published', $published);
+
+		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
+		$this->setState('filter.language', $language);
+
+		// List state information.
+		parent::populateState($ordering, $direction);
+
+		// TODO: langs
+		// Force a language
+		$forcedLanguage = $app->input->get('forcedLanguage');
+
+		if (!empty($forcedLanguage))
+		{
+			$this->setState('filter.language', $forcedLanguage);
+			$this->setState('filter.forcedLanguage', $forcedLanguage);
+		}
+	}
+
+	/**
+	 * Method to get a store id based on model configuration state.
+	 *
+	 * This is necessary because the model is used by the component and
+	 * different modules that might need different sets of data or different
+	 * ordering requirements.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return  string  A store id.
+	 *
+	 * @since   1.6
+	 */
+	protected function getStoreId($id = '')
+	{
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.access');
+		$id .= ':' . $this->getState('filter.published');
+		$id .= ':' . $this->getState('filter.language');
+
+		return parent::getStoreId($id);
 	}
 
 	/**
@@ -66,95 +139,90 @@ class CatalogueModelAttrDirs extends JModelList
 	{
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
+		$user = JFactory::getUser();
 
 		// Select the required fields from the table.
 		$query->select(
 			$this->getState(
 				'list.select',
-				'd.*'
+				'd.id, d.title, d.alias, d.state, d.created, d.modified, ' .
+				'd.ordering, d.language, d.publish_up, d.publish_down,' .
+				'd.reset_attr_name'
 			)
 		);
-		$query->from($db->quoteName('#__catalogue_attrdir') . ' AS d');
+		$query->from('#__catalogue_attrdir AS d');
 
-		// Filter by search in title
+		// Join over the language
+		$query->select('l.title AS language_title, l.image AS language_image')
+			->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = d.language');
+
+		// TODO: langs
+		// Join over the associations.
+		if (JLanguageAssociations::isEnabled())
+		{
+			$query->select('COUNT(asso2.id)>1 as association')
+				->join('LEFT', '#__associations AS asso ON asso.id = d.id AND asso.context=' . $db->quote('com_catalogue.attrdir'))
+				->join('LEFT', '#__associations AS asso2 ON asso2.key = asso.key')
+				->group('d.id, l.title, l.image');
+		}
+
+		// Filter by published state
+		$published = $this->getState('filter.published');
+
+		if (is_numeric($published))
+		{
+			$query->where('d.state = ' . (int) $published);
+		}
+		elseif ($published === '')
+		{
+			$query->where('(d.state = 0 OR d.state = 1)');
+		}
+
+		// Filter by search in title.
 		$search = $this->getState('filter.search');
+
 		if (!empty($search))
 		{
 			if (stripos($search, 'id:') === 0)
 			{
 				$query->where('d.id = ' . (int) substr($search, 3));
 			}
+//			elseif (stripos($search, 'author:') === 0)
+//			{
+//				$search = $db->quote('%' . $db->escape(substr($search, 7), true) . '%');
+//				$query->where('(ua.name LIKE ' . $search . ' OR ua.username LIKE ' . $search . ')');
+//			}
 			else
 			{
-				$search = $db->Quote('%' . $db->escape($search, true) . '%');
-				$query->where('(d.dir_name LIKE ' . $search . ')');
+				$search = $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));
+				$query->where('(a.title LIKE ' . $search . ' OR a.alias LIKE ' . $search . ')');
 			}
 		}
 
-		// Add the list ordering clause.
-		$orderCol = $this->state->get('list.ordering', 'ordering');
-		$orderDirn = $this->state->get('list.direction', 'ASC');
-		if ($orderCol == 'ordering' || $orderCol == 'dir_name')
+		// TODO: langs
+		// Filter on the language.
+		if ($language = $this->getState('filter.language'))
 		{
-			$orderCol = 'd.dir_name ' . $orderDirn . ', d.ordering';
+			$query->where('d.language = ' . $db->quote($language));
+		}
+
+		// Add the list ordering clause.
+		$orderCol = $this->state->get('list.ordering', 'd.id');
+		$orderDirn = $this->state->get('list.direction', 'desc');
+
+		if ($orderCol == 'd.ordering' || $orderCol == 'category_title')
+		{
+			$orderCol = 'c.title ' . $orderDirn . ', a.ordering';
+		}
+
+		// SQL server change
+		if ($orderCol == 'language')
+		{
+			$orderCol = 'l.title';
 		}
 
 		$query->order($db->escape($orderCol . ' ' . $orderDirn));
 
 		return $query;
-	}
-
-	/**
-	 * Method to get a store id based on the model configuration state.
-	 *
-	 * This is necessary because the model is used by the component and
-	 * different modules that might need different sets of data or different
-	 * ordering requirements.
-	 *
-	 * @param   string  $id  An identifier string to generate the store id.
-	 *
-	 * @return  string  A store id.
-	 *
-	 * @since   12.2
-	 */
-	protected function getStoreId($id = '')
-	{
-		// Compile the store id.
-		$id .= ':' . $this->getState('filter.search');
-
-		return parent::getStoreId($id);
-	}
-
-	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * This method should only be called once per instantiation and is designed
-	 * to be called on the first call to the getState() method unless the model
-	 * configuration flag to ignore the request is set.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
-	 * @param   string  $ordering   An optional ordering field.
-	 * @param   string  $direction  An optional direction (asc|desc).
-	 *
-	 * @return  void
-	 *
-	 * @since   12.2
-	 */
-	protected function populateState($ordering = null, $direction = null)
-	{
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
-
-		$state = $this->getUserStateFromRequest($this->context . '.filter.state', 'filter_state', '', 'string');
-		$this->setState('filter.state', $state);
-
-		$id = $this->getUserStateFromRequest($this->context . '.attrdir.id', 'id', 0, 'int');
-		$this->setState('attrdir.id', $id);
-
-		$params = JComponentHelper::getParams('com_catalogue');
-		$this->setState('params', $params);
-
-		parent::populateState('d.dir_name', 'asc');
 	}
 }

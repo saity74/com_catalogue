@@ -25,6 +25,8 @@ class CatalogueViewAttrDir extends JViewLegacy
 
 	protected $state;
 
+	protected $agg_fields;
+
 	/**
 	 * Execute and display a template script.
 	 *
@@ -37,6 +39,8 @@ class CatalogueViewAttrDir extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
+		$agg_model = JModelLegacy::getInstance('Aggregion', 'CatalogueModel');
+		$this->agg_fields = $agg_model->getitems();
 
 		// Initialiase variables.
 		$this->form = $this->get('Form');

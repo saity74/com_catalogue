@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  *
  * @since       3.0
  */
-class CatalogueHelper
+class CatalogueHelper extends JHelperContent
 {
 
 	public static $extension = 'com_catalogue';
@@ -63,6 +63,7 @@ class CatalogueHelper
 			'index.php?option=com_catalogue&view=carts',
 			$vName == 'carts'
 		);
+
 		JHtmlSidebar::addEntry(
 			JText::_('COM_CATALOGUE_SUBMENU_ORDERS'),
 			'index.php?option=com_catalogue&view=orders',
@@ -88,7 +89,7 @@ class CatalogueHelper
 			$id = $id[0];
 		}
 
-		$options = array();
+		$options = [];
 
 		if (!empty(static::$_items) && in_array($id, static::$_items))
 		{
@@ -136,14 +137,14 @@ class CatalogueHelper
 	 */
 	public static function getAttrDirsOptions()
 	{
-		$options = array();
+		$options = [];
 
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
-		$query->select('id As value, dir_name As text');
+		$query->select('id As value, title As text');
 		$query->from('#__catalogue_attrdir AS d');
-		$query->order('d.dir_name');
+		$query->order('d.title');
 
 		// Get the options.
 		$db->setQuery($query);
@@ -169,7 +170,7 @@ class CatalogueHelper
 	 */
 	public static function getAttrsOptions()
 	{
-		$options = array();
+		$options = [];
 
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -178,7 +179,7 @@ class CatalogueHelper
 			->from('#__catalogue_attr AS a')
 			->join('LEFT', '#__catalogue_attrdir AS d ON d.id = a.attrdir_id')
 			->where('a.state = 1 AND d.state = 1')
-			->order('d.dir_name');
+			->order('d.title');
 
 		// Get the options.
 		$db->setQuery($query);

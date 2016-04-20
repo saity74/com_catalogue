@@ -274,7 +274,7 @@ class CatalogueModelItem extends JModelAdmin
 
 			$query->select('a.id as attr_id,
 				a.attrdir_id,
-				d.dir_name,
+				d.title,
 				a.attr_name,
 				a.attr_type,
 				a.attr_default,

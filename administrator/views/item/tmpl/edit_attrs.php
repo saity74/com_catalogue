@@ -23,7 +23,7 @@
 				echo '</tbody></table>';
 				echo JHtml::_('bootstrap.endTab');
 			}
-			echo JHtml::_('bootstrap.addTab', 'attrsTab', 'tab_' . $attr_dir->attrdir_id, $attr_dir->dir_name);
+			echo JHtml::_('bootstrap.addTab', 'attrsTab', 'tab_' . $attr_dir->attrdir_id, $attr_dir->title);
 			echo '<table class="table table-stripped tablesorter attr-table"><thead><tr>' .
 				'<th style="width: 60%">Название фильтра</th>' .
 				'<th style="width: 20%">Значение</th>' .

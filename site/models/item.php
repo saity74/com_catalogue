@@ -151,7 +151,7 @@ class CatalogueModelItem extends JModelList
 	{
 		$db = $this->getDbo();
 		$query = $db->getQuery(true)
-			->select('d.id AS dir_id, a.id AS attr_id, d.dir_name, a.attr_name')
+			->select('d.id AS dir_id, a.id AS attr_id, d.title, a.attr_name')
 			->from('#__catalogue_attr AS a')
 			->join('LEFT', '#__catalogue_attrdir AS d ON d.id = a.attrdir_id')
 			->where('a.state = 1 AND d.state = 1')

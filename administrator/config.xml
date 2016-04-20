@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-  <fieldset name="advanced">
+    <fieldset name="aggregion">
+        <field  name="agg_login"
+                type="text"
+                label="COM_CATALOGUE_CONFIG_AGGREGION_LOGIN_LABEL"
+                description="COM_CATALOGUE_CONFIG_AGGREGION_LOGIN_DESC"
+                class="inputbox"
+                default=""
+                />
+
+        <field  name="agg_password"
+                type="password"
+                label="COM_CATALOGUE_CONFIG_AGGREGION_PASSWORD_LABEL"
+                description="COM_CATALOGUE_CONFIG_AGGREGION_PASSWORD_DESC"
+                class="inputbox"
+                default=""
+                />
+
+        <field  name="agg_client_id"
+                type="text"
+                label="COM_CATALOGUE_CONFIG_AGGREGION_CLIENT_ID_LABEL"
+                description="COM_CATALOGUE_CONFIG_AGGREGION_CLIENT_ID_DESC"
+                class="inputbox"
+                default=""
+                />
+
+        <field  name="agg_client_secret"
+                type="text"
+                label="COM_CATALOGUE_CONFIG_AGGREGION_CLIENT_SECRET_LABEL"
+                description="COM_CATALOGUE_CONFIG_AGGREGION_CLIENT_SECRET_DESC"
+                class="inputbox"
+                default=""
+                />
+
+        <field  name="agg_oauth_token"
+                type="hidden"
+                label="COM_CATALOGUE_CONFIG_AGGREGION_OAUTH_TOKEN_LABEL"
+                class="inputbox"
+                default=""
+                />
+
+        <field  name="agg_account_id"
+                type="hidden"
+                label="COM_CATALOGUE_CONFIG_AGGREGION_ACCOUNT_ID_LABEL"
+                class="inputbox"
+                default=""
+                />
+    </fieldset>
+
+    <fieldset name="advanced">
       <field
               name="addprice"
               type="text"

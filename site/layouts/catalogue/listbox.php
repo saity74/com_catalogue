@@ -17,7 +17,7 @@ $filter_value = $jform['filter'][$filter_name];
 ?>
 
 <div class="filter-box">
-	<h4 class="filter-label"><?php echo $displayData->dir_name; ?></h4>
+	<h4 class="filter-label"><?php echo $displayData->title; ?></h4>
 
 	<div class="filter_wrap">
 		<select class="advancedSelect"

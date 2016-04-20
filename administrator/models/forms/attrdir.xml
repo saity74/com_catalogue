@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
     <fieldset name="details" addfieldpath="/administrator/components/com_catalogue/models/fields">
-        <field name="id" type="text" default="0"
-               readonly="true" class="readonly"
-               label="JGLOBAL_FIELD_ID_LABEL" description="JGLOBAL_FIELD_ID_DESC"/>
-
-        <field name="dir_name" type="text" class="inputbox"
+        <field name="title" type="text" class="inputbox"
                size="40" label="COM_CATALOGUE_FIELD_TITLE_LABEL"
                description="COM_CATALOGUE_FIELD_TITLE_DESC" required="true"/>
 
@@ -16,21 +12,6 @@
         <field name="reset_attr_name" type="text" class="inputbox"
                label="COM_CATALOGUE_FIELD_RESETATTRNAME_LABEL"
                description="COM_CATALOGUE_FIELD_RESETATTRNAME_DESC"/>
-
-        <field name="filter_field" type="list" label="COM_CATALOGUE_FIELD_FILTER_FIELD_LABEL"
-               description="COM_CATALOGUE_FIELD_FILTER_FIELD_DESC" size="1" default="attr"
-                >
-            <option value="attr">
-                COM_CATALOGUE_FILTER_FIELD_ATTR
-            </option>
-            <option value="fl_price">
-                COM_CATALOGUE_FILTER_FIELD_PRICE
-            </option>
-            <option value="fl_manufacturer">
-                COM_CATALOGUE_FILTER_FIELD_MANUFACTURER
-            </option>
-        </field>
-
         <field name="filter_type" type="list" label="COM_CATALOGUE_FIELD_FILTER_TYPE_LABEL"
                description="COM_CATALOGUE_FIELD_FILTER_TYPE_DESC" size="1" default="none"
                 >
@@ -56,13 +37,38 @@
                 COM_CATALOGUE_FILTER_TYPE_LISTBOX
             </option>
         </field>
-
-
-        <field name="category_id" type="category" extension="com_catalogue"
+    </fieldset>
+    <fieldset name="filter_details">
+        <field name="category_id"
+               type="category"
+               extension="com_catalogue"
                multiple="true" size="5"
                label="JCATEGORY"
                description="MOD_ARTICLES_CATEGORY_FIELD_CATEGORY_DESC"
                 />
+        <field name="filter_field" type="list" label="COM_CATALOGUE_FIELD_FILTER_FIELD_LABEL"
+               description="COM_CATALOGUE_FIELD_FILTER_FIELD_DESC" size="1" default="attr"
+                >
+            <option value="attr">
+                COM_CATALOGUE_FILTER_FIELD_ATTR
+            </option>
+            <option value="fl_price">
+                COM_CATALOGUE_FILTER_FIELD_PRICE
+            </option>
+            <option value="fl_manufacturer">
+                COM_CATALOGUE_FILTER_FIELD_MANUFACTURER
+            </option>
+        </field>
+
+        <field name="agg_field"
+               type="Aggfields"
+               extension="com_catalogue"
+               label="COM_CATALOGUE_AGGREGION_FIELD_MAPPING_FIELD_LABEL"
+               description="COM_CATALOGUE_AGGREGION_FIELD_MAPPING_FIELD_DESC"
+                />
+    </fieldset>
+
+    <fieldset name="options">
 
         <field name="state" type="list" label="JSTATUS"
                description="JFIELD_PUBLISHED_DESC" class="small"
@@ -81,5 +87,9 @@
                 JTRASHED
             </option>
         </field>
+        <field name="id" type="text" default="0"
+               readonly="true" class="readonly"
+               label="JGLOBAL_FIELD_ID_LABEL" description="JGLOBAL_FIELD_ID_DESC"/>
     </fieldset>
+
 </form>
