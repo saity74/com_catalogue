@@ -187,11 +187,6 @@ class CatalogueModelAttrDirs extends JModelList
 			{
 				$query->where('d.id = ' . (int) substr($search, 3));
 			}
-//			elseif (stripos($search, 'author:') === 0)
-//			{
-//				$search = $db->quote('%' . $db->escape(substr($search, 7), true) . '%');
-//				$query->where('(ua.name LIKE ' . $search . ' OR ua.username LIKE ' . $search . ')');
-//			}
 			else
 			{
 				$search = $db->quote('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));

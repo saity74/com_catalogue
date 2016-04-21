@@ -32,21 +32,6 @@ if ($saveOrder)
 $assoc = JLanguageAssociations::isEnabled();
 ?>
 
-<!--<script type="text/javascript">-->
-<!--	Joomla.orderTable = function () {-->
-<!--		var table = document.getElementById("sortTable"),-->
-<!--			direction = document.getElementById("directionTable"),-->
-<!--			order = table.options[table.selectedIndex].value,-->
-<!--			dirn;-->
-<!--		if (order != '--><?php //echo $listOrder; ?><!--') {-->
-<!--			dirn = 'asc';-->
-<!--		} else {-->
-<!--			dirn = direction.options[direction.selectedIndex].value;-->
-<!--		}-->
-<!--		Joomla.tableOrdering(order, dirn, '');-->
-<!--	}-->
-<!--</script>-->
-
 <form action="<?php echo JRoute::_('index.php?option=com_catalogue&view=attrdirs'); ?>" method="post" name="adminForm"
 	  id="adminForm">
 	<?php if (!empty($this->sidebar)) : ?>
@@ -144,7 +129,9 @@ $assoc = JLanguageAssociations::isEnabled();
 									<?php echo $this->escape($item->title); ?>
 								</a>
 							<?php else : ?>
-								<span title="<?php echo JText::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->alias)); ?>"><?php echo $this->escape($item->title); ?></span>
+								<span title="<?php echo JText::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->alias)); ?>">
+									<?php echo $this->escape($item->title); ?>
+								</span>
 							<?php endif; ?>
 							<span class="small break-word">
 								<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>

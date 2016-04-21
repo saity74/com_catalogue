@@ -21,7 +21,7 @@ class CatalogueHelper extends JHelperContent
 
 	public static $extension = 'com_catalogue';
 
-	protected static $_items;
+	public static $items;
 
 	/**
 	 * Method to get options for list.
@@ -80,7 +80,6 @@ class CatalogueHelper extends JHelperContent
 	 */
 	public static function getItemsOptions()
 	{
-
 		$app = JFactory::getApplication();
 		$id = $app->getUserState('com_catalogue.edit.item.id', 0);
 
@@ -91,9 +90,9 @@ class CatalogueHelper extends JHelperContent
 
 		$options = [];
 
-		if (!empty(static::$_items) && in_array($id, static::$_items))
+		if (!empty(static::$items) && in_array($id, static::$items))
 		{
-			$options = static::$_items[$id];
+			$options = static::$items[$id];
 		}
 		else
 		{
@@ -103,7 +102,7 @@ class CatalogueHelper extends JHelperContent
 			$query->select('id As value, title As text');
 			$query->from('#__catalogue_item AS i');
 
-			if (!empty($id) && isset($id[0]))
+			if ( !empty($id) && isset($id[0]) )
 			{
 				$query->where('id <> ' . (int) $id[0]);
 			}
@@ -122,7 +121,7 @@ class CatalogueHelper extends JHelperContent
 				JError::raiseWarning(500, $e->getMessage());
 			}
 
-			static::$_items[$id] = $options;
+			static::$items[$id] = $options;
 		}
 
 		return $options;
@@ -196,6 +195,14 @@ class CatalogueHelper extends JHelperContent
 		return $options;
 	}
 
+	/**
+	 * Get SEO rate for item in catalogue
+	 *
+	 * @param   Object  $item     Catalogue item
+	 * @param   Array   &$errors  Errors array
+	 *
+	 * @return int
+	 */
 	public static function getSeoRate($item, &$errors)
 	{
 		$result = 0;
@@ -204,13 +211,18 @@ class CatalogueHelper extends JHelperContent
 		{
 			$result += 2;
 			$title_len = mb_strlen($item->title);
+
 			if ($title_len >= 15 && $title_len <= 55)
 			{
 				$result += 5;
-			} else {
+			}
+			else
+			{
 				$errors[] = "Слишком короткое или длинное название товара ($title_len сим.)";
 			}
-		} else {
+		}
+		else
+		{
 			$errors[] = 'Отсутствует название товара';
 		}
 
@@ -224,17 +236,25 @@ class CatalogueHelper extends JHelperContent
 			{
 				$result += 2;
 				$page_title_len = mb_strlen($page_title);
+
 				if ($page_title_len >= 15 && $page_title_len <= 100)
 				{
 					$result += 7;
-				} else {
+				}
+				else
+				{
 					$errors[] = "Слишком короткий или длинный заголовок страницы ($page_title_len сим.)";
 				}
-			} else {
+			}
+			else
+			{
 				$errors[] = 'Не прописан заголовок страницы (= названию)';
 			}
-		} else {
+		}
+		else
+		{
 			$errors[] = 'Отсутствуют атрибуты';
+
 			return 0;
 		}
 
@@ -242,13 +262,18 @@ class CatalogueHelper extends JHelperContent
 		{
 			$result += 2;
 			$metadesc_len = mb_strlen($item->metadesc);
+
 			if ($metadesc_len >= 30 && $metadesc_len <= 150)
 			{
 				$result += 5;
-			} else {
+			}
+			else
+			{
 				$errors[] = "Слишком короткое или длинное описание страницы ($metadesc_len сим.)";
 			}
-		} else {
+		}
+		else
+		{
 			$errors[] = 'Отсутствует meta-description';
 		}
 
@@ -256,60 +281,79 @@ class CatalogueHelper extends JHelperContent
 		{
 			$result += 2;
 			$metakey_len = mb_strlen($item->metakey);
+
 			if ($metakey_len >= 30 && $metakey_len <= 250)
 			{
 				$result += 5;
-			} else {
+			}
+			else
+			{
 				$errors[] = "Слишком много или мало ключевых слов ($metakey_len сим.)";
 			}
-		} else {
+		}
+		else
+		{
 			$errors[] = 'Отсутствуют meta-keywords';
 		}
 
 		if ($item->introtext)
 		{
-			// description not empty
+			// Description not empty
 			$result += 2;
 			$introtext_len = mb_strlen(strip_tags($item->introtext));
+
 			if ($introtext_len > 150)
 			{
 				$result += 5;
-			} else {
+			}
+			else
+			{
 				$errors[] = "Короткий вступительный текст ($introtext_len сим.)";
 			}
-
-		} else {
+		}
+		else
+		{
 			$errors[] = 'Отсутствует вступительный текст';
 		}
 
 		if ($item->fulltext)
 		{
-			// description not empty
+			// Description not empty
 			$result += 2;
 			$fulltext_len = mb_strlen(strip_tags($item->fulltext));
+
 			if ($fulltext_len > 450)
 			{
 				$result += 5;
-			} else {
+			}
+			else
+			{
 				$errors[] = "Короткое основное описание товара ($fulltext_len сим.)";
 			}
-
-		} else {
+		}
+		else
+		{
 			$errors[] = 'Отсутствует основное описание товара';
 		}
 
 		$images = new \Joomla\Registry\Registry($item->images);
+
 		if (count($images) > 0)
 		{
-			// images not empty
+			// Images not empty
 			$result += 2;
+
 			if (count($images) > 1)
 			{
 				$result += 2;
-			} else {
+			}
+			else
+			{
 				$errors[] = 'Загружено только одно изображение';
 			}
-		} else {
+		}
+		else
+		{
 			$errors[] = 'Отсутствуют изображения';
 		}
 
@@ -318,13 +362,18 @@ class CatalogueHelper extends JHelperContent
 		if (count($similar_items) > 0)
 		{
 			$result += 2;
+
 			if (count($similar_items) > 4)
 			{
 				$result += 2;
-			} else {
+			}
+			else
+			{
 				$errors[] = 'Указано мало сопутствующих товаров (<=4)';
 			}
-		} else {
+		}
+		else
+		{
 			$errors[] = 'Отсутствуют сопутствующие товары';
 		}
 
@@ -333,19 +382,27 @@ class CatalogueHelper extends JHelperContent
 		if (count($assoc_items) > 0)
 		{
 			$result += 3;
+
 			if (count($assoc_items) > 4)
 			{
 				$result += 5;
-			} else {
+			}
+			else
+			{
 				$errors[] = 'Указано мало похожих товаров (<=4)';
 			}
-		} else {
+		}
+		else
+		{
 			$errors[] = 'Отсутствуют похожие товары';
 		}
 
-		if ($item->price){
+		if ($item->price)
+		{
 			$result += 5;
-		} else {
+		}
+		else
+		{
 			$errors[] = 'Отсутствует цена';
 		}
 

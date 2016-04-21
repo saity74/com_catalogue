@@ -300,12 +300,4 @@ class CatalogueModelAggregion
 
 		return $this->cache['packages'];
 	}
-
-	/**
-	 *
-	 */
-	public function buildCatalogueItems()
-	{
-		return;
-	}
 }

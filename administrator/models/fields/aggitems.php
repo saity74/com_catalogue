@@ -149,6 +149,13 @@ class JFormFieldAggitems extends JFormField
 		return $html;
 	}
 
+	/**
+	 * Create HTML for Licence packages menu
+	 *
+	 * @param   Array  $groups  Array with Joomla groups
+	 *
+	 * @return string
+	 */
 	private function buildGroupsMenu($groups)
 	{
 		$html = '<ul id="aggGroupsMenu" class="nav nav-tabs">';
@@ -165,6 +172,13 @@ class JFormFieldAggitems extends JFormField
 		return $html;
 	}
 
+	/**
+	 * Create HTML for Fields tab
+	 *
+	 * @param   string  $lp_id  Licence package ID
+	 *
+	 * @return string
+	 */
 	private function buildFieldsTabHtml($lp_id)
 	{
 		$html = '';
@@ -192,6 +206,13 @@ class JFormFieldAggitems extends JFormField
 		return $html;
 	}
 
+	/**
+	 * Create HTML for Items tab
+	 *
+	 * @param   string  $lp_id  Licence package ID
+	 *
+	 * @return string
+	 */
 	private function buildItemsTabHtml($lp_id)
 	{
 		$html = '';
@@ -212,6 +233,13 @@ class JFormFieldAggitems extends JFormField
 		return $html;
 	}
 
+	/**
+	 * Create HTML for Tags tab
+	 *
+	 * @param   string  $lp_id  Licence package ID
+	 *
+	 * @return string
+	 */
 	private function buildTagsTabHtml($lp_id)
 	{
 		$html = '';
@@ -228,10 +256,18 @@ class JFormFieldAggitems extends JFormField
 			$html .= $this->buildCheckboxHtml('tags', $checkbox, $lp_id);
 		}
 
-
 		return $html;
 	}
 
+	/**
+	 * Create HTML for one checkbox
+	 *
+	 * @param   string  $type   Type of checkbox
+	 * @param   object  $item   Item with name and value
+	 * @param   string  $lp_id  Licence package ID
+	 *
+	 * @return string
+	 */
 	private function buildCheckboxHtml($type, $item, $lp_id)
 	{
 		$html = "
