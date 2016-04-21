@@ -31,6 +31,13 @@ class JFormFieldAggitems extends JFormField
 	private $agg_model;
 
 	/**
+	 * Aggregion items mapping for current category
+	 *
+	 * @var array
+	 */
+	private $mapping;
+
+	/**
 	 * Method to instantiate the form field object.
 	 *
 	 * @param   JForm  $form  The form to attach to the form field object.
@@ -44,6 +51,13 @@ class JFormFieldAggitems extends JFormField
 		JModelLegacy::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_catalogue/models');
 
 		$this->agg_model = JModelLegacy::getInstance('Aggregion', 'CatalogueModel');
+
+		$mapping_json = JFactory::getSession()->get('aggcat.mapping', false);
+
+		if ($mapping_json)
+		{
+			$this->mapping = json_decode($mapping_json, true);
+		}
 	}
 
 	/**
@@ -67,8 +81,10 @@ class JFormFieldAggitems extends JFormField
 	 */
 	public function getInput()
 	{
+
 		JFactory::getDocument()
-			->addStyleSheet('/administrator/components/com_catalogue/assets/css/admin-panel.css');
+			->addStyleSheet('/administrator/components/com_catalogue/assets/css/AggCategoriesMapping.css')
+			->addScript('/administrator/components/com_catalogue/assets/js/AggCategoriesMapping.js');
 
 		$html   = '';
 		$groups = $this->agg_model->getGroups();
@@ -185,6 +201,15 @@ class JFormFieldAggitems extends JFormField
 
 		$fields = $this->agg_model->getFields();
 
+		if ($this->mapping[$lp_id] && isset($this->mapping[$lp_id]['fields']))
+		{
+			$checked = $this->mapping[$lp_id]['fields'];
+		}
+		else
+		{
+			$checked = [];
+		}
+
 		foreach ($fields as $field)
 		{
 			$label = $field->key;
@@ -194,8 +219,9 @@ class JFormFieldAggitems extends JFormField
 			foreach ($field->values as $value)
 			{
 				$checkbox = (object) [
-					'label' => $value,
-					'value' => $value
+					'label'		=> $value,
+					'value'		=> $value,
+					'checked'	=> in_array($value, $checked)
 				];
 				$html .= $this->buildCheckboxHtml('fields', $checkbox, $lp_id);
 			}
@@ -217,13 +243,23 @@ class JFormFieldAggitems extends JFormField
 	{
 		$html = '';
 
+		if ($this->mapping[$lp_id] && isset($this->mapping[$lp_id]['items']))
+		{
+			$checked = $this->mapping[$lp_id]['items'];
+		}
+		else
+		{
+			$checked = [];
+		}
+
 		foreach ( $this->agg_model->getItems() as $item )
 		{
 			if ( $item->licensePackage === $lp_id)
 			{
 				$checkbox = (object) [
-					'label' => $item->catalog->title->default,
-					'value' => $item->id
+					'label'		=> $item->catalog->title->default,
+					'value'		=> $item->id,
+					'checked'	=> in_array($item->id, $checked)
 				];
 
 				$html .= $this->buildCheckboxHtml('items', $checkbox, $lp_id);
@@ -246,11 +282,21 @@ class JFormFieldAggitems extends JFormField
 
 		$tags = $this->agg_model->getTags();
 
+		if ($this->mapping[$lp_id] && isset($this->mapping[$lp_id]['tags']))
+		{
+			$checked = $this->mapping[$lp_id]['tags'];
+		}
+		else
+		{
+			$checked = [];
+		}
+
 		foreach ($tags as $tag)
 		{
 			$checkbox = (object) [
-				'label' => $tag,
-				'value' => $tag
+				'label'		=> $tag,
+				'value'		=> $tag,
+				'checked'	=> in_array($tag, $checked)
 			];
 
 			$html .= $this->buildCheckboxHtml('tags', $checkbox, $lp_id);
@@ -270,12 +316,15 @@ class JFormFieldAggitems extends JFormField
 	 */
 	private function buildCheckboxHtml($type, $item, $lp_id)
 	{
+		$checked = $item->checked ? " checked='checked' " : "";
 		$html = "
 			<label>
 				<input  type='checkbox'
 						class='checkbox'
 						name='$this->name[$lp_id][$type][]'
-						value='$item->value'>
+						value='$item->value'
+						$checked
+						>
 				<span class='checkbox-value'> $item->label </span>
 			</label>
 		";

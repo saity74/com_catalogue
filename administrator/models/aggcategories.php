@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.6
  */
-class CatalogueModelAgggroups extends JModelAdmin
+class CatalogueModelAggcategories extends JModelAdmin
 {
 	/**
 	 * Constructor
@@ -25,10 +25,10 @@ class CatalogueModelAgggroups extends JModelAdmin
 	{
 		$config = array_merge(
 			array(
-				'event_after_delete'  => 'onCatalogueAfterDeleteAgggroup',
-				'event_after_save'    => 'onCatalogueAfterSaveAgggroup',
-				'event_before_delete' => 'onCatalogueBeforeDeleteAgggroup',
-				'event_before_save'   => 'onCatalogueBeforeSaveAgggroup',
+				'event_after_delete'  => 'onCatalogueAfterDeleteAggcategory',
+				'event_after_save'    => 'onCatalogueAfterSaveAggcategory',
+				'event_before_delete' => 'onCatalogueBeforeDeleteAggcategory',
+				'event_before_save'   => 'onCatalogueBeforeSaveAggcategory',
 				'events_map'          => array('delete' => 'catalogue', 'save' => 'catalogue')
 			), $config
 		);
@@ -47,7 +47,7 @@ class CatalogueModelAgggroups extends JModelAdmin
 	 *
 	 * @since   1.6
 	 */
-	public function getTable($type = 'Agggroups', $prefix = 'CatalogueTable', $config = array())
+	public function getTable($type = 'Aggcategories', $prefix = 'CatalogueTable', $config = array())
 	{
 		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_catalogue/tables');
 		$return = JTable::getInstance($type, $prefix, $config);
@@ -68,7 +68,7 @@ class CatalogueModelAgggroups extends JModelAdmin
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_catalogue.agggroup', 'agggroup', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_catalogue.aggcategory', 'aggcategory', array('control' => 'jform', 'load_data' => $loadData));
 
 		if (empty($form))
 		{
