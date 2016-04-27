@@ -322,7 +322,7 @@ class CatalogueModelItem extends JModelAdmin
 			)
 				->from('#__catalogue_attr as a')
 				->join('LEFT', '#__catalogue_attrdir as d ON d.id = a.attrdir_id')
-				->where('a.published = 1 AND d.published = 1')
+				->where('a.published = 1 AND d.state = 1')
 				// ->order('a.attrdir_id ASC')
 				->order('a.attrdir_id ASC, a.ordering ASC')
 				->group('a.id');
@@ -537,7 +537,7 @@ class CatalogueModelItem extends JModelAdmin
 			$images = array_map(
 				function($name, $size, $alt, $author, $title, $attrs) use ($root, $id)
 				{
-					$name = $root . '/images/' . $id . '/' . $name;
+					$name = $root . '/images/' . $id . '/' . JFile::makeSafe($name);
 
 					return [
 						'name'    => $name,
@@ -625,19 +625,19 @@ class CatalogueModelItem extends JModelAdmin
 			{
 				$id = (int) $this->getState($this->getName() . '.id');
 
-				$srcFolder = join(DS, [JPATH_SITE, 'images', $imagesFolder]);
-				$dstFolder = join(DS, [JPATH_SITE, 'images', $id]);
+				$srcFolder = JPATH_SITE . "/images/$imagesFolder";
+				$dstFolder = JPATH_SITE . "/images/$id";
 
 				if (!JFolder::exists($dstFolder))
 				{
 					JFolder::create($dstFolder);
 				}
 
-				foreach (glob($srcFolder . DS . '*.*') as $file)
+				foreach (glob($srcFolder . '/*.*') as $file)
 				{
-					$srcFileName = str_replace($srcFolder . DS, '', $file);
+					$srcFileName = str_replace($srcFolder . '/', '', $file);
 
-					if (JFile::exists($dstFolder . DS . $srcFileName))
+					if (JFile::exists($dstFolder . '/' . $srcFileName))
 					{
 						$actual_name = JFile::stripExt($file);
 						$original_name = $actual_name;
@@ -645,14 +645,14 @@ class CatalogueModelItem extends JModelAdmin
 
 						$i = 1;
 
-						while (JFile::exists($dstFolder . DS . $srcFileName))
+						while (JFile::exists($dstFolder . '/' . $srcFileName))
 						{
 							$actual_name = (string) $original_name . '(' . (++$i) . ')';
 							$srcFileName = $actual_name . "." . $extension;
 						}
 					}
 
-					$dstFilePath = implode(DS, [$dstFolder, $srcFileName]);
+					$dstFilePath = $dstFolder . '/' . $srcFileName;
 
 					JFile::move($file, $dstFilePath);
 				}

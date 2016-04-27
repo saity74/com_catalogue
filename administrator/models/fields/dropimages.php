@@ -154,38 +154,43 @@ class JFormFieldDropimages extends JFormField
 		$doc->addScript('components/com_catalogue/assets/js/jquery-ui.min.js');
 		$doc->addScript('components/com_catalogue/assets/js/init.js');
 
-		$js[] = 'jQuery( document ).ready(function( $ ) {';
-		$js[] = '	Dropzone.options.imagesContainer = {';
-		$js[] = '		url: "' . $this->upload_url . '",';
-		$js[] = '		previewTemplate: document.querySelector(\'#template-container\').innerHTML,';
-		$js[] = '		paramName: "file",';
-		$js[] = '		createImageThumbnails: "true",';
-		$js[] = '		maxFilesize: 1,';
-		$js[] = '		thumbnailWidth: 128,';
-		$js[] = '		thumbnailHeight: 90,';
-		$js[] = '		init: function() {';
-		$js[] = '			var that = this;';
-		$js[] = '			this.on("addedfile", function(file) {';
-		$js[] = '				jQuery(file.previewElement).parent().sortable();';
-		$js[] = '				console.log(file);';
-		$js[] = '				file.previewElement.querySelector(".filename").value = file.name;';
-		$js[] = '				file.previewElement.querySelector(".filesize").value = file.size;';
-		$js[] = '				file.previewElement.querySelector(".title").value = file.title ? file.title : \'\';';
-		$js[] = '				file.previewElement.querySelector(".alt").value = file.alt ? file.alt : \'\';';
-		$js[] = '				file.previewElement.querySelector(".author").value = file.author ? file.author : \'\';';
-		$js[] = '				file.previewElement.querySelector(".attrs").value = file.attrs ? file.attrs : \'\';';
-		$js[] = '			});';
-		$js[] = '			var files = JSON.parse(\'' . json_encode($this->value) . '\');';
-		$js[] = '			files.each(function(file){';
-		$js[] = '				that.emit("addedfile", file);';
-		$js[] = '				that.emit("thumbnail", file, file.url);';
-		$js[] = '				that.emit("complete", file);';
-		$js[] = '			});';
-		$js[] = '		}';
-		$js[] = '	};';
-		$js[] = '});';
+		$js = '
+			jQuery(function($) {
+				Dropzone.options.imagesContainer = {
+					url: "' . $this->upload_url . '",
+					previewTemplate: document.querySelector(\'#template-container\').innerHTML,
+					paramName: "file",
+					createImageThumbnails: "true",
+					maxFilesize: 1,
+					thumbnailWidth: 128,
+					thumbnailHeight: 90,
+					init: function() {
+						var dropper = this;
+						this.on("addedfile", function(file) {
+							$(file.previewElement)
+								.find(".filename").val(file.name).end()
+								.find(".filesize").val(file.size).end()
+								.find(".title").val(file.title ? file.title : "").end()
+								.find(".alt").val(file.alt ? file.alt : "").end()
+								.find(".author").val(file.author ? file.author : "").end()
+								.find(".attrs").val(file.attrs ? file.attrs : "").end()
+								.parent().sortable();
+						});
 
-		$doc->addScriptDeclaration(implode("\n", $js));
+						var files = JSON.parse(\'' . json_encode($this->value) . '\');
+						console.log(files);
+						$.each(files, function(i, file) {
+							dropper
+								.emit("addedfile", file)
+								.emit("thumbnail", file, file.url)
+								.emit("complete", file);
+						});
+					}
+				};
+			});
+		';
+
+		$doc->addScriptDeclaration($js);
 
 		$html = [];
 		$html[] = '<ul id="imagesContainer" class="dropzone unstyled">';

@@ -158,6 +158,7 @@ class CatalogueControllerItem extends JControllerForm
 		$app = JFactory::getApplication();
 		$id = $app->getUserState('com_catalogue.edit.item.id', [0]);
 		$beforeSaveFolder = $app->getUserState('com_catalogue.edit.item.images_folder', '');
+
 		if (!$beforeSaveFolder)
 		{
 			$beforeSaveFolder = uniqid();
@@ -174,6 +175,7 @@ class CatalogueControllerItem extends JControllerForm
 		if (!JFactory::getUser()->authorise('core.create', 'com_catalogue'))
 		{
 			header('HTTP/1.1 403 Restricred access!');
+
 			return false;
 		}
 
@@ -207,9 +209,9 @@ class CatalogueControllerItem extends JControllerForm
 
 		// Perform basic checks on file info before attempting anything
 
-		$path               = JPath::clean(implode(DIRECTORY_SEPARATOR, array(JPATH_SITE, $this->folder)));
+		$path               = JPath::clean(JPATH_SITE . '/' . $this->folder);
 		$file['name']       = JFile::makeSafe($file['name']);
-		$file['filepath']   = implode(DIRECTORY_SEPARATOR, array($path, $file['name']));
+		$file['filepath']   = $path . '/' . $file['name'];
 
 		if (($uploadMaxSize > 0 && $file['size'] > $uploadMaxSize)
 			|| ($uploadMaxFileSize > 0 && $file['size'] > $uploadMaxFileSize))
@@ -230,11 +232,13 @@ class CatalogueControllerItem extends JControllerForm
 				$extension = JFile::getExt($file['name']);
 
 				$i = 1;
+
 				while (JFile::exists(implode(DIRECTORY_SEPARATOR, [$path, $file['name']])))
 				{
 					$actual_name = (string) $original_name . '(' . (++$i) . ')';
 					$file['name'] = $actual_name . "." . $extension;
 				}
+
 				$file['filepath'] = implode(DIRECTORY_SEPARATOR, array($path, $file['name']));
 			}
 
