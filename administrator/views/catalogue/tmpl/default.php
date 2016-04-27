@@ -189,12 +189,20 @@ $assoc = JLanguageAssociations::isEnabled();
 							</td>
 							<td class="hidden-phone">
 								<?php
-
-								$errors = [];
-								$seoRate = CatalogueHelper::getSeoRate($item, $errors);
+									$errors = [];
+									$seoRate = CatalogueHelper::getSeoRate($item, $errors);
+									$radius = 251.2 - 251.2 * $seoRate / 100;
 								?>
-								<div style="border: 1px solid #f90; width: 24px; height: 24px; line-height: 24px; padding: 10px; border-radius: 50%; text-align: center">
-									<a href="#" data-original-title="<?php echo implode('<br/>', $errors); ?>" class="hasTooltip"><?php echo $seoRate; ?>%</a>
+								<div class="seo-rate" data-toggle="tooltip" title="<?php echo implode('<br/>', $errors); ?>" class="hasTooltip">
+									<svg class="seo-rate-chart" viewbox="0 0 100 100">
+										<circle class="seo-rate-chart-rest" cx="50" cy="50" r="40"/>
+										<circle class="seo-rate-chart-ok" cx="50" cy="50" r="40"
+												stroke-dasharray="251.2"
+												stroke-dashoffset="<?php echo $radius ?>"/>
+									</svg>
+									<span class="seo-rate-value">
+										<?php echo $seoRate; ?>%
+									</span>
 								</div>
 							</td>
 							<td class="center hidden-phone">

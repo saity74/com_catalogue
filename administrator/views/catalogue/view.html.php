@@ -41,6 +41,10 @@ class CatalogueViewCatalogue extends JViewLegacy
 			CatalogueHelper::addSubmenu('catalogue');
 		}
 
+		JFactory::getDocument()
+			->addScript('/administrator/components/com_catalogue/assets/js/admin-panel.js')
+			->addStyleSheet('/administrator/components/com_catalogue/assets/css/admin-panel.css');
+
 		$this->items         = $this->get('Items');
 		$this->pagination    = $this->get('Pagination');
 		$this->state         = $this->get('State');
@@ -120,7 +124,6 @@ class CatalogueViewCatalogue extends JViewLegacy
 			&& $user->authorise('core.edit', 'com_catalogue')
 			&& $user->authorise('core.edit.state', 'com_catalogue'))
 		{
-			JHtml::_('bootstrap.modal', 'collapseModal');
 			$title = JText::_('JTOOLBAR_BATCH');
 
 			// Instantiate a new JLayoutFile instance and render the batch button
@@ -141,6 +144,9 @@ class CatalogueViewCatalogue extends JViewLegacy
 
 		if ($user->authorise('core.admin', 'com_catalogue') || $user->authorise('core.options', 'com_catalogue'))
 		{
+			$layout = new JLayoutFile('toolbar.aggsync');
+			$bar->appendButton('Custom', $layout->render(), 'aggsync');
+
 			JToolbarHelper::preferences('com_catalogue');
 		}
 
