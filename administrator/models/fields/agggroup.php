@@ -16,7 +16,7 @@ JFormHelper::loadFieldClass('list');
  *
  * @since  11.1
  */
-class JFormFieldAgggroups extends JFormFieldList
+class JFormFieldAgggroup extends JFormFieldList
 {
 
 	protected static $options = [];
@@ -27,7 +27,7 @@ class JFormFieldAgggroups extends JFormFieldList
 	 * @var    string
 	 * @since  11.1
 	 */
-	protected $type = 'Agggroups';
+	protected $type = 'Agggroup';
 
 	/**
 	 * Method to get the field options.

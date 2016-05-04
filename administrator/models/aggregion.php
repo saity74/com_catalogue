@@ -21,9 +21,8 @@ JLoader::register('HttpHelper', JPATH_ADMINISTRATOR . '/components/com_catalogue
  *
  * @since  1.0
  */
-class CatalogueModelAggregion
+class CatalogueModelAggregion extends JModelLegacy
 {
-	const ID_URL            = 'https://id.aggregion.com';
 	const ID_API_URL        = 'https://id.aggregion.com/api';
 	const MARKET_API_URL    = 'https://market.aggregion.com/api';
 	const STORAGE_API_URL   = 'https://storage.aggregion.com/api';
@@ -36,14 +35,29 @@ class CatalogueModelAggregion
 	protected $cache = [];
 
 	/**
-	 * Constructor.
+	 * A state object
+	 *
+	 * @var    JObject
+	 * @since  12.2
 	 */
-	public function __construct()
+	protected $state;
+
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  An array of configuration options (name, state, dbo, table_path, ignore_request).
+	 *
+	 * @since   1.0
+	 * @throws  Exception
+	 */
+	public function __construct($config = array())
 	{
 		$this->http = new HttpHelper;
 		$this->app = JFactory::getApplication();
 
 		$this->cache['user'] = $this->getAggregionUser();
+
+		parent::__construct($config);
 	}
 
 	/**
@@ -232,16 +246,10 @@ class CatalogueModelAggregion
 
 		$groups = $users_model->getItems();
 		$agg_groups = [];
-		$agg_group_id = '';
+		$agg_group_id = '1000';
 
 		foreach ($groups as $group)
 		{
-			// Detect Aggregion Group ID
-			if ( ! $agg_group_id && $group->level === '1' && $group->title === 'Aggregion' )
-			{
-				$agg_group_id = $group->id;
-			}
-
 			if ($group->parent_id === $agg_group_id)
 			{
 				$agg_group = (object) [
@@ -288,7 +296,7 @@ class CatalogueModelAggregion
 				return false;
 			}
 
-			$url = self::MARKET_API_URL . '/licensePackages?filter=status("sale",equals)';
+			$url = self::FILE_URL_FORMAT . '/licensePackages?filter=status("sale",equals)';
 
 			$headers = [
 				'X-Account' => $agg_user->account_id,
@@ -299,5 +307,41 @@ class CatalogueModelAggregion
 		}
 
 		return $this->cache['packages'];
+	}
+
+	/**
+	 * Loads Aggregion resource
+	 *
+	 * @param   string  $resourceId  Aggregion resource ID
+	 *
+	 * @return bool|string
+	 */
+	public function getResource($resourceId)
+	{
+		if ( ! ($agg_user = $this->getAggregionUser()) && ! $resourceId )
+		{
+			return false;
+		}
+
+		$url = self::STORAGE_API_URL . "/files/$resourceId";
+
+		$headers = [
+			'X-Account' => $agg_user->account_id,
+			'X-Access-Token' => $agg_user->oauth_token
+		];
+
+		if ( ($resource_info = HttpHelper::get($url, $headers)) && $resource_info->state->available === true )
+		{
+			$url = str_replace('{{resourceId}}', $resourceId, self::FILE_URL_FORMAT);
+
+			if ( $resource = HttpHelper::get($url, $headers) )
+			{
+				$resource_info->resource = $resource;
+
+				return $resource_info;
+			}
+		}
+
+		return false;
 	}
 }

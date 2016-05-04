@@ -145,6 +145,7 @@ DROP TABLE IF EXISTS `#__catalogue_item`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `#__catalogue_item` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `sku` varchar(255) NOT NULL,
   `asset_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table.',
   `title` varchar(255) NOT NULL DEFAULT '',
   `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
@@ -189,7 +190,7 @@ CREATE TABLE `#__catalogue_item` (
   PRIMARY KEY (`id`),
   KEY `idx_catid` (`catid`),
   KEY `idx_access` (`access`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_item_review`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

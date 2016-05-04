@@ -46,6 +46,7 @@ class CatalogueModelAttrDir extends JModelAdmin
 	public function getForm($data = array(), $loadData = true)
 	{
 		$form = $this->loadForm('com_catalogue.attrdir', 'attrdir', array('control' => 'jform', 'load_data' => $loadData));
+
 		if (empty($form))
 		{
 			return false;
@@ -101,6 +102,7 @@ class CatalogueModelAttrDir extends JModelAdmin
 	public function getItem($pk = null)
 	{
 		$item = parent::getItem($pk);
+
 		if ($item)
 		{
 			$query = $this->_db->getQuery(true);

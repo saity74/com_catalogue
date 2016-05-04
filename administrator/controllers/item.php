@@ -147,7 +147,7 @@ class CatalogueControllerItem extends JControllerForm
 	/**
 	 * Method to upload images
 	 *
-	 * @return  string
+	 * @return  void
 	 *
 	 * @since   2.0
 	 */
@@ -180,9 +180,9 @@ class CatalogueControllerItem extends JControllerForm
 		}
 
 		// Create upload folder if not exist
-		if (!JFolder::exists(JPATH_SITE . DIRECTORY_SEPARATOR . $this->folder))
+		if (!JFolder::exists(JPATH_SITE . '/' . $this->folder))
 		{
-			JFolder::create(JPATH_SITE . DIRECTORY_SEPARATOR . $this->folder);
+			JFolder::create(JPATH_SITE . '/' . $this->folder);
 		}
 
 		// Total length of post back data in bytes.

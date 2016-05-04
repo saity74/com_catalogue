@@ -678,52 +678,34 @@ class CatalogueModelItem extends JModelAdmin
 				$item = $this->getItem($id);
 
 				// Adding self to the association
-				$associations = $data['associations'];
 
-				foreach ($associations as $tag => $id)
+				if (isset($data['associations']))
 				{
-					if (empty($id))
+					$associations = $data['associations'];
+
+					foreach ($associations as $tag => $id)
 					{
-						unset($associations[$tag]);
+						if (empty($id))
+						{
+							unset($associations[$tag]);
+						}
 					}
-				}
-				// Detecting all item menus
-				$all_language = $item->language == '*';
+					// Detecting all item menus
+					$all_language = $item->language == '*';
 
-				if ($all_language && !empty($associations))
-				{
-					JError::raiseNotice(403, JText::_('COM_CONTENT_ERROR_ALL_LANGUAGE_ASSOCIATED'));
-				}
-
-				$associations[$item->language] = $item->id;
-
-				// Deleting old association for these items
-				$db = JFactory::getDbo();
-				$query = $db->getQuery(true)
-					->delete('#__associations')
-					->where('context=' . $db->quote('com_catalogue.item'))
-					->where('id IN (' . implode(',', $associations) . ')');
-				$db->setQuery($query);
-				$db->execute();
-
-				if ($error = $db->getErrorMsg())
-				{
-					$this->setError($error);
-
-					return false;
-				}
-
-				if (!$all_language && count($associations))
-				{
-					// Adding new association for these items
-					$key = md5(json_encode($associations));
-					$query->clear()->insert('#__associations');
-
-					foreach ($associations as $id)
+					if ($all_language && !empty($associations))
 					{
-						$query->values($id . ',' . $db->quote('com_catalogue.item') . ',' . $db->quote($key));
+						JError::raiseNotice(403, JText::_('COM_CONTENT_ERROR_ALL_LANGUAGE_ASSOCIATED'));
 					}
 
+					$associations[$item->language] = $item->id;
+
+					// Deleting old association for these items
+					$db = JFactory::getDbo();
+					$query = $db->getQuery(true)
+						->delete('#__associations')
+						->where('context=' . $db->quote('com_catalogue.item'))
+						->where('id IN (' . implode(',', $associations) . ')');
 					$db->setQuery($query);
 					$db->execute();
 
@@ -732,6 +714,28 @@ class CatalogueModelItem extends JModelAdmin
 						$this->setError($error);
 
 						return false;
+					}
+
+					if (!$all_language && count($associations))
+					{
+						// Adding new association for these items
+						$key = md5(json_encode($associations));
+						$query->clear()->insert('#__associations');
+
+						foreach ($associations as $id)
+						{
+							$query->values($id . ',' . $db->quote('com_catalogue.item') . ',' . $db->quote($key));
+						}
+
+						$db->setQuery($query);
+						$db->execute();
+
+						if ($error = $db->getErrorMsg())
+						{
+							$this->setError($error);
+
+							return false;
+						}
 					}
 				}
 			}

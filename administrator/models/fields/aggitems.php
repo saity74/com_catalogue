@@ -19,7 +19,7 @@ class JFormFieldAggitems extends JFormField
 	 * The form field type.
 	 *
 	 * @var    string
-	 * @since  11.1
+	 * @since  1.0
 	 */
 	protected $type = 'Aggitems';
 
@@ -42,7 +42,7 @@ class JFormFieldAggitems extends JFormField
 	 *
 	 * @param   JForm  $form  The form to attach to the form field object.
 	 *
-	 * @since   11.1
+	 * @since   1.0
 	 */
 	public function __construct($form = null)
 	{
@@ -65,7 +65,7 @@ class JFormFieldAggitems extends JFormField
 	 *
 	 * @return  string  The field label markup.
 	 *
-	 * @since   11.1
+	 * @since   1.0
 	 */
 	public function getLabel()
 	{
@@ -77,13 +77,13 @@ class JFormFieldAggitems extends JFormField
 	 *
 	 * @return  string  The field input markup.
 	 *
-	 * @since   11.1
+	 * @since   1.0
 	 */
 	public function getInput()
 	{
-
 		JFactory::getDocument()
 			->addStyleSheet('/administrator/components/com_catalogue/assets/css/AggCategoriesMapping.css')
+			->addScript('/administrator/components/com_catalogue/assets/js/list.fuzzysearch.min.js')
 			->addScript('/administrator/components/com_catalogue/assets/js/AggCategoriesMapping.js');
 
 		$html   = '';
@@ -201,18 +201,11 @@ class JFormFieldAggitems extends JFormField
 
 		$fields = $this->agg_model->getFields();
 
-		if ($this->mapping[$lp_id] && isset($this->mapping[$lp_id]['fields']))
-		{
-			$checked = $this->mapping[$lp_id]['fields'];
-		}
-		else
-		{
-			$checked = [];
-		}
-
 		foreach ($fields as $field)
 		{
 			$label = $field->key;
+			$checked = isset($this->mapping[$lp_id]['fields'][$label]) ? $this->mapping[$lp_id]['fields'][$label] : [];
+
 			$html .= "<div class='category-fields-block'>
 						<h4> $label </h4>";
 
@@ -223,7 +216,7 @@ class JFormFieldAggitems extends JFormField
 					'value'		=> $value,
 					'checked'	=> in_array($value, $checked)
 				];
-				$html .= $this->buildCheckboxHtml('fields', $checkbox, $lp_id);
+				$html .= $this->buildCheckboxHtml("[fields][$label][]", $checkbox, $lp_id);
 			}
 
 			$html .= "</div>";
@@ -242,8 +235,10 @@ class JFormFieldAggitems extends JFormField
 	private function buildItemsTabHtml($lp_id)
 	{
 		$html = '';
+		$html .= '<input class="fuzzy-search" />';
+		$html .= '<ul class="list unstyled">';
 
-		if ($this->mapping[$lp_id] && isset($this->mapping[$lp_id]['items']))
+		if (isset($this->mapping[$lp_id]) && isset($this->mapping[$lp_id]['items']))
 		{
 			$checked = $this->mapping[$lp_id]['items'];
 		}
@@ -262,9 +257,13 @@ class JFormFieldAggitems extends JFormField
 					'checked'	=> in_array($item->id, $checked)
 				];
 
-				$html .= $this->buildCheckboxHtml('items', $checkbox, $lp_id);
+				$html .= "<li class='item-checkbox-li'>";
+				$html .= $this->buildCheckboxHtml('[items][]', $checkbox, $lp_id);
+				$html .= "</li>";
 			}
 		}
+
+		$html .= '</ul>';
 
 		return $html;
 	}
@@ -282,7 +281,7 @@ class JFormFieldAggitems extends JFormField
 
 		$tags = $this->agg_model->getTags();
 
-		if ($this->mapping[$lp_id] && isset($this->mapping[$lp_id]['tags']))
+		if (isset($this->mapping[$lp_id]) && isset($this->mapping[$lp_id]['tags']))
 		{
 			$checked = $this->mapping[$lp_id]['tags'];
 		}
@@ -299,7 +298,7 @@ class JFormFieldAggitems extends JFormField
 				'checked'	=> in_array($tag, $checked)
 			];
 
-			$html .= $this->buildCheckboxHtml('tags', $checkbox, $lp_id);
+			$html .= $this->buildCheckboxHtml('[tags][]', $checkbox, $lp_id);
 		}
 
 		return $html;
@@ -321,7 +320,7 @@ class JFormFieldAggitems extends JFormField
 			<label>
 				<input  type='checkbox'
 						class='checkbox'
-						name='$this->name[$lp_id][$type][]'
+						name='$this->name[$lp_id]$type'
 						value='$item->value'
 						$checked
 						>

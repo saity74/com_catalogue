@@ -61,7 +61,6 @@ class CatalogueTableCatalogue extends JTable
 	 */
 	public function bind($array, $ignore = '')
 	{
-
 		if (isset($array['itemtext']))
 		{
 			$pattern = '#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i';
@@ -81,10 +80,12 @@ class CatalogueTableCatalogue extends JTable
 		if (isset($array['params']) && is_array($array['params']))
 		{
 			$tmp = array();
+
 			foreach ($array['params']['attr'] as $key => $param)
 			{
 				$tmp['attr_' . $key] = $param;
 			}
+
 			$array['params'] = json_encode($tmp);
 		}
 
@@ -159,6 +160,7 @@ class CatalogueTableCatalogue extends JTable
 			{
 				$this->created = $date->toSql();
 			}
+
 			if (empty($this->created_by))
 			{
 				$this->created_by = $user->get('id');

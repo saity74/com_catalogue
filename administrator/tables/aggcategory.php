@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.6
  */
-class CatalogueTableAggcategories extends JTable
+class CatalogueTableAggcategory extends JTable
 {
 	/**
 	 * Constructor

@@ -98,18 +98,6 @@ class CatalogueControllerAggregion extends JControllerForm
 	/**
 	 * Depreceted
 	 *
-	 * @return mixed
-	 */
-	public function getFields()
-	{
-		$model = $this->getModel();
-
-		return $model->getFields();
-	}
-
-	/**
-	 * Depreceted
-	 *
 	 * @return bool
 	 *
 	 * @throws Exception
@@ -130,12 +118,11 @@ class CatalogueControllerAggregion extends JControllerForm
 		if (!$this->allowEdit())
 		{
 			// Set the internal error and also the redirect error.
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_EDIT_RECORD_NOT_PERMITTED'));
-			$this->setMessage($this->getError(), 'error');
+			$this->setMessage(JText::_('JLIB_APPLICATION_ERROR_EDIT_RECORD_NOT_PERMITTED'), 'error');
 
 			$this->setRedirect(
 				JRoute::_(
-					'index.php?option=' . $this->option . '&view=' . $this->view_list
+					'index.php?option=com_catalogue&view=' . $this->view_list
 					. $this->getRedirectToListAppend(), false
 				)
 			);
@@ -148,11 +135,167 @@ class CatalogueControllerAggregion extends JControllerForm
 
 		$this->setRedirect(
 			JRoute::_(
-				'index.php?option=' . $this->option . '&view=' . $this->view_item
+				'index.php?option=com_catalogue&view=' . $this->view_item
 				. $this->getRedirectToItemAppend(), false
 			)
 		);
 
 		return true;
+	}
+
+	/**
+	 * AJAX get aggregion items
+	 *
+	 * @return void
+	 */
+	public function getItemsAJAX()
+	{
+		if ($items = $this->getModel()->getItems())
+		{
+			echo json_encode($items);
+		}
+
+		JFactory::getApplication()->close();
+	}
+
+	/**
+	 * Finish Aggregion import
+	 *
+	 * @return void
+	 */
+	public function finishImport()
+	{
+		// TODO: handle errors && warning
+
+		$this->setMessage(JText::_('COM_CATALOGUE_AGGREGION_FINISH_IMPORT_SUCCESS'), 'success');
+		$this->setRedirect(
+			JRoute::_('index.php?option=com_catalogue&view=aggregion', false)
+		);
+	}
+
+	/**
+	 * Aggregion items import
+	 *
+	 * @return void
+	 */
+	public function import()
+	{
+		// TODO: check correct mapping
+		$items = $this->getModel()->getItems();
+
+		if ( ! $items )
+		{
+			$this->setMessage(JText::_('COM_CATALOGUE_AGGREGION_NO_ITEMS_ERROR'), 'error');
+			$this->setRedirect(
+				JRoute::_('index.php?option=com_catalogue&view=aggregion', false)
+			);
+		}
+
+		$this->input->set('layout', 'import');
+		$this->input->set('items', $items);
+
+		parent::display();
+	}
+
+	/**
+	 * AJAX import for one item
+	 *
+	 * @return void
+	 */
+	public function importItem()
+	{
+		$response = [
+			'status'	=> 1,
+			'msg'		=> 'Error'
+		];
+
+		if ( $agg_item = $this->input->post->get('item', false, 'json') )
+		{
+			if ( $agg_item = json_decode($agg_item) )
+			{
+				if ( $item = AggregionHelper::buildCatalogueItem($agg_item) )
+				{
+					$cover = $item['cover'];
+					unset($item['cover']);
+
+					$item_model = JModelLegacy::getInstance('Item', 'CatalogueModel');
+
+					if ( $item_model->save($item) )
+					{
+						$item_id = isset($item['id']) ? $item['id'] : $item_model->getState($item_model->getName() . '.id');
+						$item_images = [];
+						$item_images['id'] = $item_id;
+
+						AggregionHelper::getImages($item_images, $cover);
+
+						if ( $item_model->save($item_images) )
+						{
+							$item['id'] = $item_id;
+							$response['status'] = 0;
+							$response['msg'] = 'Success';
+							$response['item'] = $item;
+						}
+						else
+						{
+							$response['status'] = 6;
+							$response['msg'] = 'Unable to save images';
+							$response['item'] = $item;
+						}
+					}
+					else
+					{
+						$response['status'] = 5;
+						$response['msg'] = $item_model->getError();
+					}
+				}
+				else
+				{
+					$response['status'] = 4;
+					$response['msg'] = 'Item doesn\'t belong to any category';
+				}
+			}
+			else
+			{
+				$response['status'] = 3;
+				$response['msg'] = 'Bad JSON';
+			}
+		}
+		else
+		{
+			$response['status'] = 2;
+			$response['msg'] = 'No item';
+		}
+
+		echo json_encode($response);
+
+		JFactory::getApplication()->close();
+	}
+
+	/**
+	 * Synchronize catalogue
+	 *
+	 * @return void
+	 */
+	public function aggsync()
+	{
+		// Get Store Views
+		$agg_groups = AggregionHelper::getAggGroups();
+
+		// Get category mapping
+		$agg_categories = AggregionHelper::getAggCategories();
+
+		// Get fields mapping
+		$fields_model = $this->getModel('Attrdirs');
+		$fields = $fields_model->getItems();
+
+		$items = AggregionHelper::buildCatalogueItems($agg_groups, $agg_categories, $fields);
+		var_dump($items);die;
+
+		// Build items
+
+		// Sync items
+
+		var_dump(1);
+		die;
 	}
 }

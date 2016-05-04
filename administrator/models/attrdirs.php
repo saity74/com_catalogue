@@ -33,6 +33,7 @@ class CatalogueModelAttrDirs extends JModelList
 				'title',			'd.title',
 				'alias',			'd.alias',
 				'state',			'd.state',
+				'agg_field',		'd.agg_field',
 				'created',			'd.created',
 				'created_by',		'd.created_by',
 				'created_by_alias',	'd.created_by_alias',
@@ -147,7 +148,7 @@ class CatalogueModelAttrDirs extends JModelList
 				'list.select',
 				'd.id, d.title, d.alias, d.state, d.created, d.modified, ' .
 				'd.ordering, d.language, d.publish_up, d.publish_down,' .
-				'd.reset_attr_name'
+				'd.agg_field, d.reset_attr_name'
 			)
 		);
 		$query->from('#__catalogue_attrdir AS d');

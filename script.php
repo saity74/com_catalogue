@@ -22,8 +22,9 @@ class Com_CatalogueInstallerScript
 	 */
 	public function install()
 	{
+		// TODO: add Aggregion user group (ID MUST BE 1000!)
 
-		//TODO: add Aggregion user group (ID MUST BE 1000!)
+		// TODO: create /images/aggregion folder
 
 		// Create categories for our component
 		$basePath = JPATH_ADMINISTRATOR . '/components/com_categories';
