@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
  *
  * @since  1.0
  */
-class CatalogueTableAggcategory extends JTable
+class CatalogueTableAgguser extends JTable
 {
 	/**
 	 * Constructor
@@ -25,6 +25,6 @@ class CatalogueTableAggcategory extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		parent::__construct('#__catalogue_agg_categories', 'id', $db);
+		parent::__construct('#__catalogue_agg_users', 'id', $db);
 	}
 }

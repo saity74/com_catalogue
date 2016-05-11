@@ -40,30 +40,19 @@ class HttpHelper
 		}
 		catch (Exception $exception)
 		{
-			JFactory::getApplication()
-				->enqueueMessage(JText::sprintf('COM_CATALOGUE_ERROR_SERVER_CONNECT', $exception->getMessage()), 'error');
+			$app = JFactory::getApplication();
+			$app->enqueueMessage(JText::_('COM_CATALOGUE_ERROR_SERVER_CONNECT'), 'error');
+			$app->enqueueMessage(JText::_($exception->getMessage()), 'error');
 
 			return false;
 		}
 
-		if (302 == $response->code && isset($response->headers['Location']))
+		if ( 302 == $response->code && isset($response->headers['Location']) )
 		{
 			return self::get($response->headers['Location'], $headers);
 		}
-		elseif (200 != $response->code)
-		{
-			JFactory::getApplication()
-				->enqueueMessage(JText::sprintf('COM_CATALOGUE_ERROR_SERVER_CONNECT', $response->code), 'error');
 
-			return false;
-		}
-
-		if ( ! $ret = json_decode($response->body) )
-		{
-			$ret = $response->body;
-		}
-
-		return $ret;
+		return self::handleResponse($response);
 	}
 
 	/**
@@ -85,29 +74,71 @@ class HttpHelper
 
 		if ( ! empty($data) )
 		{
-			$response = $http->post($url, $data, $headers);
+			try
+			{
+				$response = $http->post($url, $data, $headers);
+			}
+			catch (Exception $exception)
+			{
+				$app = JFactory::getApplication();
+				$app->enqueueMessage(JText::_('COM_CATALOGUE_ERROR_SERVER_CONNECT'), 'error');
+				$app->enqueueMessage(JText::_($exception->getMessage()), 'error');
 
-			if (302 == $response->code && isset($response->headers['Location']))
+				return false;
+			}
+
+			if ( 302 == $response->code && isset($response->headers['Location']) )
 			{
 				return self::post($response->headers['Location'], $data, $headers);
 			}
-			elseif (200 != $response->code)
-			{
-				JFactory::getApplication()
-					->enqueueMessage(JText::sprintf('COM_CATALOGUE_ERROR_SERVER_CONNECT', $response->code), 'error');
-			}
 
-			if ( ! $ret = json_decode($response->body) )
-			{
-				$ret = $response->body;
-			}
-
-			return $ret;
-
+			return self::handleResponse($response);
 		}
 		else
 		{
 			return false;
 		}
+	}
+
+	/**
+	 * Handles HTTP response, displays error messages
+	 *
+	 * @param   JHttpResponse  $response  Request response
+	 *
+	 * @return  bool|mixed
+	 */
+	private static function handleResponse($response)
+	{
+		$app = JFactory::getApplication();
+
+		if (200 != $response->code)
+		{
+			$app->enqueueMessage(JText::_('COM_CATALOGUE_ERROR_SERVER_CONNECT') . " ($response->code)", 'error');
+		}
+
+		if ( ! $ret = json_decode($response->body) )
+		{
+			return $response->body;
+		}
+
+		if ( isset($ret->error) )
+		{
+			$app->enqueueMessage($ret->error, 'error');
+
+			if ( isset($ret->meta) )
+			{
+				foreach ( $ret->meta as $meta )
+				{
+					if ( isset($meta->msg) )
+					{
+						$app->enqueueMessage($meta->msg, 'error');
+					}
+				}
+			}
+
+			return false;
+		}
+
+		return $ret;
 	}
 }

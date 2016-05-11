@@ -270,32 +270,4 @@ class CatalogueControllerAggregion extends JControllerForm
 
 		JFactory::getApplication()->close();
 	}
-
-	/**
-	 * Synchronize catalogue
-	 *
-	 * @return void
-	 */
-	public function aggsync()
-	{
-		// Get Store Views
-		$agg_groups = AggregionHelper::getAggGroups();
-
-		// Get category mapping
-		$agg_categories = AggregionHelper::getAggCategories();
-
-		// Get fields mapping
-		$fields_model = $this->getModel('Attrdirs');
-		$fields = $fields_model->getItems();
-
-		$items = AggregionHelper::buildCatalogueItems($agg_groups, $agg_categories, $fields);
-		var_dump($items);die;
-
-		// Build items
-
-		// Sync items
-
-		var_dump(1);
-		die;
-	}
 }

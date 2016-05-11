@@ -23,14 +23,26 @@ JLoader::register('HttpHelper', JPATH_ADMINISTRATOR . '/components/com_catalogue
  */
 class CatalogueModelAggregion extends JModelLegacy
 {
+	const ASTORE_AUTH_URL   = 'https://auth.a-store.io';
 	const ID_API_URL        = 'https://id.aggregion.com/api';
 	const MARKET_API_URL    = 'https://market.aggregion.com/api';
 	const STORAGE_API_URL   = 'https://storage.aggregion.com/api';
 	const FILE_URL_FORMAT   = 'https://storage.aggregion.com/api/files/{{resourceId}}/shared/data';
 
-	protected $app;
+	private $credentials = [
+		'id' => [
+			'main',
+			'accounts'
+		],
+		// 'distribution' => array('main'),
+		'storage' => ['main'],
+		// 'distributionCenter' => array('main'),
+		'market' => ['main'],
+	];
 
 	private $http;
+
+	protected $app;
 
 	protected $cache = [];
 
@@ -72,8 +84,9 @@ class CatalogueModelAggregion extends JModelLegacy
 	 * @since   12.2
 	 * @throws  Exception
 	 */
-	public function getTable($type, $prefix = 'CatalogueTable', $config = array())
+	public function getTable($type = 'Agggroup', $prefix = 'CatalogueTable', $config = array())
 	{
+		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_catalogue/tables');
 		if ( ! $type )
 		{
 			return false;
@@ -110,6 +123,35 @@ class CatalogueModelAggregion extends JModelLegacy
 		}
 
 		return $this->cache['user'];
+	}
+
+	/**
+	 * getCustomerAuthURL
+	 *
+	 * @param   string  $redirectUrl  URL to redirect back to
+	 *
+	 * @return string
+	 */
+	public function getCustomerAuthURL($redirectUrl)
+	{
+		if ( ! $agg_user = $this->getAggregionUser() )
+		{
+			return false;
+		}
+
+		$method = '/oauth';
+		$url = self::ASTORE_AUTH_URL . $method;
+
+		$params = [
+			'clientId' => $agg_user->client_id,
+			'credentials' => $this->credentials,
+		];
+
+		$params = json_encode($params);
+		$url .= '?redirectUrl=' . urlencode($redirectUrl) . '&data=' . urlencode($params);
+		var_dump(urldecode($url));die;
+
+		return $url;
 	}
 
 	/**
@@ -247,6 +289,7 @@ class CatalogueModelAggregion extends JModelLegacy
 		$groups = $users_model->getItems();
 		$agg_groups = [];
 		$agg_group_id = '1000';
+		$table = $this->getTable();
 
 		foreach ($groups as $group)
 		{
@@ -258,24 +301,15 @@ class CatalogueModelAggregion extends JModelLegacy
 				];
 
 				// Load Aggregion group from the database.
-				$db = JFactory::getDbo();
-				$db->setQuery(
-					'SELECT `package_id` FROM #__catalogue_agg_groups WHERE group_id = ' . (int) $group->id
-				);
 
-				try
+				$table->load(['group_id' => (int) $group->id]);
+
+				if ( ! is_null($table->id) )
 				{
 					// Note: lp_id === license package id
-					$agg_group->lp_id = $db->loadObject()->package_id;
+					$agg_group->lp_id = $table->package_id;
 					$agg_groups[] = $agg_group;
 				}
-				catch (RuntimeException $e)
-				{
-					$this->_subject->setError($e->getMessage());
-
-					return false;
-				}
-
 			}
 		}
 
@@ -296,7 +330,7 @@ class CatalogueModelAggregion extends JModelLegacy
 				return false;
 			}
 
-			$url = self::FILE_URL_FORMAT . '/licensePackages?filter=status("sale",equals)';
+			$url = self::MARKET_API_URL . '/licensePackages?filter=status("sale",equals)';
 
 			$headers = [
 				'X-Account' => $agg_user->account_id,

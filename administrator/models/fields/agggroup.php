@@ -62,6 +62,5 @@ class JFormFieldAgggroup extends JFormFieldList
 		}
 
 		return static::$options[$hash];
-
 	}
 }

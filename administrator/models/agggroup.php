@@ -49,6 +49,7 @@ class CatalogueModelAgggroup extends JModelAdmin
 	 */
 	public function getTable($type = 'Agggroup', $prefix = 'CatalogueTable', $config = array())
 	{
+
 		JTable::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_catalogue/tables');
 		$return = JTable::getInstance($type, $prefix, $config);
 

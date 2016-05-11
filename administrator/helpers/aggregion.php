@@ -252,7 +252,7 @@ class AggregionHelper
 
 				// If some of the item tags matches category tabs mapping
 				if ( isset($mapping->tags)
-					&& ! empty(array_intersect($mapping->tags, $agg_item->tags)) )
+					&& ! empty(array_intersect($mapping->tags, $agg_item->catalog->tags)) )
 				{
 					return $category->cat_id;
 				}

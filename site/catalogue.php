@@ -13,7 +13,7 @@ define('DS', DIRECTORY_SEPARATOR);
 /** @noinspection PhpIncludeInspection */
 require_once JPATH_COMPONENT . '/helpers/route.php';
 require_once JPATH_COMPONENT . '/helpers/query.php';
-
+JLoader::register('HttpHelper', JPATH_ADMINISTRATOR . '/helpers/http.php');
 
 $doc = JFactory::getDocument();
 $doc->addStyleSheet('/components/com_catalogue/assets/css/catalogue.css');

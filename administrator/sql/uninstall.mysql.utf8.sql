@@ -1,6 +1,7 @@
 DELETE FROM `#__categories` WHERE `extension` = 'com_catalogue';
 DROP TABLE IF EXISTS `#__catalogue_agg_categories`;
 DROP TABLE IF EXISTS `#__catalogue_agg_groups`;
+DROP TABLE IF EXISTS `#__catalogue_agg_users`;
 DROP TABLE IF EXISTS `#__catalogue_attr`;
 DROP TABLE IF EXISTS `#__catalogue_attr_price`;
 DROP TABLE IF EXISTS `#__catalogue_attrdir`;

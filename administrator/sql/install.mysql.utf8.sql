@@ -31,6 +31,24 @@ CREATE TABLE `#__catalogue_agg_groups` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `#__catalogue_agg_users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `#__catalogue_agg_users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `agg_id` varchar(255) NOT NULL,
+  `account_id` varchar(255) NOT NULL,
+  `access_token` text NOT NULL,
+  `refresh_token` text NOT NULL,
+  `expires_in` int(11) NOT NULL,
+  `created` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `agg_id` (`agg_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `#__catalogue_agg_users_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `#__users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_attr`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -119,7 +137,7 @@ CREATE TABLE `#__catalogue_cart` (
   PRIMARY KEY (`id`),
   KEY `track_id` (`track_id`),
   KEY `amount` (`amount`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `#__catalogue_country`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
