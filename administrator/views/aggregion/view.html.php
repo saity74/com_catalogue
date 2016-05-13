@@ -96,16 +96,12 @@ class CatalogueViewAggregion extends JViewLegacy
 
 			if ($this->_layout === 'default')
 			{
-				foreach (['import'] as $item)
-				{
-					$actions[$item] = (object) [
-						'item'  => $item,
-						'title' => 'COM_CATALOGUE_AGGREGION_' . strtoupper($item) . '_BUTTON_TITLE',
-						'link'  => "index.php?option=com_catalogue&view=aggregion&task=aggregion.$item",
-					];
-				}
-
-				$actions['import']->icon = 'arrow-down-4';
+				$actions['import'] = (object) [
+					'item'	=> 'import',
+					'icon'	=> 'arrow-down-4',
+					'title'	=> 'COM_CATALOGUE_AGGREGION_IMPORT_BUTTON_TITLE',
+					'link'	=> "index.php?option=com_catalogue&view=aggregion&task=aggregion.import",
+				];
 			}
 
 

@@ -69,7 +69,6 @@ class CatalogueController extends JControllerLegacy
 
 	public function display($cachable = false, $urlparams = array())
 	{
-
 		$vName = $this->input->get('view');
 
 		if ($vName == 'order' && CatalogueCart::$isEmpty)
