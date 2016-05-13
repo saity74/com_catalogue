@@ -90,11 +90,11 @@ class CatalogueControllerAggregion extends JControllerForm
 
 		$app = JFactory::getApplication();
 		$input = $app->input;
-		$account_id = $input->get('account_id', false);
+		$account = $input->get('account_id', false);
 
-		if ( $account_id )
+		if ( $account )
 		{
-			$return = $this->setAccount($account_id);
+			$this->setAccount($account);
 		}
 
 		$return = $input->get('return', false) ? base64_decode($input->get('return')) : JUri::base();
@@ -102,7 +102,7 @@ class CatalogueControllerAggregion extends JControllerForm
 		JFactory::getApplication()->redirect($return);
 	}
 
-	private function setAccount($account_id)
+	private function setAccount($account)
 	{
 		$user = JFactory::getUser();
 
@@ -113,7 +113,12 @@ class CatalogueControllerAggregion extends JControllerForm
 
 			if ( $agg_user_table->load(['user_id' => $user->id]) )
 			{
+				$account = explode('_', $account);
+				$account_id = $account[0];
+				$account_is_org = $account[1];
+
 				$agg_user_table->account_id = $account_id;
+				$agg_user_table->account_is_org = $account_is_org;
 
 				if ( $agg_user_table->store() )
 				{

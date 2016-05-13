@@ -39,6 +39,7 @@ CREATE TABLE `#__catalogue_agg_users` (
   `user_id` int(11) NOT NULL,
   `agg_id` varchar(255) NOT NULL,
   `account_id` varchar(255) NOT NULL,
+  `account_is_org` tinyint(1) NOT NULL DEFAULT '0',
   `access_token` text NOT NULL,
   `refresh_token` text NOT NULL,
   `expires_in` int(11) NOT NULL,

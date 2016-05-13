@@ -144,8 +144,17 @@ class CatalogueViewCatalogue extends JViewLegacy
 
 		if ($user->authorise('core.admin', 'com_catalogue') || $user->authorise('core.options', 'com_catalogue'))
 		{
-			$layout = new JLayoutFile('toolbar.aggsync');
-			$bar->appendButton('Custom', $layout->render(), 'aggsync');
+			$import_btn = (object) [
+				'item'	=> 'import',
+				'icon'	=> 'arrow-down-4',
+				'title'	=> 'COM_CATALOGUE_AGGREGION_IMPORT_BUTTON_TITLE',
+				'link'	=> "index.php?option=com_catalogue&view=aggregion&task=aggregion.import",
+			];
+
+			$btn_layout = new JLayoutFile('toolbar.button', $basePath = JPATH_ROOT . '/components/com_catalogue/layouts');
+
+			$bhtml = $btn_layout->render($import_btn);
+			$bar->appendButton('Custom', $bhtml, 'import');
 
 			JToolbarHelper::preferences('com_catalogue');
 		}
